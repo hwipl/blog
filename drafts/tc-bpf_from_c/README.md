@@ -1,8 +1,47 @@
 # TC-BPF from C code
 
-## code snippets
+This document describes how a eBPF program for TC can be attached and detached
+from C code, without using the `tc` tool.
 
-### loading a bpf program on a network interface
+Note: this document was started before libbpf supported TC program loading.
+Maybe a, probably much shorter, libbpf version of this will come in the future.
+Still, this document provides information on how tc, netlink, and bpf interact
+and can be used from a C program.
+
+## Overview
+
+Attaching BPF programs consists of the following steps:
+
+* Load bpf program
+* Add qdisc on network interface
+* Add tc filter with bpf program on network interface
+
+Detaching BPF programs can be achieved with the following step:
+
+* Remove qdisc on network interface
+
+## Loading the BPF Program
+
+TODO
+
+## Adding the QDISC
+
+TODO
+
+## Adding the TC Filter
+
+TODO
+
+## Removing the QDISC
+
+TODO
+
+## Code Snippets
+
+The sections below contain C code snippets that show the implementation of
+tc-bpf attaching and detaching.
+
+### Attaching a BPF Program on a Network Interface
 
 Include headers:
 
@@ -262,7 +301,7 @@ int main(int argc, char **argv) {
 }
 ```
 
-### unloading bpf programs on a network interface
+### Detaching BPF Programs on a Network Interface
 
 Include headers:
 
