@@ -22,7 +22,12 @@ Detaching BPF programs can be achieved with the following step:
 
 ## Loading the BPF Program
 
-TODO
+As a first step, the bpf program needs to be loaded into the kernel. For
+example, this can be achieved with libbpf's function `bpf_prog_load_xattr()`.
+The load function requires the specification of the bpf program and the program
+type. In this case, the program type is `BPF_PROG_TYPE_SCHED_CLS`. Loading the
+bpf kernel returns a file descriptor that can be used to reference the loaded
+program in the following steps.
 
 ## Adding the QDISC
 
