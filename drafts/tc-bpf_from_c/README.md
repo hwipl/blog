@@ -46,7 +46,41 @@ created, the TC handle `TC_H_MAKE(TC_H_CLSACT, 0)` and the TC parent
 
 ## Adding the TC Filter
 
-TODO
+With the QDISC configured in the kernel, the TC Filter can be added. This also
+requires communication with the kernel over the netlink routing socket. This
+time the netlink message consists of a header and an embedded TC message with a
+kind and an options attribute. The options attribute contains a bpf file
+descriptor attribute, a bpf name attribute, and a bpf flags attribute.
+
+The header specifies the message type `RTM_NEWTFILTER` and the flags
+`NLM_F_REQUEST | NLM_F_CREATE` that indicate a request to create a new TC
+Filter.
+
+The TC message specifies the TC familiy `AF_UNSPEC`, the index of the network
+interface where the filter should be added, the TC handle `0`, the TC parent
+`TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS)` and the TC info `TC_H_MAKE(0,
+htons(ETH_P_ALL))`.
+
+The kind attribute is a netlink routing attribute of type `TCA_KIND` and
+contains the kind `bpf` as a string.
+
+The options attribute is netlink routing attribute of type `TCA_OPTIONS` and
+contains the other bpf attributes.
+
+The bpf file descriptor attribute is a netlink routing attribute of type
+`TCA_BPF_FD` and contains the file descriptor of the bpf program that was
+returned by loading the bpf program into the kernel, as described above.
+
+The bpf name descriptor attribute is a netlink routing attribute of type
+`TCA_BPF_NAME` and contains the name of the section within the loaded bpf
+program, that identifies the packet handling function, as a string, e.g.,
+`accept-all`.
+
+TODO: add section to document about bpf file creation? reference to section
+name in bpf name attribute?
+
+The bpf flags attribute is a netlink routing attribute of type `TCA_BPF_FLAGS`
+and contains the flag `TCA_BPF_FLAG_ACT_DIRECT` as an unsigned 32 bit integer.
 
 ## Removing the QDISC
 
