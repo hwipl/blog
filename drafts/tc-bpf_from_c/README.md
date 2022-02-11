@@ -84,7 +84,16 @@ and contains the flag `TCA_BPF_FLAG_ACT_DIRECT` as an unsigned 32 bit integer.
 
 ## Removing the QDISC
 
-TODO
+The previous steps can be undone by deleting the QDISC on the network
+interface. Again, this requires communication with the kernel over the netlink
+routing socket. The netlink message consists of a header and an embedded TC
+message with a TC kind attribute. The header specifies the message type
+`RTM_DELQDISC` and the flag `NLM_F_REQUEST` that indicate a request to delete a
+QDISC. The TC message specifies the TC family `AF_UNSPEC`, the index of the
+network interface where the QDISC should be deleted, the TC handle
+`TC_H_MAKE(TC_H_CLSACT, 0)` and the TC parent `TC_H_CLSACT`. The kind attribute
+is a netlink routing attribute of type `TCA_KIND` and contains the kind
+`clsact` as string.
 
 ## Code Snippets
 
