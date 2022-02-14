@@ -34,15 +34,58 @@ program in the following steps.
 The next step is adding the traffic control (TC) queueing discipline (QDISC).
 TC configuration relies on a Netlink interface. So, a netlink socket has to be
 created and an appropriate netlink message has to be sent to the kernel over
-the socket. The netlink socket is a routing (rtnetlink) socket with the family
-`NETLINK_ROUTE`. The netlink message consists of a header and an embedded TC
-message with a TC kind attribute. The header specifies the message type
-`RTM_NEWQDISC` and the flags `NLM_F_REQUEST | NLM_F_CREATE` that indicate a
-request to create a new QDISC. The TC message specifies the TC family
-`AF_UNSPEC`, the index of the network interface where the QDISC should be
-created, the TC handle `TC_H_MAKE(TC_H_CLSACT, 0)` and the TC parent
-`TC_H_CLSACT`. The kind attribute is a netlink routing attribute of type
-`TCA_KIND` and contains the kind `clsact` as a string.
+the socket.
+
+The netlink socket is a routing (rtnetlink) socket with the family
+`NETLINK_ROUTE`.
+
+```c
+/* create socket address */
+struct sockaddr_nl sa;
+memset(&sa, 0, sizeof(sa));
+sa.nl_family = AF_NETLINK;
+
+/* create and bind socket */
+int fd = socket(AF_NETLINK, SOCK_RAW, NETLINK_ROUTE);
+if (fd < 0) {
+	return fd;
+}
+if (bind(fd, (struct sockaddr *) &sa, sizeof(sa))) {
+	return -1;
+}
+```
+
+The netlink message consists of a header and an embedded TC message with a TC
+kind attribute.
+
+```
++--------------------------------------------------+
+|                                   Netlink Header |
+| type: RTM_RTM_NEWQDISC                           |
+| flags: NLM_F_REQUEST | NLM_F_CREATE              |
++--------------------------------------------------+
+|                                       TC Message |
+| family: AF_UNSPEC                                |
+| ifindex: if_index                                |
+| handle: TC_H_MAKE(TC_H_CLSACT, 0)                |
+| parent: TC_H_CLSACT                              |
+| info: TC_H_MAKE(0, htons(ETH_P_ALL))             |
++--------------------------------------------------+
+|                                   Kind Attribute |
+| type: TCA_KIND                                   |
+| data: "clsact"                                   |
++--------------------------------------------------+
+```
+
+The header specifies the message type `RTM_NEWQDISC` and the flags
+`NLM_F_REQUEST | NLM_F_CREATE` that indicate a request to create a new QDISC.
+
+The TC message specifies the TC family `AF_UNSPEC`, the index of the network
+interface where the QDISC should be created, the TC handle
+`TC_H_MAKE(TC_H_CLSACT, 0)` and the TC parent `TC_H_CLSACT`.
+
+The kind attribute is a netlink routing attribute of type `TCA_KIND` and
+contains the kind `clsact` as a string.
 
 ## Adding the TC Filter
 
