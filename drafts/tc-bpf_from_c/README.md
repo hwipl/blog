@@ -46,6 +46,13 @@ created, the TC handle `TC_H_MAKE(TC_H_CLSACT, 0)` and the TC parent
 
 ## Adding the TC Filter
 
+With the QDISC configured in the kernel, the TC Filter can be added. This also
+requires communication with the kernel over the netlink routing socket.
+
+This time the netlink message consists of a header and an embedded TC message
+with a kind and an options attribute. The options attribute contains a bpf
+file descriptor attribute, a bpf name attribute, and a bpf flags attribute.
+
 ```
 +--------------------------------------------------+
 |                                   Netlink Header |
@@ -79,12 +86,6 @@ created, the TC handle `TC_H_MAKE(TC_H_CLSACT, 0)` and the TC parent
 | data: TCA_BPF_FLAG_ACT_DIRECT                    |
 +--------------------------------------------------+
 ```
-
-With the QDISC configured in the kernel, the TC Filter can be added. This also
-requires communication with the kernel over the netlink routing socket. This
-time the netlink message consists of a header and an embedded TC message with a
-kind and an options attribute. The options attribute contains a bpf file
-descriptor attribute, a bpf name attribute, and a bpf flags attribute.
 
 ```c
 /* create request message */
