@@ -48,49 +48,35 @@ created, the TC handle `TC_H_MAKE(TC_H_CLSACT, 0)` and the TC parent
 
 ```
 +--------------------------------------------------+
-|                                 | Netlink Header |
-|                                 +----------------|
+|                                   Netlink Header |
 | type: RTM_NEWTFILTER                             |
 | flags: NLM_F_REQUEST | NLM_F_CREATE              |
-|                                                  |
 +--------------------------------------------------+
-|                                     | TC Message |
-|                                     +------------|
+|                                       TC Message |
 | family: AF_UNSPEC                                |
 | ifindex: if_index                                |
 | handle: 0                                        |
 | parent: TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS) |
 | info: TC_H_MAKE(0, htons(ETH_P_ALL))             |
-|                                                  |
 +--------------------------------------------------+
-|                                 | Kind Attribute |
-|                                 +----------------|
+|                                   Kind Attribute |
 | type: TCA_KIND                                   |
 | data: "bpf"                                      |
-|                                                  |
 +--------------------------------------------------+
-|                              | Options Attribute |
-|                              +-------------------|
+|                                Options Attribute |
 | type: TCA_OPTIONS                                |
-|                                                  |
 +--------------------------------------------------+
-|                  | BPF File Descriptor Attribute |
-|                  +-------------------------------|
+|                    BPF File Descriptor Attribute |
 | type: TCA_BPF_FD                                 |
 | data: bpf_fd                                     |
-|                                                  |
 +--------------------------------------------------+
-|                             | BPF Name Attribute |
-|                             +--------------------|
+|                               BPF Name Attribute |
 | type: TCA_BPF_NAME                               |
 | data: name                                       |
-|                                                  |
 +--------------------------------------------------+
-|                            | BPF Flags Attribute |
-|                            +---------------------|
+|                              BPF Flags Attribute |
 | type: TCA_BPF_FLAGS                              |
 | data: TCA_BPF_FLAG_ACT_DIRECT                    |
-|                                                  |
 +--------------------------------------------------+
 ```
 
