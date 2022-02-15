@@ -59,22 +59,21 @@ The netlink message consists of a header and an embedded TC message with a TC
 kind attribute.
 
 ```
-+--------------------------------------------------+
-|                                   Netlink Header |
-| type: RTM_RTM_NEWQDISC                           |
-| flags: NLM_F_REQUEST | NLM_F_CREATE              |
-+--------------------------------------------------+
-|                                       TC Message |
-| family: AF_UNSPEC                                |
-| ifindex: if_index                                |
-| handle: TC_H_MAKE(TC_H_CLSACT, 0)                |
-| parent: TC_H_CLSACT                              |
-| info: TC_H_MAKE(0, htons(ETH_P_ALL))             |
-+--------------------------------------------------+
-|                                   Kind Attribute |
-| type: TCA_KIND                                   |
-| data: "clsact"                                   |
-+--------------------------------------------------+
++---------------------------------------------------+
+|                                    Netlink Header |
+| type:    RTM_NEWQDISC                             |
+| flags:   NLM_F_REQUEST | NLM_F_CREATE             |
++---------------------------------------------------+
+|                                        TC Message |
+| family:  AF_UNSPEC                                |
+| ifindex: if_index                                 |
+| handle:  TC_H_MAKE(TC_H_CLSACT, 0)                |
+| parent:  TC_H_CLSACT                              |
++---------------------------------------------------+
+|                                    Kind Attribute |
+| type:    TCA_KIND                                 |
+| data:    "clsact"                                 |
++---------------------------------------------------+
 ```
 
 ```c
@@ -138,37 +137,37 @@ with a kind and an options attribute. The options attribute contains a bpf
 file descriptor attribute, a bpf name attribute, and a bpf flags attribute.
 
 ```
-+--------------------------------------------------+
-|                                   Netlink Header |
-| type: RTM_NEWTFILTER                             |
-| flags: NLM_F_REQUEST | NLM_F_CREATE              |
-+--------------------------------------------------+
-|                                       TC Message |
-| family: AF_UNSPEC                                |
-| ifindex: if_index                                |
-| handle: 0                                        |
-| parent: TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS) |
-| info: TC_H_MAKE(0, htons(ETH_P_ALL))             |
-+--------------------------------------------------+
-|                                   Kind Attribute |
-| type: TCA_KIND                                   |
-| data: "bpf"                                      |
-+--------------------------------------------------+
-|                                Options Attribute |
-| type: TCA_OPTIONS                                |
-+--------------------------------------------------+
-|                    BPF File Descriptor Attribute |
-| type: TCA_BPF_FD                                 |
-| data: bpf_fd                                     |
-+--------------------------------------------------+
-|                               BPF Name Attribute |
-| type: TCA_BPF_NAME                               |
-| data: name                                       |
-+--------------------------------------------------+
-|                              BPF Flags Attribute |
-| type: TCA_BPF_FLAGS                              |
-| data: TCA_BPF_FLAG_ACT_DIRECT                    |
-+--------------------------------------------------+
++---------------------------------------------------+
+|                                    Netlink Header |
+| type:    RTM_NEWTFILTER                           |
+| flags:   NLM_F_REQUEST | NLM_F_CREAT              |
++---------------------------------------------------+
+|                                        TC Message |
+| family:  AF_UNSPEC                                |
+| ifindex: if_index                                 |
+| handle:  0                                        |
+| parent:  TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS) |
+| info:    TC_H_MAKE(0, htons(ETH_P_ALL))           |
++---------------------------------------------------+
+|                                    Kind Attribute |
+| type:    TCA_KIND                                 |
+| data:    "bpf"                                    |
++---------------------------------------------------+
+|                                 Options Attribute |
+| type:    TCA_OPTIONS                              |
++---------------------------------------------------+
+|                     BPF File Descriptor Attribute |
+| type:    TCA_BPF_FD                               |
+| data:    bpf_fd                                   |
++---------------------------------------------------+
+|                                BPF Name Attribute |
+| type:    TCA_BPF_NAME                             |
+| data:    name                                     |
++---------------------------------------------------+
+|                               BPF Flags Attribute |
+| type:    TCA_BPF_FLAGS                            |
+| data:    TCA_BPF_FLAG_ACT_DIRECT                  |
++---------------------------------------------------+
 ```
 
 ```c
