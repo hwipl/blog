@@ -301,14 +301,38 @@ req.hdr.nlmsg_len = NLMSG_ALIGN(req.hdr.nlmsg_len) +
 
 The previous steps can be undone by deleting the QDISC on the network
 interface. Again, this requires communication with the kernel over the netlink
-routing socket. The netlink message consists of a header and an embedded TC
-message with a TC kind attribute. The header specifies the message type
-`RTM_DELQDISC` and the flag `NLM_F_REQUEST` that indicate a request to delete a
-QDISC. The TC message specifies the TC family `AF_UNSPEC`, the index of the
-network interface where the QDISC should be deleted, the TC handle
-`TC_H_MAKE(TC_H_CLSACT, 0)` and the TC parent `TC_H_CLSACT`. The kind attribute
-is a netlink routing attribute of type `TCA_KIND` and contains the kind
-`clsact` as string.
+routing socket.
+
+The netlink message consists of a header and an embedded TC message with a TC
+kind attribute.
+
+```
++---------------------------------------------------+
+|                                    Netlink Header |
+| type:    RTM_DELQDISC                             |
+| flags:   NLM_F_REQUEST                            |
++---------------------------------------------------+
+|                                        TC Message |
+| family:  AF_UNSPEC                                |
+| ifindex: if_index                                 |
+| handle:  TC_H_MAKE(TC_H_CLSACT, 0)                |
+| parent:  TC_H_CLSACT                              |
++---------------------------------------------------+
+|                                    Kind Attribute |
+| type:    TCA_KIND                                 |
+| data:    "clsact"                                 |
++---------------------------------------------------+
+```
+
+The header specifies the message type `RTM_DELQDISC` and the flag
+`NLM_F_REQUEST` that indicate a request to delete a QDISC.
+
+The TC message specifies the TC family `AF_UNSPEC`, the index of the network
+interface where the QDISC should be deleted, the TC handle
+`TC_H_MAKE(TC_H_CLSACT, 0)` and the TC parent `TC_H_CLSACT`.
+
+The kind attribute is a netlink routing attribute of type `TCA_KIND` and
+contains the kind `clsact` as string.
 
 ## Code Snippets
 
