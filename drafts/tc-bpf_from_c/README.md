@@ -377,8 +377,8 @@ req.hdr.nlmsg_len = NLMSG_ALIGN(req.hdr.nlmsg_len) + kind_rta->rta_len;
 
 ## Code Snippets
 
-The sections below contain C code snippets that show the implementation of
-tc-bpf attaching and detaching.
+The sections below contain C code snippets that show a complete implementation
+of tc-bpf attaching and detaching as described above.
 
 ### Attaching a BPF Program on a Network Interface
 
