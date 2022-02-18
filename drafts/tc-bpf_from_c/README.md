@@ -66,7 +66,7 @@ kind attribute.
 +---------------------------------------------------+
 |                                        TC Message |
 | family:  AF_UNSPEC                                |
-| ifindex: if_index                                 |
+| ifindex: if_nametoindex(if_name)                  |
 | handle:  TC_H_MAKE(TC_H_CLSACT, 0)                |
 | parent:  TC_H_CLSACT                              |
 +---------------------------------------------------+
@@ -144,7 +144,7 @@ file descriptor attribute, a bpf name attribute, and a bpf flags attribute.
 +---------------------------------------------------+
 |                                        TC Message |
 | family:  AF_UNSPEC                                |
-| ifindex: if_index                                 |
+| ifindex: if_nametoindex(if_name)                  |
 | handle:  0                                        |
 | parent:  TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS) |
 | info:    TC_H_MAKE(0, htons(ETH_P_ALL))           |
@@ -314,7 +314,7 @@ kind attribute.
 +---------------------------------------------------+
 |                                        TC Message |
 | family:  AF_UNSPEC                                |
-| ifindex: if_index                                 |
+| ifindex: if_nametoindex(if_name)                  |
 | handle:  TC_H_MAKE(TC_H_CLSACT, 0)                |
 | parent:  TC_H_CLSACT                              |
 +---------------------------------------------------+
