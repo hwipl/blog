@@ -29,6 +29,19 @@ type. In this case, the program type is `BPF_PROG_TYPE_SCHED_CLS`. Loading the
 bpf kernel returns a file descriptor that can be used to reference the loaded
 program in the following steps.
 
+```c
+struct bpf_prog_load_attr prog_load_attr = {
+	.prog_type      = BPF_PROG_TYPE_SCHED_CLS,
+	.file		= file,
+};
+struct bpf_object *obj;
+int prog_fd;
+
+if (bpf_prog_load_xattr(&prog_load_attr, &obj, &prog_fd)) {
+	return -1;
+}
+```
+
 ## Adding the QDISC
 
 The next step is adding the traffic control (TC) queueing discipline (QDISC).
