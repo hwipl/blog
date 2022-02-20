@@ -390,8 +390,31 @@ req.hdr.nlmsg_len = NLMSG_ALIGN(req.hdr.nlmsg_len) + kind_rta->rta_len;
 
 ## Code Snippets
 
-The sections below contain C code snippets that show a complete implementation
-of tc-bpf attaching and detaching as described above.
+The sections below contain C code snippets that show a dummy BPF program and a
+complete implementation of tc-bpf attaching and detaching as described above.
+
+### Dummy BPF Program
+
+Dummy BPF program for TC that accepts all packets:
+
+```c
+/* bpf */
+#include <linux/bpf.h>
+#include <bpf/bpf_helpers.h>
+
+/* tc */
+#include <linux/pkt_cls.h>
+
+/* set license to gpl */
+char _license[] SEC("license") = "GPL";
+
+/* accept all packets */
+SEC("accept_all")
+int _accept_all(struct __sk_buff *skb)
+{
+	return TC_ACT_OK;
+}
+```
 
 ### Attaching a BPF Program on a Network Interface
 
