@@ -8,6 +8,8 @@ Maybe a, probably much shorter, libbpf version of this will come in the future.
 Still, this document provides information on how tc, netlink, and bpf interact
 and can be used from a C program.
 
+TODO: add tc tool examples as reference/comparison?
+
 ## Overview
 
 Attaching BPF programs consists of the following steps:
