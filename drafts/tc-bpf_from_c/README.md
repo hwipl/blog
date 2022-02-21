@@ -22,6 +22,26 @@ Detaching BPF programs can be achieved with the following step:
 
 * Remove qdisc on network interface
 
+## Creating a BPF Program
+
+TODO: add to overview, check (transitions to) other sections
+
+Attaching and using a BPF program as described in the sections below requires a
+BPF program that is compatible with TC. When passing packets to the BPF
+program, TC identifies the corresponding functions within the program by the
+section name in the compiled ELF file. The functions should accept a linux
+socket buffer (SKB) and return an action like `OK`, `SHOT`, `REDIRECT` as a
+verdict.
+
+```c
+/* accept all packets */
+SEC("accept_all")
+int _accept_all(struct __sk_buff *skb)
+{
+	return TC_ACT_OK;
+}
+```
+
 ## Loading the BPF Program
 
 As a first step, the bpf program needs to be loaded into the kernel. For
