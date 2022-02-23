@@ -12,6 +12,9 @@ TODO: add tc tool examples as reference/comparison?
 
 ## Overview
 
+In the following sections, creating a BPF program for TC and the steps for
+attaching and detaching such a TC-BPF program are described.
+
 Attaching BPF programs consists of the following steps:
 
 * Load bpf program
@@ -24,7 +27,7 @@ Detaching BPF programs can be achieved with the following step:
 
 ## Creating a BPF Program
 
-TODO: add to overview, check (transitions to) other sections
+TODO: check (transitions to) other sections
 
 Attaching and using a BPF program as described in the sections below requires a
 BPF program that is compatible with TC. When passing packets to the BPF
