@@ -27,8 +27,6 @@ Detaching BPF programs can be achieved with the following step:
 
 ## Creating a BPF Program
 
-TODO: check (transitions to) other sections
-
 Attaching and using a BPF program as described in the sections below requires a
 BPF program that is compatible with TC. When passing packets to the BPF
 program, TC identifies the corresponding functions within the program by the
@@ -47,12 +45,12 @@ int _accept_all(struct __sk_buff *skb)
 
 ## Loading the BPF Program
 
-As a first step, the bpf program needs to be loaded into the kernel. For
-example, this can be achieved with libbpf's function `bpf_prog_load_xattr()`.
-The load function requires the specification of the bpf program and the program
-type. In this case, the program type is `BPF_PROG_TYPE_SCHED_CLS`. Loading the
-bpf kernel returns a file descriptor that can be used to reference the loaded
-program in the following steps.
+As a first step of attaching the BPF program, it needs to be loaded into the
+kernel. For example, this can be achieved with libbpf's function
+`bpf_prog_load_xattr()`.  The load function requires the specification of the
+bpf program and the program type. In this case, the program type is
+`BPF_PROG_TYPE_SCHED_CLS`. Loading the bpf kernel returns a file descriptor
+that can be used to reference the loaded program in the following steps.
 
 ```c
 struct bpf_prog_load_attr prog_load_attr = {
