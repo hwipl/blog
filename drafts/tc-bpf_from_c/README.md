@@ -1,14 +1,30 @@
 # TC-BPF from C code
 
 This document describes how a eBPF program for TC can be attached and detached
-from C code, without using the `tc` tool.
+from C code, without using the `tc` tool. It shows an alternative to running
+the following tc commands:
+
+```console
+# # attach bpf program to device:
+# # - add qdisc on device
+# # - add filter with bpf program and section to qdisc
+# tc qdisc add dev "$DEVICE" clsact
+# tc filter add dev "$DEVICE" ingress bpf \
+        direct-action obj "$BPF_PROGRAM" sec "$BPF_SECTION"
+```
+
+```console
+# # detach bpf program from device
+# # - remove qdisc on device
+# tc qdisc del dev "$DEVICE" clsact
+```
 
 Note: this document was started before libbpf supported TC program loading.
 Maybe a, probably much shorter, libbpf version of this will come in the future.
 Still, this document provides information on how tc, netlink, and bpf interact
 and can be used from a C program.
 
-TODO: add tc tool examples as reference/comparison?
+TODO: egress?
 
 ## Overview
 
