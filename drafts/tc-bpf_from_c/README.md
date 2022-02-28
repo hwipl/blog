@@ -8,7 +8,7 @@ the following `tc` commands:
 # attach bpf program to device:
 # - add qdisc on device
 # - add filter to qdisc on device for direction ingress or egress with
-    bpf program and section
+#   bpf program and section
 tc qdisc add dev "$DEVICE" clsact
 tc filter add dev "$DEVICE" "$DIRECTION" bpf \
       direct-action obj "$BPF_PROGRAM" sec "$BPF_SECTION"
