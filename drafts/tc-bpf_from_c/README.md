@@ -324,9 +324,6 @@ options_rta->rta_len = RTA_ALIGN(options_rta->rta_len) +
 	name_rta->rta_len;
 ```
 
-TODO: add section to document about bpf file creation? reference to section
-name in bpf name attribute?
-
 The bpf flags attribute is a netlink routing attribute of type `TCA_BPF_FLAGS`
 and contains the flag `TCA_BPF_FLAG_ACT_DIRECT` as an unsigned 32 bit integer.
 
