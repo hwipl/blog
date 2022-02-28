@@ -7,9 +7,10 @@ the following `tc` commands:
 ```sh
 # attach bpf program to device:
 # - add qdisc on device
-# - add filter with bpf program and section to qdisc
+# - add filter to qdisc on device for direction ingress or egress with
+    bpf program and section
 tc qdisc add dev "$DEVICE" clsact
-tc filter add dev "$DEVICE" ingress bpf \
+tc filter add dev "$DEVICE" "$DIRECTION" bpf \
       direct-action obj "$BPF_PROGRAM" sec "$BPF_SECTION"
 ```
 
@@ -23,8 +24,6 @@ Note: this document was started before libbpf supported TC program loading.
 Maybe a, probably much shorter, libbpf version of this will come in the future.
 Still, this document provides information on how tc, netlink, and bpf interact
 and can be used from a C program.
-
-TODO: egress?
 
 ## Overview
 
@@ -247,8 +246,9 @@ req.hdr.nlmsg_flags = NLM_F_REQUEST | NLM_F_CREATE;
 
 The TC message specifies the TC familiy `AF_UNSPEC`, the index of the network
 interface where the filter should be added, the TC handle `0`, the TC parent
-`TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS)` and the TC info `TC_H_MAKE(0,
-htons(ETH_P_ALL))`.
+`TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS)` for ingress or
+`TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_EGRESS)` for egress, and the TC info
+`TC_H_MAKE(0, htons(ETH_P_ALL))`.
 
 ```c
 /* fill tc message */
