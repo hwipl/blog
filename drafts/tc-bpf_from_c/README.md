@@ -27,16 +27,16 @@ bpf interact and can be used from a C program.
 
 ## Overview
 
-In the following sections, creating a BPF program for TC and the steps for
-attaching and detaching such a TC-BPF program are described.
+The following sections describe how to create a BPF program for TC and the
+steps for attaching and detaching such a TC-BPF program.
 
-Attaching BPF programs consists of the following steps:
+Attaching BPF programs to a network interface consists of the following steps:
 
 * Load bpf program
 * Add qdisc on network interface
 * Add tc filter with bpf program on network interface
 
-Detaching BPF programs can be achieved with the following step:
+You can detach BPF programs from a network interface with the following step:
 
 * Remove qdisc on network interface
 
