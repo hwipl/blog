@@ -83,9 +83,9 @@ if (bpf_prog_load_xattr(&prog_load_attr, &obj, &prog_fd)) {
 ## Adding the QDISC
 
 The next step is adding the traffic control (TC) queueing discipline (QDISC).
-TC configuration relies on a Netlink interface. So, a netlink socket has to be
-created and an appropriate netlink message has to be sent to the kernel over
-the socket.
+TC configuration relies on a Netlink interface. So, you have to create a
+netlink socket and you have to send an appropriate netlink message to the
+kernel over the socket.
 
 The netlink socket is a routing (rtnetlink) socket with the family
 `NETLINK_ROUTE`.
