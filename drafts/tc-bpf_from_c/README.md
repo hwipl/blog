@@ -348,9 +348,9 @@ req.hdr.nlmsg_len = NLMSG_ALIGN(req.hdr.nlmsg_len) +
 
 ## Removing the QDISC
 
-The previous steps can be undone by deleting the QDISC on the network
-interface. Again, this requires communication with the kernel over the netlink
-routing socket.
+You can undo the previous steps by deleting the QDISC on the network interface.
+Again, this requires communication with the kernel over the netlink routing
+socket.
 
 The netlink message consists of a header and an embedded TC message with a TC
 kind attribute.
