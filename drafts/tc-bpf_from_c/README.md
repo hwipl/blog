@@ -180,7 +180,7 @@ req.hdr.nlmsg_len = NLMSG_ALIGN(req.hdr.nlmsg_len) + kind_rta->rta_len;
 
 ## Adding the TC Filter
 
-With the QDISC configured in the kernel, the TC Filter can be added. This also
+With the QDISC configured in the kernel, you can add the TC Filter. This also
 requires communication with the kernel over the netlink routing socket.
 
 This time the netlink message consists of a header and an embedded TC message
