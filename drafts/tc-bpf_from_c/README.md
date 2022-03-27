@@ -5,19 +5,19 @@ from C code, without using the `tc` tool. It shows an alternative to running
 the following `tc` commands:
 
 ```sh
-# attach bpf program to device:
-# - add qdisc on device
-# - add filter to qdisc on device for direction ingress or egress with
+# attach bpf program to network interface:
+# - add qdisc on interface
+# - add filter to qdisc on interface for direction ingress or egress with
 #   bpf program and section
-tc qdisc add dev "$DEVICE" clsact
-tc filter add dev "$DEVICE" "$DIRECTION" bpf \
+tc qdisc add dev "$INTERFACE" clsact
+tc filter add dev "$INTERFACE" "$DIRECTION" bpf \
       direct-action obj "$BPF_PROGRAM" sec "$BPF_SECTION"
 ```
 
 ```sh
-# detach bpf program from device
-# - remove qdisc on device
-tc qdisc del dev "$DEVICE" clsact
+# detach bpf program from network interface:
+# - remove qdisc on interface
+tc qdisc del dev "$INTERFACE" clsact
 ```
 
 Note: this document was started before libbpf supported TC program loading.
