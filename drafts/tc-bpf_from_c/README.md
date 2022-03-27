@@ -1,8 +1,8 @@
 # TC-BPF from C code
 
-This document describes how a eBPF program for TC can be attached and detached
-from C code, without using the `tc` tool. It shows an alternative to running
-the following `tc` commands:
+This document describes how you can attach and detach an eBPF program for TC on
+a network interface from C code, without using the `tc` tool. It shows an
+alternative to running the following `tc` commands:
 
 ```sh
 # attach bpf program to network interface:
@@ -20,10 +20,10 @@ tc filter add dev "$INTERFACE" "$DIRECTION" bpf \
 tc qdisc del dev "$INTERFACE" clsact
 ```
 
-Note: this document was started before libbpf supported TC program loading.
-Maybe a, probably much shorter, libbpf version of this will come in the future.
-Still, this document provides information on how tc, netlink, and bpf interact
-and can be used from a C program.
+Note: creating this document started before libbpf supported TC program
+loading. Maybe a, probably much shorter, libbpf version of this will come in
+the future.  Still, this document provides information on how tc, netlink, and
+bpf interact and can be used from a C program.
 
 ## Overview
 
