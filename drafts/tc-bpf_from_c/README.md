@@ -60,12 +60,12 @@ int _accept_all(struct __sk_buff *skb)
 
 ## Loading the BPF Program
 
-As a first step of attaching the BPF program, it needs to be loaded into the
-kernel. For example, this can be achieved with libbpf's function
-`bpf_prog_load_xattr()`.  The load function requires the specification of the
-bpf program and the program type. In this case, the program type is
-`BPF_PROG_TYPE_SCHED_CLS`. Loading the bpf kernel returns a file descriptor
-that can be used to reference the loaded program in the following steps.
+The first step of attaching the BPF program is loading it into the kernel. For
+example, you can achieve this with libbpf's function `bpf_prog_load_xattr()`.
+The load function requires the specification of the bpf program and the program
+type. In this case, the program type is `BPF_PROG_TYPE_SCHED_CLS`. Loading the
+bpf into the kernel returns a file descriptor that you can use to reference the
+loaded program in the following steps.
 
 ```c
 struct bpf_prog_load_attr prog_load_attr = {
