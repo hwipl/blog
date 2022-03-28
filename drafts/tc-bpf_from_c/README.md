@@ -74,10 +74,7 @@ struct bpf_prog_load_attr prog_load_attr = {
 };
 struct bpf_object *obj;
 int prog_fd;
-
-if (bpf_prog_load_xattr(&prog_load_attr, &obj, &prog_fd)) {
-	return -1;
-}
+bpf_prog_load_xattr(&prog_load_attr, &obj, &prog_fd);
 ```
 
 ## Adding the QDISC
