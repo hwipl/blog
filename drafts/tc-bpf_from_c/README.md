@@ -95,12 +95,7 @@ sa.nl_family = AF_NETLINK;
 
 /* create and bind socket */
 int fd = socket(AF_NETLINK, SOCK_RAW, NETLINK_ROUTE);
-if (fd < 0) {
-	return fd;
-}
-if (bind(fd, (struct sockaddr *) &sa, sizeof(sa))) {
-	return -1;
-}
+bind(fd, (struct sockaddr *) &sa, sizeof(sa));
 ```
 
 The netlink message consists of a header and an embedded TC message with a TC
