@@ -119,26 +119,17 @@ kind attribute.
 +---------------------------------------------------+
 ```
 
-```c
-/* create request message */
-struct {
-	struct nlmsghdr hdr;
-	struct tcmsg tcm;
-	char attrbuf[512];
-} req;
-memset(&req, 0, sizeof(req));
-```
-
 The header specifies the message type `RTM_NEWQDISC` and the flags
 `NLM_F_REQUEST | NLM_F_CREATE` that indicate a request to create a new QDISC.
 
 ```c
-/* fill header */
-req.hdr.nlmsg_len = NLMSG_LENGTH(sizeof(req.tcm));
-req.hdr.nlmsg_pid = 0;
-req.hdr.nlmsg_seq = 1;
-req.hdr.nlmsg_type = RTM_NEWQDISC;
-req.hdr.nlmsg_flags = NLM_F_REQUEST | NLM_F_CREATE;
+/* netlink message header */
+struct nlmsghdr hdr;
+hdr.nlmsg_len = NLMSG_ALIGN(NLMSG_LENGTH(sizeof(tcm))) + kind_rta.rta_len;
+hdr.nlmsg_pid = 0;
+hdr.nlmsg_seq = 1;
+hdr.nlmsg_type = RTM_NEWQDISC;
+hdr.nlmsg_flags = NLM_F_REQUEST | NLM_F_CREATE;
 ```
 
 The TC message specifies the TC family `AF_UNSPEC`, the index of the network
@@ -146,28 +137,27 @@ interface where the QDISC should be created, the TC handle
 `TC_H_MAKE(TC_H_CLSACT, 0)` and the TC parent `TC_H_CLSACT`.
 
 ```c
-/* fill tc message */
-req.tcm.tcm_family = AF_UNSPEC;
-req.tcm.tcm_ifindex = if_nametoindex(if_name);
-req.tcm.tcm_handle = TC_H_MAKE(TC_H_CLSACT, 0);
-req.tcm.tcm_parent = TC_H_CLSACT;
+/* tc message */
+struct tcmsg tcm;
+tcm.tcm_family = AF_UNSPEC;
+tcm.tcm_ifindex = if_nametoindex(if_name);
+tcm.tcm_handle = TC_H_MAKE(TC_H_CLSACT, 0);
+tcm.tcm_parent = TC_H_CLSACT;
+tcm.tcm_info = 0;
 ```
 
 The kind attribute is a netlink routing attribute of type `TCA_KIND` and
 contains the kind `clsact` as a string.
 
 ```c
-/* add kind attribute */
+/* kind attribute */
 const char *kind = "clsact";
+char attrbuf[512];
 struct rtattr *kind_rta;
-kind_rta = (struct rtattr *)(((char *) &req) +
-			     NLMSG_ALIGN(req.hdr.nlmsg_len));
+kind_rta = (struct rtattr *) attrbuf;
 kind_rta->rta_type = TCA_KIND;
 kind_rta->rta_len = RTA_LENGTH(strnlen(kind, 6));
 memcpy(RTA_DATA(kind_rta), kind, strnlen(kind, 6));
-
-/* update message length */
-req.hdr.nlmsg_len = NLMSG_ALIGN(req.hdr.nlmsg_len) + kind_rta->rta_len;
 ```
 
 ## Adding the TC Filter
