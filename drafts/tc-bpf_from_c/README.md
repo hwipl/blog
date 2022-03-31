@@ -1,5 +1,16 @@
 # TC-BPF from C code
 
+TODO: add overview/metadata table? Release date, version/last modification,
+keywords? Add glue text connecting sections? Add changelog at the end of the
+document?
+
+TODO: simplify code snippets in sections? Add comments for variables, e.g.,
+`file // filename of bpf program`?
+
+TODO: create svg figures instead of ascii art?
+
+TODO: move netlink socket into its own section?
+
 This document describes how you can attach and detach an eBPF program for TC on
 a network interface from C code, without using the `tc` tool. It shows an
 alternative to running the following `tc` commands:
@@ -27,6 +38,8 @@ bpf interact and can be used from a C program.
 
 ## Overview
 
+TODO: add figure?
+
 The following sections describe how to create a BPF program for TC and the
 steps for attaching and detaching such a TC-BPF program.
 
@@ -40,7 +53,13 @@ You can detach BPF programs from a network interface with the following step:
 
 * Remove qdisc on network interface
 
+TODO: add reference to code snippets? This document ends with a list of
+complete code snippets? At the end of this document, you can find complete code
+snippets in the last sections?
+
 ## Creating a BPF Program
+
+TODO: add figure?
 
 Attaching and using a BPF program as described in the sections below requires a
 BPF program that is compatible with TC. When passing packets to the BPF
@@ -125,7 +144,7 @@ The header specifies the message type `RTM_NEWQDISC` and the flags
 ```c
 /* netlink message header */
 struct nlmsghdr hdr;
-hdr.nlmsg_len = NLMSG_ALIGN(NLMSG_LENGTH(sizeof(tcm))) + kind_rta.rta_len;
+hdr.nlmsg_len = NLMSG_ALIGN(NLMSG_LENGTH(sizeof(struct tcmsg))) + RTA_LENGTH(strlen("clsact"));
 hdr.nlmsg_pid = 0;
 hdr.nlmsg_seq = 1;
 hdr.nlmsg_type = RTM_NEWQDISC;
@@ -151,13 +170,10 @@ contains the kind `clsact` as a string.
 
 ```c
 /* kind attribute */
-const char *kind = "clsact";
-char attrbuf[512];
-struct rtattr *kind_rta;
-kind_rta = (struct rtattr *) attrbuf;
+struct rtattr *kind_rta = attr_buf;
 kind_rta->rta_type = TCA_KIND;
-kind_rta->rta_len = RTA_LENGTH(strnlen(kind, 6));
-memcpy(RTA_DATA(kind_rta), kind, strnlen(kind, 6));
+kind_rta->rta_len = RTA_LENGTH(strlen("clsact"));
+memcpy(RTA_DATA(kind_rta), "clsact", strlen("clsact"));
 ```
 
 ## Adding the TC Filter
@@ -405,6 +421,9 @@ memcpy(RTA_DATA(kind_rta), kind, strnlen(kind, 6));
 /* update message length */
 req.hdr.nlmsg_len = NLMSG_ALIGN(req.hdr.nlmsg_len) + kind_rta->rta_len;
 ```
+## Conclusion?
+
+TODO: add a conclusion?
 
 ## Code Snippets
 
