@@ -219,27 +219,19 @@ file descriptor attribute, a bpf name attribute, and a bpf flags attribute.
 +---------------------------------------------------+
 ```
 
-```c
-/* create request message */
-struct {
-	struct nlmsghdr hdr;
-	struct tcmsg tcm;
-	char attrbuf[512];
-} req;
-memset(&req, 0, sizeof(req));
-```
-
 The header specifies the message type `RTM_NEWTFILTER` and the flags
 `NLM_F_REQUEST | NLM_F_CREATE` that indicate a request to create a new TC
 Filter.
 
 ```c
-/* fill header */
-req.hdr.nlmsg_len = NLMSG_LENGTH(sizeof(req.tcm));
-req.hdr.nlmsg_pid = 0;
-req.hdr.nlmsg_seq = 1;
-req.hdr.nlmsg_type = RTM_NEWTFILTER;
-req.hdr.nlmsg_flags = NLM_F_REQUEST | NLM_F_CREATE;
+/* netlink message header */
+struct nlmsghdr hdr;
+hdr.nlmsg_len = NLMSG_LENGTH(sizeof(req.tcm));
+hdr.nlmsg_len = NLMSG_ALIGN(NLMSG_LENGTH(sizeof(struct tcmsg))) + RTA_LENGTH(strlen("bpf") + 1);
+hdr.nlmsg_pid = 0;
+hdr.nlmsg_seq = 1;
+hdr.nlmsg_type = RTM_NEWTFILTER;
+hdr.nlmsg_flags = NLM_F_REQUEST | NLM_F_CREATE;
 ```
 
 The TC message specifies the TC familiy `AF_UNSPEC`, the index of the network
@@ -249,29 +241,24 @@ interface where the filter should be added, the TC handle `0`, the TC parent
 `TC_H_MAKE(0, htons(ETH_P_ALL))`.
 
 ```c
-/* fill tc message */
-req.tcm.tcm_family = AF_UNSPEC;
-req.tcm.tcm_ifindex = if_nametoindex(if_name);
-req.tcm.tcm_handle = 0;
-req.tcm.tcm_parent = TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS);
-req.tcm.tcm_info = TC_H_MAKE(0, htons(ETH_P_ALL));
+/* tc message */
+struct tcmsg tcm;
+tcm.tcm_family = AF_UNSPEC;
+tcm.tcm_ifindex = if_nametoindex(if_name);
+tcm.tcm_handle = 0;
+tcm.tcm_parent = TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS);
+tcm.tcm_info = TC_H_MAKE(0, htons(ETH_P_ALL));
 ```
 
 The kind attribute is a netlink routing attribute of type `TCA_KIND` and
 contains the kind `bpf` as a string.
 
 ```c
-/* add kind attribute */
-const char *kind = "bpf";
-struct rtattr *kind_rta;
-kind_rta = (struct rtattr *)(((char *) &req) +
-			     NLMSG_ALIGN(req.hdr.nlmsg_len));
+/* kind attribute */
+struct rtattr *kind_rta = kind_buf;
 kind_rta->rta_type = TCA_KIND;
-kind_rta->rta_len = RTA_LENGTH(strnlen(kind, 3) + 1);
-memcpy(RTA_DATA(kind_rta), kind, strnlen(kind, 3) + 1);
-
-/* update message length */
-req.hdr.nlmsg_len = NLMSG_ALIGN(req.hdr.nlmsg_len) + kind_rta->rta_len;
+kind_rta->rta_len = RTA_LENGTH(strnlen("bpf") + 1);
+memcpy(RTA_DATA(kind_rta), "bpf", strlen("bpf") + 1);
 ```
 
 The options attribute is netlink routing attribute of type `TCA_OPTIONS` and
@@ -279,9 +266,7 @@ contains the other bpf attributes.
 
 ```c
 /* add options attribute */
-struct rtattr *options_rta;
-options_rta = (struct rtattr *)(((char *) &req) +
-				NLMSG_ALIGN(req.hdr.nlmsg_len));
+struct rtattr *options_rta = options_buf;
 options_rta->rta_type = TCA_OPTIONS;
 options_rta->rta_len = RTA_LENGTH(0);
 ```
@@ -309,13 +294,12 @@ program, that identifies the packet handling function, as a string, e.g.,
 
 ```c
 /* add bpf name attribute */
-const char *name = "accept-all";
 struct rtattr *name_rta;
 name_rta = (struct rtattr *)(((char *) options_rta) +
 			     RTA_ALIGN(options_rta->rta_len));
 name_rta->rta_type = TCA_BPF_NAME;
-name_rta->rta_len = RTA_LENGTH(strnlen(name, 10) + 1);
-memcpy(RTA_DATA(name_rta), name, strnlen(name, 10 + 1));
+name_rta->rta_len = RTA_LENGTH(strlen("accept-all") + 1);
+memcpy(RTA_DATA(name_rta), "accept-all", strlen("accept-all") + 1);
 
 /* update options length */
 options_rta->rta_len = RTA_ALIGN(options_rta->rta_len) +
