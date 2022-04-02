@@ -9,8 +9,6 @@ TODO: simplify code snippets in sections? Add comments for variables, e.g.,
 
 TODO: create svg figures instead of ascii art?
 
-TODO: move netlink socket into its own section?
-
 This document describes how you can attach and detach an eBPF program for TC on
 a network interface from C code, without using the `tc` tool. It shows an
 alternative to running the following `tc` commands:
@@ -96,12 +94,13 @@ int prog_fd;
 bpf_prog_load_xattr(&prog_load_attr, &obj, &prog_fd);
 ```
 
-## Adding the QDISC
+## Communicating with TC
 
-The next step is adding the traffic control (TC) queueing discipline (QDISC).
-TC configuration relies on a Netlink interface. So, you have to create a
-netlink socket and you have to send an appropriate netlink message to the
-kernel over the socket.
+The TC configuration in the following sections relies on a Netlink
+interface. So, you have to create a netlink socket and you have to send an
+appropriate netlink message to the kernel over the socket.
+
+TODO: improve?
 
 The netlink socket is a routing (rtnetlink) socket with the family
 `NETLINK_ROUTE`.
@@ -116,6 +115,15 @@ sa.nl_family = AF_NETLINK;
 int fd = socket(AF_NETLINK, SOCK_RAW, NETLINK_ROUTE);
 bind(fd, (struct sockaddr *) &sa, sizeof(sa));
 ```
+
+TODO: add something about message format, message buffer used in following
+sections?
+
+## Adding the QDISC
+
+The next step after loading the BPF program into the kernel is adding the
+traffic control (TC) queueing discipline (QDISC). This requires communication
+with the kernel over the netlink routing socket as mentioned above.
 
 The netlink message consists of a header and an embedded TC message with a TC
 kind attribute.
