@@ -87,7 +87,7 @@ loaded program in the following steps.
 ```c
 struct bpf_prog_load_attr prog_load_attr = {
 	.prog_type      = BPF_PROG_TYPE_SCHED_CLS,
-	.file		= file,
+	.file		= file, // filename of the bpf program
 };
 struct bpf_object *obj;
 int prog_fd;
