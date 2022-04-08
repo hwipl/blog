@@ -100,11 +100,10 @@ bpf_prog_load_xattr(&prog_load_attr, &obj, &prog_fd);
 
 ## Communicating with TC via Netlink
 
-The TC configuration in the following sections relies on a Netlink
-interface. So, you have to create a netlink socket and you have to send
-appropriate netlink messages to the kernel over the socket.
-
-TODO: improve?
+Traffic Control (TC) inside the kernel and, thus, the TC configuration in the
+following sections relies on a Netlink interface. So, you have to create a
+respective Netlink socket and you have to send appropriate Netlink messages to
+the kernel over the socket.
 
 The netlink socket is a routing (rtnetlink) socket with the family
 `NETLINK_ROUTE`.
@@ -120,17 +119,15 @@ int fd = socket(AF_NETLINK, SOCK_RAW, NETLINK_ROUTE);
 bind(fd, (struct sockaddr *) &sa, sizeof(sa));
 ```
 
-The netlink messages consist of a header (`struct nlmsghdr`),  a TC message
+The netlink messages consist of a header (`struct nlmsghdr`), a TC message
 (`struct tcmsg`) and one or more netlink routing attributes (`struct rtattr`).
 
-TODO: add something about message format, message buffer used in following
-sections?
-
 ```c
-char msg_buf[512] = { 0 };
-struct nlmsghdr *hdr = (struct nlmsghdr *) msg_buf;
-struct tcmsg *tcm = (struct tcmsg *) (msg_buf + sizeof(*hdr));
-char *attr_buf = msg_buf + NLMSG_ALIGN(NLMSG_LENGTH(sizeof(struct tcmsg)));
+char msg_buf[512] = { 0 }; // buffer for netlink message
+struct nlmsghdr *hdr = (struct nlmsghdr *) msg_buf; // netlink message header
+struct tcmsg *tcm = (struct tcmsg *) (msg_buf + sizeof(*hdr)); // tc message
+char *attr_buf = msg_buf + NLMSG_ALIGN(NLMSG_LENGTH(sizeof(struct tcmsg))); // routing attributes
+struct rtattr *attr = (struct rtattr *) attr_buf; // a routing attribute
 ```
 
 ## Adding the QDISC
