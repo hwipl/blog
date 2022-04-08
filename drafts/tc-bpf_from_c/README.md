@@ -38,6 +38,8 @@ bpf interact and can be used from a C program.
 
 TODO: add figure?
 
+TODO: add reference to netlink section
+
 The following sections describe how to create a BPF program for TC and the
 steps for attaching and detaching such a TC-BPF program.
 
@@ -76,6 +78,8 @@ int _accept_all(struct __sk_buff *skb)
 ```
 
 ## Loading the BPF Program
+
+TODO: add figure?
 
 The first step of attaching the BPF program is loading it into the kernel. For
 example, you can achieve this with libbpf's function `bpf_prog_load_xattr()`.
@@ -273,7 +277,7 @@ contains the kind `bpf` as a string.
 /* kind attribute */
 struct rtattr *kind_rta = kind_buf;
 kind_rta->rta_type = TCA_KIND;
-kind_rta->rta_len = RTA_LENGTH(strnlen("bpf") + 1);
+kind_rta->rta_len = RTA_LENGTH(strnlen("bpf") + 1); // check offset
 memcpy(RTA_DATA(kind_rta), "bpf", strlen("bpf") + 1);
 ```
 
