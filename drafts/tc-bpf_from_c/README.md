@@ -242,13 +242,12 @@ Filter.
 
 ```c
 /* netlink message header */
-struct nlmsghdr hdr;
-hdr.nlmsg_len = NLMSG_LENGTH(sizeof(req.tcm));
-hdr.nlmsg_len = NLMSG_ALIGN(NLMSG_LENGTH(sizeof(struct tcmsg))) + RTA_LENGTH(strlen("bpf") + 1);
-hdr.nlmsg_pid = 0;
-hdr.nlmsg_seq = 1;
-hdr.nlmsg_type = RTM_NEWTFILTER;
-hdr.nlmsg_flags = NLM_F_REQUEST | NLM_F_CREATE;
+hdr->nlmsg_len = NLMSG_LENGTH(sizeof(req.tcm));
+hdr->nlmsg_len = NLMSG_ALIGN(NLMSG_LENGTH(sizeof(struct tcmsg))) + RTA_LENGTH(strlen("bpf") + 1);
+hdr->nlmsg_pid = 0;
+hdr->nlmsg_seq = 1;
+hdr->nlmsg_type = RTM_NEWTFILTER;
+hdr->nlmsg_flags = NLM_F_REQUEST | NLM_F_CREATE;
 ```
 
 The TC message specifies the TC familiy `AF_UNSPEC`, the index of the network
@@ -259,12 +258,11 @@ interface where the filter should be added, the TC handle `0`, the TC parent
 
 ```c
 /* tc message */
-struct tcmsg tcm;
-tcm.tcm_family = AF_UNSPEC;
-tcm.tcm_ifindex = if_nametoindex(if_name);
-tcm.tcm_handle = 0;
-tcm.tcm_parent = TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS);
-tcm.tcm_info = TC_H_MAKE(0, htons(ETH_P_ALL));
+tcm->tcm_family = AF_UNSPEC;
+tcm->tcm_ifindex = if_nametoindex(if_name);
+tcm->tcm_handle = 0;
+tcm->tcm_parent = TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS);
+tcm->tcm_info = TC_H_MAKE(0, htons(ETH_P_ALL));
 ```
 
 The kind attribute is a netlink routing attribute of type `TCA_KIND` and
@@ -272,7 +270,7 @@ contains the kind `bpf` as a string.
 
 ```c
 /* kind attribute */
-struct rtattr *kind_rta = kind_buf;
+struct rtattr *kind_rta = (struct rtattr *) attr_buf;
 kind_rta->rta_type = TCA_KIND;
 kind_rta->rta_len = RTA_LENGTH(strnlen("bpf") + 1); // check offset
 memcpy(RTA_DATA(kind_rta), "bpf", strlen("bpf") + 1);
@@ -283,7 +281,7 @@ contains the other bpf attributes.
 
 ```c
 /* add options attribute */
-struct rtattr *options_rta = options_buf;
+struct rtattr *options_rta = (struct rtattr *)(attr_buf + RTA_ALIGN(kind_rta->rta_len));
 options_rta->rta_type = TCA_OPTIONS;
 options_rta->rta_len = RTA_LENGTH(0);
 ```
@@ -341,7 +339,7 @@ options_rta->rta_len = RTA_ALIGN(options_rta->rta_len) +
 	flags_rta->rta_len;
 
 /* update message length */
-req.hdr.nlmsg_len = NLMSG_ALIGN(req.hdr.nlmsg_len) +
+hdr->nlmsg_len = NLMSG_ALIGN(req.hdr.nlmsg_len) +
 	options_rta->rta_len;
 ```
 
