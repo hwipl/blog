@@ -375,12 +375,11 @@ The header specifies the message type `RTM_DELQDISC` and the flag
 
 ```c
 /* netlink message header */
-struct nlmsghdr hdr;
-hdr.nlmsg_len = NLMSG_ALIGN(NLMSG_LENGTH(sizeof(struct tcmsg))) + RTA_LENGTH(strlen("clsact"));
-hdr.nlmsg_pid = 0;
-hdr.nlmsg_seq = 1;
-hdr.nlmsg_type = RTM_DELQDISC;
-hdr.nlmsg_flags = NLM_F_REQUEST;
+hdr->nlmsg_len = NLMSG_ALIGN(NLMSG_LENGTH(sizeof(struct tcmsg))) + RTA_LENGTH(strlen("clsact"));
+hdr->nlmsg_pid = 0;
+hdr->nlmsg_seq = 1;
+hdr->nlmsg_type = RTM_DELQDISC;
+hdr->nlmsg_flags = NLM_F_REQUEST;
 ```
 
 The TC message specifies the TC family `AF_UNSPEC`, the index of the network
@@ -389,12 +388,11 @@ interface where the QDISC should be deleted, the TC handle
 
 ```c
 /* tc message */
-struct tcmsg tcm;
-tcm.tcm_family = AF_UNSPEC;
-tcm.tcm_ifindex = if_nametoindex(if_name);
-tcm.tcm_handle = TC_H_MAKE(TC_H_CLSACT, 0);
-tcm.tcm_parent = TC_H_CLSACT;
-tcm.tcm_info = 0;
+tcm->tcm_family = AF_UNSPEC;
+tcm->tcm_ifindex = if_nametoindex(if_name);
+tcm->tcm_handle = TC_H_MAKE(TC_H_CLSACT, 0);
+tcm->tcm_parent = TC_H_CLSACT;
+tcm->tcm_info = 0;
 ```
 
 The kind attribute is a netlink routing attribute of type `TCA_KIND` and
@@ -402,7 +400,7 @@ contains the kind `clsact` as string.
 
 ```c
 /* kind attribute */
-struct rtattr *kind_rta = attr_buf;
+struct rtattr *kind_rta = (struct rtattr *) attr_buf;
 kind_rta->rta_type = TCA_KIND;
 kind_rta->rta_len = RTA_LENGTH(strlen("clsact"));
 memcpy(RTA_DATA(kind_rta), "clsact", strlen("clsact"));
