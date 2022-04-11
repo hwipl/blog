@@ -43,15 +43,30 @@ TODO: add reference to netlink section
 The following sections describe how to create a BPF program for TC and the
 steps for attaching and detaching such a TC-BPF program.
 
+```
++-------------------+
+|     C Program     |
+|                   |
++-------[ Netlink ]-+
+   |         |
+   | (1)     | (2), (3), (4)
+   |         |
++-----+ +---------+
+| BPF | | Traffic |
+|     | | Control |
++-----+ +---------+
+```
+
+
 Attaching BPF programs to a network interface consists of the following steps:
 
-* Load bpf program
-* Add qdisc on network interface
-* Add tc filter with bpf program on network interface
+1. Load bpf program
+2. Add qdisc on network interface
+3. Add tc filter with bpf program on network interface
 
 You can detach BPF programs from a network interface with the following step:
 
-* Remove qdisc on network interface
+4. Remove qdisc on network interface
 
 TODO: add reference to code snippets? This document ends with a list of
 complete code snippets? At the end of this document, you can find complete code
