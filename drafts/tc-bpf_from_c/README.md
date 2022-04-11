@@ -44,17 +44,17 @@ The following sections describe how to create a BPF program for TC and the
 steps for attaching and detaching such a TC-BPF program.
 
 ```
-+-------------------+
-|     C Program     |
-|                   |
-+-------[ Netlink ]-+
-   |         |
-   | (1)     | (2), (3), (4)
-   |         |
-+-----+ +---------+
-| BPF | | Traffic |
-|     | | Control |
-+-----+ +---------+
++-----------------------+
+|       C Program       |
+|                       |
++----------[ Netlink ]--+
+   |            |
+   | (1)        | (2), (3), (4)
+   |            |
++-----+    +---------+
+| BPF |    | Traffic |
+|     |    | Control |
++-----+    +---------+
 ```
 
 
