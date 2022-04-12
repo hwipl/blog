@@ -36,10 +36,6 @@ bpf interact and can be used from a C program.
 
 ## Overview
 
-TODO: add figure?
-
-TODO: add reference to netlink section
-
 The following sections describe how to create a BPF program for TC and the
 steps for attaching and detaching such a TC-BPF program.
 
@@ -68,9 +64,9 @@ You can detach BPF programs from a network interface with the following step:
 
 4. Remove qdisc on network interface
 
-TODO: add reference to code snippets? This document ends with a list of
-complete code snippets? At the end of this document, you can find complete code
-snippets in the last sections?
+Steps 2,3 and 4 require communication with TC inside the kernel. So, there is
+an additional section describing the TC Netlink interface before them. Also,
+you can find complete code snippets at the end of this document.
 
 ## Creating a BPF Program
 
