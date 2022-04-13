@@ -70,14 +70,22 @@ you can find complete code snippets at the end of this document.
 
 ## Creating a BPF Program
 
-TODO: add figure?
-
 Attaching and using a BPF program as described in the sections below requires a
-BPF program that is compatible with TC. When passing packets to the BPF
-program, TC identifies the corresponding functions within the program by the
-section name in the compiled ELF file. The functions should accept a linux
-socket buffer (SKB) and return an action like `OK`, `SHOT`, `REDIRECT` as a
-verdict.
+BPF program that is compatible with TC.
+
+```
++---------+           +---------+
+|         |    skb    |         |
+| Traffic |---------->| BPF     |
+| Control |  verdict  | Program |
+|         |<----------|         |
++---------+           +---------+
+```
+
+When passing packets to the BPF program, TC identifies the corresponding
+functions within the program by the section name in the compiled ELF file. The
+functions should accept a linux socket buffer (SKB) and return an action like
+`OK`, `SHOT`, `REDIRECT` as a verdict.
 
 ```c
 /* accept all packets */
@@ -89,8 +97,6 @@ int _accept_all(struct __sk_buff *skb)
 ```
 
 ## Loading the BPF Program
-
-TODO: add figure?
 
 The first step of attaching the BPF program is loading it into the kernel. For
 example, you can achieve this with libbpf's function `bpf_prog_load_xattr()`.
