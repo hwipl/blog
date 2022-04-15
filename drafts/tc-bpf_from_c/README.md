@@ -259,8 +259,7 @@ Filter.
 
 ```c
 /* netlink message header */
-hdr->nlmsg_len = NLMSG_LENGTH(sizeof(req.tcm));
-hdr->nlmsg_len = NLMSG_ALIGN(NLMSG_LENGTH(sizeof(struct tcmsg))) + RTA_LENGTH(strlen("bpf") + 1);
+hdr->nlmsg_len = MESSAGE_LENGTH; // header + tc message + attributes
 hdr->nlmsg_pid = 0;
 hdr->nlmsg_seq = 1;
 hdr->nlmsg_type = RTM_NEWTFILTER;
@@ -278,7 +277,7 @@ interface where the filter should be added, the TC handle `0`, the TC parent
 tcm->tcm_family = AF_UNSPEC;
 tcm->tcm_ifindex = if_nametoindex(if_name);
 tcm->tcm_handle = 0;
-tcm->tcm_parent = TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS);
+tcm->tcm_parent = TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS); // or TC_H_MIN_EGRESS
 tcm->tcm_info = TC_H_MAKE(0, htons(ETH_P_ALL));
 ```
 
@@ -289,7 +288,7 @@ contains the kind `bpf` as a string.
 /* kind attribute */
 struct rtattr *kind_rta = (struct rtattr *) attr_buf;
 kind_rta->rta_type = TCA_KIND;
-kind_rta->rta_len = RTA_LENGTH(strnlen("bpf") + 1); // check offset
+kind_rta->rta_len = RTA_LENGTH(strlen("bpf") + 1); // TODO: check offset
 memcpy(RTA_DATA(kind_rta), "bpf", strlen("bpf") + 1);
 ```
 
@@ -300,7 +299,7 @@ contains the other bpf attributes.
 /* add options attribute */
 struct rtattr *options_rta = (struct rtattr *)(attr_buf + RTA_ALIGN(kind_rta->rta_len));
 options_rta->rta_type = TCA_OPTIONS;
-options_rta->rta_len = RTA_LENGTH(0);
+options_rta->rta_len = OPTIONS_LENGTH; // fd + name + flags attributes
 ```
 
 The bpf file descriptor attribute is a netlink routing attribute of type
@@ -313,10 +312,6 @@ struct rtattr *fd_rta = RTA_DATA(options_rta);
 fd_rta->rta_type = TCA_BPF_FD;
 fd_rta->rta_len = RTA_LENGTH(sizeof(int));
 memcpy(RTA_DATA(fd_rta), &bpf_fd, sizeof(int));
-
-/* update options length */
-options_rta->rta_len = RTA_ALIGN(options_rta->rta_len) +
-	fd_rta->rta_len;
 ```
 
 The bpf name descriptor attribute is a netlink routing attribute of type
@@ -326,16 +321,10 @@ program, that identifies the packet handling function, as a string, e.g.,
 
 ```c
 /* add bpf name attribute */
-struct rtattr *name_rta;
-name_rta = (struct rtattr *)(((char *) options_rta) +
-			     RTA_ALIGN(options_rta->rta_len));
+struct rtattr *name_rta = (struct rtattr *)(((char *) fd_rta) + RTA_ALIGN(fd->rta_len));
 name_rta->rta_type = TCA_BPF_NAME;
 name_rta->rta_len = RTA_LENGTH(strlen("accept-all") + 1);
 memcpy(RTA_DATA(name_rta), "accept-all", strlen("accept-all") + 1);
-
-/* update options length */
-options_rta->rta_len = RTA_ALIGN(options_rta->rta_len) +
-	name_rta->rta_len;
 ```
 
 The bpf flags attribute is a netlink routing attribute of type `TCA_BPF_FLAGS`
@@ -344,20 +333,10 @@ and contains the flag `TCA_BPF_FLAG_ACT_DIRECT` as an unsigned 32 bit integer.
 ```c
 /* add bpf flags */
 __u32 flags = TCA_BPF_FLAG_ACT_DIRECT;
-struct rtattr *flags_rta;
-flags_rta = (struct rtattr *)(((char *) options_rta) +
-			      RTA_ALIGN(options_rta->rta_len));
+struct rtattr *flags_rta = (struct rtattr *)(((char *) name_rta) + RTA_ALIGN(name_rta->rta_len));
 flags_rta->rta_type = TCA_BPF_FLAGS;
 flags_rta->rta_len = RTA_LENGTH(sizeof(flags));
 memcpy(RTA_DATA(flags_rta), &flags, sizeof(flags));
-
-/* update options length */
-options_rta->rta_len = RTA_ALIGN(options_rta->rta_len) +
-	flags_rta->rta_len;
-
-/* update message length */
-hdr->nlmsg_len = NLMSG_ALIGN(req.hdr.nlmsg_len) +
-	options_rta->rta_len;
 ```
 
 ## Removing the QDISC
