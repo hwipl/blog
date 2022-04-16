@@ -419,6 +419,8 @@ code here:
 - [TC-BPF Attaching](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-load.c)
 - [TC-BPF Detaching](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-unload.c)
 
+TODO: rename source code files in other repo and here?
+
 ### Dummy BPF Program
 
 Dummy BPF program for TC that accepts all packets:
@@ -687,18 +689,18 @@ int main(int argc, char **argv) {
 }
 ```
 
-You can, for example, save the code in `tc-load.c` and then build it as
-`tc-load` with clang:
+You can, for example, save the code in `tc-attach.c` and then build it as
+`tc-attach` with clang:
 
 ```console
-$ clang tc-load.c -o tc-load -l bpf
+$ clang tc-attach.c -o tc-attach -l bpf
 ```
 
 You can then attach the bpf program `tc-accept.o` built above, for example, to
 the network interface `eth0` with the following command:
 
 ```console
-$ sudo ./tc-load tc-accept.o eth0
+$ sudo ./tc-attach tc-accept.o eth0
 ```
 
 ### Detaching BPF Programs on a Network Interface
@@ -806,16 +808,16 @@ int main(int argc, char **argv) {
 }
 ```
 
-You can, for example, save the code in `tc-unload.c` and then build it as
-`tc-unload` with clang:
+You can, for example, save the code in `tc-detach.c` and then build it as
+`tc-detach` with clang:
 
 ```console
-$ clang tc-unload.c -o tc-unload
+$ clang tc-detach.c -o tc-detach
 ```
 
 You can then detach the previously attached bpf program, for example, on
 network interface `eth0` with the following command:
 
 ```console
-$ sudo ./tc-unload eth0
+$ sudo ./tc-detach eth0
 ```
