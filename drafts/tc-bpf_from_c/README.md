@@ -323,7 +323,7 @@ program, that identifies the packet handling function, as a string, e.g.,
 ```c
 /* add bpf name attribute */
 char *name = "accept-all"; // name of section in loaded bpf program
-struct rtattr *name_rta = (struct rtattr *)(((char *) fd_rta) + RTA_ALIGN(fd->rta_len));
+struct rtattr *name_rta = (struct rtattr *)(((char *) fd_rta) + RTA_ALIGN(fd_rta->rta_len));
 name_rta->rta_type = TCA_BPF_NAME;
 name_rta->rta_len = RTA_LENGTH(strlen(name) + 1);
 memcpy(RTA_DATA(name_rta), name, strlen(name) + 1);
