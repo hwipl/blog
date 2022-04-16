@@ -288,7 +288,7 @@ contains the kind `bpf` as a string.
 /* kind attribute */
 struct rtattr *kind_rta = (struct rtattr *) attr_buf;
 kind_rta->rta_type = TCA_KIND;
-kind_rta->rta_len = RTA_LENGTH(strlen("bpf") + 1); // TODO: check offset
+kind_rta->rta_len = RTA_LENGTH(strlen("bpf") + 1);
 memcpy(RTA_DATA(kind_rta), "bpf", strlen("bpf") + 1);
 ```
 
@@ -297,7 +297,7 @@ contains the other bpf attributes.
 
 ```c
 /* add options attribute */
-struct rtattr *options_rta = (struct rtattr *)(attr_buf + RTA_ALIGN(kind_rta->rta_len));
+struct rtattr *options_rta = (struct rtattr *) (attr_buf + RTA_SPACE(strlen("bpf") + 1));
 options_rta->rta_type = TCA_OPTIONS;
 options_rta->rta_len = OPTIONS_LENGTH; // fd + name + flags attributes
 ```
@@ -323,7 +323,7 @@ program, that identifies the packet handling function, as a string, e.g.,
 ```c
 /* add bpf name attribute */
 char *name = "accept-all"; // name of section in loaded bpf program
-struct rtattr *name_rta = (struct rtattr *)(((char *) fd_rta) + RTA_ALIGN(fd_rta->rta_len));
+struct rtattr *name_rta = (struct rtattr *) (((char *) fd_rta) + RTA_SPACE(sizeof(fd)));
 name_rta->rta_type = TCA_BPF_NAME;
 name_rta->rta_len = RTA_LENGTH(strlen(name) + 1);
 memcpy(RTA_DATA(name_rta), name, strlen(name) + 1);
@@ -335,7 +335,7 @@ and contains the flag `TCA_BPF_FLAG_ACT_DIRECT` as an unsigned 32 bit integer.
 ```c
 /* add bpf flags */
 __u32 flags = TCA_BPF_FLAG_ACT_DIRECT;
-struct rtattr *flags_rta = (struct rtattr *)(((char *) name_rta) + RTA_ALIGN(name_rta->rta_len));
+struct rtattr *flags_rta = (struct rtattr *) (((char *) name_rta) + RTA_SPACE(strlen(name) + 1));
 flags_rta->rta_type = TCA_BPF_FLAGS;
 flags_rta->rta_len = RTA_LENGTH(sizeof(flags));
 memcpy(RTA_DATA(flags_rta), &flags, sizeof(flags));
