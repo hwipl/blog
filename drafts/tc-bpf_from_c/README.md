@@ -436,6 +436,13 @@ int _accept_all(struct __sk_buff *skb)
 }
 ```
 
+You can build the bpf program, for example, with clang:
+
+```console
+$ clang -O2 -emit-llvm -c $SRC -o - -fno-stack-protector | \
+	llc -march=bpf -filetype=obj -o $FILE
+```
+
 ### Attaching a BPF Program on a Network Interface
 
 Include headers:
@@ -696,6 +703,12 @@ int main(int argc, char **argv) {
 }
 ```
 
+You can build the code, for example, with clang:
+
+```console
+$ clang $SRC -o $FILE -l bpf
+```
+
 ### Detaching BPF Programs on a Network Interface
 
 Include headers:
@@ -805,4 +818,10 @@ int main(int argc, char **argv) {
 	int fd = create_socket();
 	send_request(fd, argv[1]);
 }
+```
+
+You can build the code, for example, with clang:
+
+```console
+$ clang $SRC -o $FILE -l bpf
 ```
