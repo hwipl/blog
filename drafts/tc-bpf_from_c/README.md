@@ -373,7 +373,7 @@ The header specifies the message type `RTM_DELQDISC` and the flag
 
 ```c
 /* netlink message header */
-hdr->nlmsg_len = NLMSG_ALIGN(NLMSG_LENGTH(sizeof(struct tcmsg))) + RTA_LENGTH(strlen("clsact"));
+hdr->nlmsg_len = MESSAGE_LENGTH; // header + tc message + attribute
 hdr->nlmsg_pid = 0;
 hdr->nlmsg_seq = 1;
 hdr->nlmsg_type = RTM_DELQDISC;
@@ -387,7 +387,7 @@ interface where the QDISC should be deleted, the TC handle
 ```c
 /* tc message */
 tcm->tcm_family = AF_UNSPEC;
-tcm->tcm_ifindex = if_nametoindex(if_name);
+tcm->tcm_ifindex = if_nametoindex(if_name); // set interface index from name
 tcm->tcm_handle = TC_H_MAKE(TC_H_CLSACT, 0);
 tcm->tcm_parent = TC_H_CLSACT;
 tcm->tcm_info = 0;
