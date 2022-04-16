@@ -275,7 +275,7 @@ interface where the filter should be added, the TC handle `0`, the TC parent
 ```c
 /* tc message */
 tcm->tcm_family = AF_UNSPEC;
-tcm->tcm_ifindex = if_nametoindex(if_name);
+tcm->tcm_ifindex = if_nametoindex(if_name); // set interface index from name
 tcm->tcm_handle = 0;
 tcm->tcm_parent = TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS); // or TC_H_MIN_EGRESS
 tcm->tcm_info = TC_H_MAKE(0, htons(ETH_P_ALL));
@@ -308,10 +308,11 @@ returned by loading the bpf program into the kernel, as described above.
 
 ```c
 /* add bpf fd attribute */
+int fd = bpf_fd; // file descriptor of loaded bpf program
 struct rtattr *fd_rta = RTA_DATA(options_rta);
 fd_rta->rta_type = TCA_BPF_FD;
-fd_rta->rta_len = RTA_LENGTH(sizeof(int));
-memcpy(RTA_DATA(fd_rta), &bpf_fd, sizeof(int));
+fd_rta->rta_len = RTA_LENGTH(sizeof(fd));
+memcpy(RTA_DATA(fd_rta), &fd, sizeof(fd));
 ```
 
 The bpf name descriptor attribute is a netlink routing attribute of type
@@ -321,10 +322,11 @@ program, that identifies the packet handling function, as a string, e.g.,
 
 ```c
 /* add bpf name attribute */
+char *name = "accept-all"; // name of section in loaded bpf program
 struct rtattr *name_rta = (struct rtattr *)(((char *) fd_rta) + RTA_ALIGN(fd->rta_len));
 name_rta->rta_type = TCA_BPF_NAME;
-name_rta->rta_len = RTA_LENGTH(strlen("accept-all") + 1);
-memcpy(RTA_DATA(name_rta), "accept-all", strlen("accept-all") + 1);
+name_rta->rta_len = RTA_LENGTH(strlen(name) + 1);
+memcpy(RTA_DATA(name_rta), name, strlen(name) + 1);
 ```
 
 The bpf flags attribute is a netlink routing attribute of type `TCA_BPF_FLAGS`
