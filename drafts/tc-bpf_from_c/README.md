@@ -411,8 +411,9 @@ TODO: add a conclusion?
 ## Code Snippets
 
 The sections below contain C code snippets that show a dummy BPF program and a
-complete implementation of tc-bpf attaching and detaching as described above as
-well as build instructions. You can also find the source code here:
+complete implementation of tc-bpf attaching and detaching as described above,
+build instructions, as well as usage examples. You can also find the source
+code here:
 
 - [Dummy BPF Program](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-accept.c)
 - [TC-BPF Attaching](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-load.c)
@@ -441,11 +442,12 @@ int _accept_all(struct __sk_buff *skb)
 }
 ```
 
-You can build the bpf program, for example, with clang:
+You can, for example, save the code in `tc-accept.c` and then build the bpf
+program as `tc-accept.o` with clang:
 
 ```console
-$ clang -O2 -emit-llvm -c $SRC -o - -fno-stack-protector | \
-	llc -march=bpf -filetype=obj -o $FILE
+$ clang -O2 -emit-llvm -c tc-accept.c -o - -fno-stack-protector | \
+	llc -march=bpf -filetype=obj -o tc-accept.o
 ```
 
 ### Attaching a BPF Program on a Network Interface
@@ -685,10 +687,18 @@ int main(int argc, char **argv) {
 }
 ```
 
-You can build the code, for example, with clang:
+You can, for example, save the code in `tc-load.c` and then build it as
+`tc-load` with clang:
 
 ```console
-$ clang $SRC -o $FILE -l bpf
+$ clang tc-load.c -o tc-load -l bpf
+```
+
+You can then attach the bpf program `tc-accept.o` built above, for example, to
+the network interface `eth0` with the following command:
+
+```console
+$ sudo ./tc-load tc-accept.o eth0
 ```
 
 ### Detaching BPF Programs on a Network Interface
@@ -796,8 +806,16 @@ int main(int argc, char **argv) {
 }
 ```
 
-You can build the code, for example, with clang:
+You can, for example, save the code in `tc-unload.c` and then build it as
+`tc-unload` with clang:
 
 ```console
-$ clang $SRC -o $FILE
+$ clang tc-unload.c -o tc-unload
+```
+
+You can then detach the previously attached bpf program, for example, on
+network interface `eth0` with the following command:
+
+```console
+$ sudo ./tc-unload eth0
 ```
