@@ -526,40 +526,34 @@ int send_request_qdisc(int fd, const char *if_name) {
 	sa.nl_family = AF_NETLINK;
 
 	/* create request message */
-	struct {
-		struct nlmsghdr hdr;
-		struct tcmsg tcm;
-		char attrbuf[512];
-	} req;
-	memset(&req, 0, sizeof(req));
+	char msg_buf[512] = { 0 };
+	struct nlmsghdr *hdr = (struct nlmsghdr *) msg_buf;
+	struct tcmsg *tcm = NLMSG_DATA(hdr);
+	char *attr_buf = msg_buf + NLMSG_SPACE(sizeof(struct tcmsg));
+	struct rtattr *kind_rta = (struct rtattr *) attr_buf;
+	const char *kind = "clsact";
 
 	/* fill header */
-	req.hdr.nlmsg_len = NLMSG_LENGTH(sizeof(req.tcm));
-	req.hdr.nlmsg_pid = 0;
-	req.hdr.nlmsg_seq = 1;
-	req.hdr.nlmsg_type = RTM_NEWQDISC;
-	req.hdr.nlmsg_flags = NLM_F_REQUEST | NLM_F_CREATE;
+	hdr->nlmsg_len = NLMSG_SPACE(sizeof(struct tcmsg)) +
+		RTA_LENGTH(strlen(kind) + 1);
+	hdr->nlmsg_pid = 0;
+	hdr->nlmsg_seq = 1;
+	hdr->nlmsg_type = RTM_NEWQDISC;
+	hdr->nlmsg_flags = NLM_F_REQUEST | NLM_F_CREATE;
 
 	/* fill tc message */
-	req.tcm.tcm_family = AF_UNSPEC;
-	req.tcm.tcm_ifindex = if_nametoindex(if_name);
-	req.tcm.tcm_handle = TC_H_MAKE(TC_H_CLSACT, 0);
-	req.tcm.tcm_parent = TC_H_CLSACT;
+	tcm->tcm_family = AF_UNSPEC;
+	tcm->tcm_ifindex = if_nametoindex(if_name);
+	tcm->tcm_handle = TC_H_MAKE(TC_H_CLSACT, 0);
+	tcm->tcm_parent = TC_H_CLSACT;
 
-	/* add kind attribute */
-	const char *kind = "clsact";
-	struct rtattr *kind_rta;
-	kind_rta = (struct rtattr *)(((char *) &req) +
-				     NLMSG_ALIGN(req.hdr.nlmsg_len));
+	/* fill kind attribute */
 	kind_rta->rta_type = TCA_KIND;
-	kind_rta->rta_len = RTA_LENGTH(strnlen(kind, 6));
-	memcpy(RTA_DATA(kind_rta), kind, strnlen(kind, 6));
-
-	/* update message length */
-	req.hdr.nlmsg_len = NLMSG_ALIGN(req.hdr.nlmsg_len) + kind_rta->rta_len;
+	kind_rta->rta_len = RTA_LENGTH(strlen(kind) + 1);
+	memcpy(RTA_DATA(kind_rta), kind, strlen(kind) + 1);
 
 	/* send request */
-	struct iovec iov = { &req, req.hdr.nlmsg_len };
+	struct iovec iov = { msg_buf, hdr->nlmsg_len };
 	struct msghdr msg = { &sa, sizeof(sa), &iov, 1, NULL, 0, 0 };
 	sendmsg(fd, &msg, 0);
 
@@ -579,88 +573,71 @@ int send_request_filter(int fd, const char *if_name, int bpf_fd) {
 	sa.nl_family = AF_NETLINK;
 
 	/* create request message */
-	struct {
-		struct nlmsghdr hdr;
-		struct tcmsg tcm;
-		char attrbuf[512];
-	} req;
-	memset(&req, 0, sizeof(req));
+	char msg_buf[512] = { 0 };
+	struct nlmsghdr *hdr = (struct nlmsghdr *) msg_buf;
+	struct tcmsg *tcm = NLMSG_DATA(hdr);
+	char *attr_buf = msg_buf + NLMSG_SPACE(sizeof(struct tcmsg));
+	struct rtattr *kind_rta = (struct rtattr *) attr_buf;
+	const char *kind = "bpf";
+	struct rtattr *options_rta =
+		(struct rtattr *) (attr_buf +
+				   RTA_SPACE(strlen(kind) + 1));
+	struct rtattr *fd_rta = RTA_DATA(options_rta);
+	struct rtattr *name_rta =
+		(struct rtattr *) (((char *) fd_rta) +
+				   RTA_SPACE(sizeof(bpf_fd)));
+	const char *name = "accept-all";
+	struct rtattr *flags_rta =
+		(struct rtattr *) (((char *) name_rta) +
+				   RTA_SPACE(strlen(name) + 1));
+	__u32 flags = TCA_BPF_FLAG_ACT_DIRECT;
 
 	/* fill header */
-	req.hdr.nlmsg_len = NLMSG_LENGTH(sizeof(req.tcm));
-	req.hdr.nlmsg_pid = 0;
-	req.hdr.nlmsg_seq = 1;
-	req.hdr.nlmsg_type = RTM_NEWTFILTER;
-	req.hdr.nlmsg_flags = NLM_F_REQUEST | NLM_F_CREATE;
+	hdr->nlmsg_len = NLMSG_SPACE(sizeof(struct tcmsg)) +
+		RTA_SPACE(strlen(kind) + 1) +
+		RTA_SPACE(0) +
+		RTA_SPACE(sizeof(bpf_fd)) +
+		RTA_SPACE(strlen(name) + 1) +
+		RTA_LENGTH(sizeof(flags));
+	hdr->nlmsg_pid = 0;
+	hdr->nlmsg_seq = 1;
+	hdr->nlmsg_type = RTM_NEWTFILTER;
+	hdr->nlmsg_flags = NLM_F_REQUEST | NLM_F_CREATE;
 
 	/* fill tc message */
-	req.tcm.tcm_family = AF_UNSPEC;
-	req.tcm.tcm_ifindex = if_nametoindex(if_name);
-	req.tcm.tcm_handle = 0;
-	req.tcm.tcm_parent = TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS);
-	req.tcm.tcm_info = TC_H_MAKE(0, htons(ETH_P_ALL));
+	tcm->tcm_family = AF_UNSPEC;
+	tcm->tcm_ifindex = if_nametoindex(if_name);
+	tcm->tcm_handle = 0;
+	tcm->tcm_parent = TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS);
+	tcm->tcm_info = TC_H_MAKE(0, htons(ETH_P_ALL));
 
-	/* add kind attribute */
-	const char *kind = "bpf";
-	struct rtattr *kind_rta;
-	kind_rta = (struct rtattr *)(((char *) &req) +
-				     NLMSG_ALIGN(req.hdr.nlmsg_len));
+	/* fill kind attribute */
 	kind_rta->rta_type = TCA_KIND;
-	kind_rta->rta_len = RTA_LENGTH(strnlen(kind, 3) + 1);
-	memcpy(RTA_DATA(kind_rta), kind, strnlen(kind, 3) + 1);
+	kind_rta->rta_len = RTA_LENGTH(strlen(kind) + 1);
+	memcpy(RTA_DATA(kind_rta), kind, strlen(kind) + 1);
 
-	/* update message length */
-	req.hdr.nlmsg_len = NLMSG_ALIGN(req.hdr.nlmsg_len) + kind_rta->rta_len;
-
-	/* add options attribute */
-	struct rtattr *options_rta;
-	options_rta = (struct rtattr *)(((char *) &req) +
-					NLMSG_ALIGN(req.hdr.nlmsg_len));
+	/* fill options attribute */
 	options_rta->rta_type = TCA_OPTIONS;
-	options_rta->rta_len = RTA_LENGTH(0);
+	options_rta->rta_len = RTA_SPACE(0) + RTA_SPACE(sizeof(bpf_fd)) +
+		RTA_SPACE(strlen(name) + 1) + RTA_LENGTH(sizeof(flags));
 
-	/* add bpf fd attribute */
-	struct rtattr *fd_rta = RTA_DATA(options_rta);
+	/* fill bpf fd attribute */
 	fd_rta->rta_type = TCA_BPF_FD;
-	fd_rta->rta_len = RTA_LENGTH(sizeof(int));
-	memcpy(RTA_DATA(fd_rta), &bpf_fd, sizeof(int));
+	fd_rta->rta_len = RTA_LENGTH(sizeof(bpf_fd));
+	memcpy(RTA_DATA(fd_rta), &bpf_fd, sizeof(bpf_fd));
 
-	/* update options length */
-	options_rta->rta_len = RTA_ALIGN(options_rta->rta_len) +
-		fd_rta->rta_len;
-
-	/* add bpf name attribute */
-	const char *name = "accept-all";
-	struct rtattr *name_rta;
-	name_rta = (struct rtattr *)(((char *) options_rta) +
-				     RTA_ALIGN(options_rta->rta_len));
+	/* fill bpf name attribute */
 	name_rta->rta_type = TCA_BPF_NAME;
-	name_rta->rta_len = RTA_LENGTH(strnlen(name, 10) + 1);
-	memcpy(RTA_DATA(name_rta), name, strnlen(name, 10 + 1));
+	name_rta->rta_len = RTA_LENGTH(strlen(name) + 1);
+	memcpy(RTA_DATA(name_rta), name, strlen(name) + 1);
 
-	/* update options length */
-	options_rta->rta_len = RTA_ALIGN(options_rta->rta_len) +
-		name_rta->rta_len;
-
-	/* add bpf flags */
-	__u32 flags = TCA_BPF_FLAG_ACT_DIRECT;
-	struct rtattr *flags_rta;
-	flags_rta = (struct rtattr *)(((char *) options_rta) +
-				      RTA_ALIGN(options_rta->rta_len));
+	/* fill bpf flags */
 	flags_rta->rta_type = TCA_BPF_FLAGS;
 	flags_rta->rta_len = RTA_LENGTH(sizeof(flags));
 	memcpy(RTA_DATA(flags_rta), &flags, sizeof(flags));
 
-	/* update options length */
-	options_rta->rta_len = RTA_ALIGN(options_rta->rta_len) +
-		flags_rta->rta_len;
-
-	/* update message length */
-	req.hdr.nlmsg_len = NLMSG_ALIGN(req.hdr.nlmsg_len) +
-		options_rta->rta_len;
-
 	/* send request */
-	struct iovec iov = { &req, req.hdr.nlmsg_len };
+	struct iovec iov = { msg_buf, hdr->nlmsg_len };
 	struct msghdr msg = { &sa, sizeof(sa), &iov, 1, NULL, 0, 0 };
 	sendmsg(fd, &msg, 0);
 
