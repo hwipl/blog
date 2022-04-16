@@ -744,40 +744,34 @@ int send_request(int fd, const char *if_name) {
 	sa.nl_family = AF_NETLINK;
 
 	/* create request message */
-	struct {
-		struct nlmsghdr hdr;
-		struct tcmsg tcm;
-		char attrbuf[512];
-	} req;
-	memset(&req, 0, sizeof(req));
+	char msg_buf[512] = { 0 };
+	struct nlmsghdr *hdr = (struct nlmsghdr *) msg_buf;
+	struct tcmsg *tcm = NLMSG_DATA(hdr);
+	char *attr_buf = msg_buf + NLMSG_SPACE(sizeof(struct tcmsg));
+	struct rtattr *kind_rta = (struct rtattr *) attr_buf;
+	const char *kind = "clsact";
 
 	/* fill header */
-	req.hdr.nlmsg_len = NLMSG_LENGTH(sizeof(req.tcm));
-	req.hdr.nlmsg_pid = 0;
-	req.hdr.nlmsg_seq = 1;
-	req.hdr.nlmsg_type = RTM_DELQDISC;
-	req.hdr.nlmsg_flags = NLM_F_REQUEST;
+	hdr->nlmsg_len = NLMSG_SPACE(sizeof(struct tcmsg)) +
+		RTA_LENGTH(strlen(kind) + 1);
+	hdr->nlmsg_pid = 0;
+	hdr->nlmsg_seq = 1;
+	hdr->nlmsg_type = RTM_DELQDISC;
+	hdr->nlmsg_flags = NLM_F_REQUEST;
 
 	/* fill tc message */
-	req.tcm.tcm_family = AF_UNSPEC;
-	req.tcm.tcm_ifindex = if_nametoindex(if_name);
-	req.tcm.tcm_handle = TC_H_MAKE(TC_H_CLSACT, 0);
-	req.tcm.tcm_parent = TC_H_CLSACT;
+	tcm->tcm_family = AF_UNSPEC;
+	tcm->tcm_ifindex = if_nametoindex(if_name);
+	tcm->tcm_handle = TC_H_MAKE(TC_H_CLSACT, 0);
+	tcm->tcm_parent = TC_H_CLSACT;
 
-	/* add kind attribute */
-	const char *kind = "clsact";
-	struct rtattr *kind_rta;
-	kind_rta = (struct rtattr *)(((char *) &req) +
-				     NLMSG_ALIGN(req.hdr.nlmsg_len));
+	/* fill kind attribute */
 	kind_rta->rta_type = TCA_KIND;
-	kind_rta->rta_len = RTA_LENGTH(strnlen(kind, 6));
-	memcpy(RTA_DATA(kind_rta), kind, strnlen(kind, 6));
-
-	/* update message length */
-	req.hdr.nlmsg_len = NLMSG_ALIGN(req.hdr.nlmsg_len) + kind_rta->rta_len;
+	kind_rta->rta_len = RTA_LENGTH(strlen(kind) + 1);
+	memcpy(RTA_DATA(kind_rta), kind, strlen(kind) + 1);
 
 	/* send request */
-	struct iovec iov = { &req, req.hdr.nlmsg_len };
+	struct iovec iov = { msg_buf, hdr->nlmsg_len };
 	struct msghdr msg = { &sa, sizeof(sa), &iov, 1, NULL, 0, 0 };
 	sendmsg(fd, &msg, 0);
 
