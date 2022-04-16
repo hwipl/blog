@@ -142,8 +142,8 @@ The netlink messages consist of a header (`struct nlmsghdr`), a TC message
 ```c
 char msg_buf[512] = { 0 }; // buffer for netlink message
 struct nlmsghdr *hdr = (struct nlmsghdr *) msg_buf; // netlink message header
-struct tcmsg *tcm = (struct tcmsg *) (msg_buf + sizeof(*hdr)); // tc message
-char *attr_buf = msg_buf + NLMSG_ALIGN(NLMSG_LENGTH(sizeof(struct tcmsg))); // routing attributes
+struct tcmsg *tcm = NLMSG_DATA(hdr); // tc message
+char *attr_buf = msg_buf + NLMSG_SPACE(sizeof(struct tcmsg)); // routing attributes
 struct rtattr *attr = (struct rtattr *) attr_buf; // a routing attribute
 ```
 
