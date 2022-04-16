@@ -411,7 +411,12 @@ TODO: add a conclusion?
 ## Code Snippets
 
 The sections below contain C code snippets that show a dummy BPF program and a
-complete implementation of tc-bpf attaching and detaching as described above.
+complete implementation of tc-bpf attaching and detaching as described above as
+well as build instructions. You can also find the source code here:
+
+- [Dummy BPF Program](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-accept.c)
+- [TC-BPF Attaching](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-load.c)
+- [TC-BPF Detaching](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-unload.c)
 
 ### Dummy BPF Program
 
