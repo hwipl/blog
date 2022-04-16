@@ -206,8 +206,8 @@ contains the kind `clsact` as a string.
 /* kind attribute */
 struct rtattr *kind_rta = (struct rtattr *) attr_buf;
 kind_rta->rta_type = TCA_KIND;
-kind_rta->rta_len = RTA_LENGTH(strlen("clsact"));
-memcpy(RTA_DATA(kind_rta), "clsact", strlen("clsact"));
+kind_rta->rta_len = RTA_LENGTH(strlen("clsact") + 1);
+memcpy(RTA_DATA(kind_rta), "clsact", strlen("clsact") + 1);
 ```
 
 ## Adding the TC Filter
