@@ -799,5 +799,5 @@ int main(int argc, char **argv) {
 You can build the code, for example, with clang:
 
 ```console
-$ clang $SRC -o $FILE -l bpf
+$ clang $SRC -o $FILE
 ```
