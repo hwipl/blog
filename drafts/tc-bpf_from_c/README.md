@@ -31,7 +31,7 @@ tc qdisc del dev "$INTERFACE" clsact
 
 Note: creating this document started before libbpf supported TC program
 loading. Maybe a, probably much shorter, libbpf version of this will come in
-the future.  Still, this document provides information on how tc, netlink, and
+the future. Still, this document provides information on how tc, netlink, and
 bpf interact and can be used from a C program.
 
 ## Overview
