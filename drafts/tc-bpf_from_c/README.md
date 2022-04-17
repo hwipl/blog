@@ -409,7 +409,12 @@ memcpy(RTA_DATA(kind_rta), "clsact", strlen("clsact") + 1);
 
 This document describes how you can load a TC BPF program into the kernel and,
 then, attach and detach it on a network interface using the TC Netlink
-interface without external tools like `tc` in C code.
+interface without external tools like `tc` in C code. The main steps are adding
+or removing a QDISC and a TC Filter that passes every packet to the loaded BPF
+program. All sections contain code examples you can use as a basis for your own
+implementation. Additionally, you can find a complete implementation in the
+appendix below. As noted, libbpf now supports TC program attaching and
+detaching. So, there might be libbpf version of this document in the future.
 
 ## Appendix: Code
 
