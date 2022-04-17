@@ -1,14 +1,5 @@
 # TC-BPF from C code
 
-TODO: add overview/metadata table? Release date, version/last modification,
-keywords? Add glue text connecting sections? Add changelog at the end of the
-document?
-
-TODO: simplify code snippets in sections? Add comments for variables, e.g.,
-`file // filename of bpf program`?
-
-TODO: create svg figures instead of ascii art?
-
 This document describes how you can attach and detach an eBPF program for TC on
 a network interface from C code, without using the `tc` tool. It shows an
 alternative to running the following `tc` commands:
