@@ -404,9 +404,11 @@ kind_rta->rta_len = RTA_LENGTH(strlen("clsact") + 1);
 memcpy(RTA_DATA(kind_rta), "clsact", strlen("clsact") + 1);
 ```
 
-## Conclusion?
+## Conclusion
 
-TODO: add a conclusion?
+This document describes how you can load a TC BPF program into the kernel and,
+then, attach and detach it on a network interface using the TC Netlink
+interface without external tools like `tc` in C code.
 
 ## Code Snippets
 
