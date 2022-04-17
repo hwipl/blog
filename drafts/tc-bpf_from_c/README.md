@@ -414,10 +414,8 @@ of TC BPF attaching and detaching as described above, build instructions, as
 well as usage examples. You can also find the source code here:
 
 - [Dummy BPF Program](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-accept.c)
-- [TC-BPF Attaching](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-load.c)
-- [TC-BPF Detaching](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-unload.c)
-
-TODO: rename source code files in other repo and here?
+- [TC-BPF Attaching](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-attach.c)
+- [TC-BPF Detaching](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-detach.c)
 
 ### Dummy BPF Program
 
