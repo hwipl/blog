@@ -405,7 +405,7 @@ or removing a QDISC and a TC Filter that passes every packet to the loaded BPF
 program. All sections contain code examples you can use as a basis for your own
 implementation. Additionally, you can find a complete implementation in the
 appendix below. As noted, libbpf now supports TC program attaching and
-detaching. So, there might be libbpf version of this document in the future.
+detaching. So, there might be a libbpf version of this document in the future.
 
 ## Appendix: Code
 
