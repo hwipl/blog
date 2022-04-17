@@ -223,7 +223,7 @@ file descriptor attribute, a bpf name attribute, and a bpf flags attribute.
 +---------------------------------------------------+
 |                                    Netlink Header |
 | type:    RTM_NEWTFILTER                           |
-| flags:   NLM_F_REQUEST | NLM_F_CREAT              |
+| flags:   NLM_F_REQUEST | NLM_F_CREATE             |
 +---------------------------------------------------+
 |                                        TC Message |
 | family:  AF_UNSPEC                                |
