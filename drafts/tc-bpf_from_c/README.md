@@ -267,7 +267,7 @@ hdr->nlmsg_type = RTM_NEWTFILTER;
 hdr->nlmsg_flags = NLM_F_REQUEST | NLM_F_CREATE;
 ```
 
-The TC message specifies the TC familiy `AF_UNSPEC`, the index of the network
+The TC message specifies the TC family `AF_UNSPEC`, the index of the network
 interface where the filter should be added, the TC handle `0`, the TC parent
 `TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS)` for ingress or
 `TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_EGRESS)` for egress, and the TC info
