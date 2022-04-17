@@ -66,7 +66,8 @@ You can detach BPF programs from a network interface with the following step:
 
 Steps 2,3 and 4 require communication with TC inside the kernel. So, there is
 an additional section describing the TC Netlink interface before them. Also,
-you can find complete code snippets at the end of this document.
+you can find the complete code in the appendix after the conclusion at the end
+of this document.
 
 ## Creating a BPF Program
 
