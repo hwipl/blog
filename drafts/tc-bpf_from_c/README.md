@@ -31,7 +31,7 @@ tc qdisc del dev "$INTERFACE" clsact
 
 Note: creating this document started before libbpf supported TC program
 loading. Maybe a, probably much shorter, libbpf version of this will come in
-the future. Still, this document provides information on how tc, netlink, and
+the future. Still, this document provides information on how TC, netlink, and
 BPF interact and can be used from a C program.
 
 ## Overview
@@ -58,7 +58,7 @@ Attaching BPF programs to a network interface consists of the following steps:
 
 1. Load BPF program
 2. Add qdisc on network interface
-3. Add tc filter with BPF program on network interface
+3. Add TC filter with BPF program on network interface
 
 You can detach BPF programs from a network interface with the following step:
 
@@ -577,7 +577,7 @@ int send_request_qdisc(int fd, const char *if_name) {
 }
 ```
 
-Function for adding a tc filter for a BPF program on a network interface using
+Function for adding a TC filter for a BPF program on a network interface using
 the netlink socket:
 
 ```c
