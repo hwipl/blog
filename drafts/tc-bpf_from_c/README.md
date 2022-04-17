@@ -32,7 +32,7 @@ tc qdisc del dev "$INTERFACE" clsact
 Note: creating this document started before libbpf supported TC program
 loading. Maybe a, probably much shorter, libbpf version of this will come in
 the future. Still, this document provides information on how tc, netlink, and
-bpf interact and can be used from a C program.
+BPF interact and can be used from a C program.
 
 ## Overview
 
@@ -56,9 +56,9 @@ steps for attaching and detaching such a TC-BPF program.
 
 Attaching BPF programs to a network interface consists of the following steps:
 
-1. Load bpf program
+1. Load BPF program
 2. Add qdisc on network interface
-3. Add tc filter with bpf program on network interface
+3. Add tc filter with BPF program on network interface
 
 You can detach BPF programs from a network interface with the following step:
 
@@ -101,9 +101,9 @@ int _accept_all(struct __sk_buff *skb)
 
 The first step of attaching the BPF program is loading it into the kernel. For
 example, you can achieve this with libbpf's function `bpf_prog_load_xattr()`.
-The load function requires the specification of the bpf program and the program
+The load function requires the specification of the BPF program and the program
 type. In this case, the program type is `BPF_PROG_TYPE_SCHED_CLS`. Loading the
-bpf into the kernel returns a file descriptor that you can use to reference the
+BPF into the kernel returns a file descriptor that you can use to reference the
 loaded program in the following steps.
 
 ```c
@@ -217,8 +217,8 @@ With the QDISC configured in the kernel, you can add the TC Filter. This also
 requires communication with the kernel over the netlink routing socket.
 
 This time the netlink message consists of a header and an embedded TC message
-with a kind and an options attribute. The options attribute contains a bpf
-file descriptor attribute, a bpf name attribute, and a bpf flags attribute.
+with a kind and an options attribute. The options attribute contains a BPF
+file descriptor attribute, a BPF name attribute, and a BPF flags attribute.
 
 ```
 +---------------------------------------------------+
@@ -294,7 +294,7 @@ memcpy(RTA_DATA(kind_rta), "bpf", strlen("bpf") + 1);
 ```
 
 The options attribute is netlink routing attribute of type `TCA_OPTIONS` and
-contains the other bpf attributes.
+contains the other BPF attributes.
 
 ```c
 /* add options attribute */
@@ -303,9 +303,9 @@ options_rta->rta_type = TCA_OPTIONS;
 options_rta->rta_len = OPTIONS_LENGTH; // fd + name + flags attributes
 ```
 
-The bpf file descriptor attribute is a netlink routing attribute of type
-`TCA_BPF_FD` and contains the file descriptor of the bpf program that was
-returned by loading the bpf program into the kernel, as described above.
+The BPF file descriptor attribute is a netlink routing attribute of type
+`TCA_BPF_FD` and contains the file descriptor of the BPF program that was
+returned by loading the BPF program into the kernel, as described above.
 
 ```c
 /* add bpf fd attribute */
@@ -316,8 +316,8 @@ fd_rta->rta_len = RTA_LENGTH(sizeof(fd));
 memcpy(RTA_DATA(fd_rta), &fd, sizeof(fd));
 ```
 
-The bpf name descriptor attribute is a netlink routing attribute of type
-`TCA_BPF_NAME` and contains the name of the section within the loaded bpf
+The BPF name descriptor attribute is a netlink routing attribute of type
+`TCA_BPF_NAME` and contains the name of the section within the loaded BPF
 program, that identifies the packet handling function, as a string, e.g.,
 `accept-all`.
 
@@ -330,7 +330,7 @@ name_rta->rta_len = RTA_LENGTH(strlen(name) + 1);
 memcpy(RTA_DATA(name_rta), name, strlen(name) + 1);
 ```
 
-The bpf flags attribute is a netlink routing attribute of type `TCA_BPF_FLAGS`
+The BPF flags attribute is a netlink routing attribute of type `TCA_BPF_FLAGS`
 and contains the flag `TCA_BPF_FLAG_ACT_DIRECT` as an unsigned 32 bit integer.
 
 ```c
@@ -451,7 +451,7 @@ int _accept_all(struct __sk_buff *skb)
 }
 ```
 
-You can, for example, save the code in `tc-accept.c` and then build the bpf
+You can, for example, save the code in `tc-accept.c` and then build the BPF
 program as `tc-accept.o` with clang:
 
 ```console
@@ -489,7 +489,7 @@ Include headers:
 #include <arpa/inet.h>
 ```
 
-Function for loading the bpf program:
+Function for loading the BPF program:
 
 ```c
 /* load bpf program from file and return program fd */
@@ -577,7 +577,7 @@ int send_request_qdisc(int fd, const char *if_name) {
 }
 ```
 
-Function for adding a tc filter for a bpf program on a network interface using
+Function for adding a tc filter for a BPF program on a network interface using
 the netlink socket:
 
 ```c
@@ -703,7 +703,7 @@ You can, for example, save the code in `tc-attach.c` and then build it as
 $ clang tc-attach.c -o tc-attach -l bpf
 ```
 
-You can then attach the bpf program `tc-accept.o` built above, for example, to
+You can then attach the BPF program `tc-accept.o` built above, for example, to
 the network interface `eth0` with the following command:
 
 ```console
@@ -822,7 +822,7 @@ You can, for example, save the code in `tc-detach.c` and then build it as
 $ clang tc-detach.c -o tc-detach
 ```
 
-You can then detach the previously attached bpf program, for example, on
+You can then detach the previously attached BPF program, for example, on
 network interface `eth0` with the following command:
 
 ```console
