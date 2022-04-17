@@ -31,7 +31,7 @@ tc qdisc del dev "$INTERFACE" clsact
 
 Note: creating this document started before libbpf supported TC program
 loading. Maybe a, probably much shorter, libbpf version of this will come in
-the future. Still, this document provides information on how TC, netlink, and
+the future. Still, this document provides information on how TC, Netlink, and
 BPF interact and can be used from a C program.
 
 ## Overview
@@ -123,7 +123,7 @@ following sections relies on a Netlink interface. So, you have to create a
 respective Netlink socket and you have to send appropriate Netlink messages to
 the kernel over the socket.
 
-The netlink socket is a routing (rtnetlink) socket with the family
+The Netlink socket is a routing (`rtnetlink`) socket with the family
 `NETLINK_ROUTE`.
 
 ```c
@@ -137,8 +137,8 @@ int fd = socket(AF_NETLINK, SOCK_RAW, NETLINK_ROUTE);
 bind(fd, (struct sockaddr *) &sa, sizeof(sa));
 ```
 
-The netlink messages consist of a header (`struct nlmsghdr`), a TC message
-(`struct tcmsg`) and one or more netlink routing attributes (`struct rtattr`).
+The Netlink messages consist of a header (`struct nlmsghdr`), a TC message
+(`struct tcmsg`) and one or more Netlink routing attributes (`struct rtattr`).
 
 ```c
 char msg_buf[512] = { 0 }; // buffer for netlink message
@@ -152,9 +152,9 @@ struct rtattr *attr = (struct rtattr *) attr_buf; // a routing attribute
 
 The next step after loading the BPF program into the kernel is adding the
 traffic control (TC) queueing discipline (QDISC). This requires communication
-with the kernel over the netlink routing socket as mentioned above.
+with the kernel over the Netlink routing socket as mentioned above.
 
-The netlink message consists of a header and an embedded TC message with a TC
+The Netlink message consists of a header and an embedded TC message with a TC
 kind attribute.
 
 ```
@@ -200,7 +200,7 @@ tcm->tcm_parent = TC_H_CLSACT;
 tcm->tcm_info = 0;
 ```
 
-The kind attribute is a netlink routing attribute of type `TCA_KIND` and
+The kind attribute is a Netlink routing attribute of type `TCA_KIND` and
 contains the kind `clsact` as a string.
 
 ```c
@@ -214,9 +214,9 @@ memcpy(RTA_DATA(kind_rta), "clsact", strlen("clsact") + 1);
 ## Adding the TC Filter
 
 With the QDISC configured in the kernel, you can add the TC Filter. This also
-requires communication with the kernel over the netlink routing socket.
+requires communication with the kernel over the Netlink routing socket.
 
-This time the netlink message consists of a header and an embedded TC message
+This time the Netlink message consists of a header and an embedded TC message
 with a kind and an options attribute. The options attribute contains a BPF
 file descriptor attribute, a BPF name attribute, and a BPF flags attribute.
 
@@ -282,7 +282,7 @@ tcm->tcm_parent = TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS); // or TC_H_MIN_EGRES
 tcm->tcm_info = TC_H_MAKE(0, htons(ETH_P_ALL));
 ```
 
-The kind attribute is a netlink routing attribute of type `TCA_KIND` and
+The kind attribute is a Netlink routing attribute of type `TCA_KIND` and
 contains the kind `bpf` as a string.
 
 ```c
@@ -293,7 +293,7 @@ kind_rta->rta_len = RTA_LENGTH(strlen("bpf") + 1);
 memcpy(RTA_DATA(kind_rta), "bpf", strlen("bpf") + 1);
 ```
 
-The options attribute is netlink routing attribute of type `TCA_OPTIONS` and
+The options attribute is Netlink routing attribute of type `TCA_OPTIONS` and
 contains the other BPF attributes.
 
 ```c
@@ -303,7 +303,7 @@ options_rta->rta_type = TCA_OPTIONS;
 options_rta->rta_len = OPTIONS_LENGTH; // fd + name + flags attributes
 ```
 
-The BPF file descriptor attribute is a netlink routing attribute of type
+The BPF file descriptor attribute is a Netlink routing attribute of type
 `TCA_BPF_FD` and contains the file descriptor of the BPF program that was
 returned by loading the BPF program into the kernel, as described above.
 
@@ -316,7 +316,7 @@ fd_rta->rta_len = RTA_LENGTH(sizeof(fd));
 memcpy(RTA_DATA(fd_rta), &fd, sizeof(fd));
 ```
 
-The BPF name descriptor attribute is a netlink routing attribute of type
+The BPF name descriptor attribute is a Netlink routing attribute of type
 `TCA_BPF_NAME` and contains the name of the section within the loaded BPF
 program, that identifies the packet handling function, as a string, e.g.,
 `accept-all`.
@@ -330,7 +330,7 @@ name_rta->rta_len = RTA_LENGTH(strlen(name) + 1);
 memcpy(RTA_DATA(name_rta), name, strlen(name) + 1);
 ```
 
-The BPF flags attribute is a netlink routing attribute of type `TCA_BPF_FLAGS`
+The BPF flags attribute is a Netlink routing attribute of type `TCA_BPF_FLAGS`
 and contains the flag `TCA_BPF_FLAG_ACT_DIRECT` as an unsigned 32 bit integer.
 
 ```c
@@ -345,10 +345,10 @@ memcpy(RTA_DATA(flags_rta), &flags, sizeof(flags));
 ## Removing the QDISC
 
 You can undo the previous steps by deleting the QDISC on the network interface.
-Again, this requires communication with the kernel over the netlink routing
+Again, this requires communication with the kernel over the Netlink routing
 socket.
 
-The netlink message consists of a header and an embedded TC message with a TC
+The Netlink message consists of a header and an embedded TC message with a TC
 kind attribute.
 
 ```
@@ -394,7 +394,7 @@ tcm->tcm_parent = TC_H_CLSACT;
 tcm->tcm_info = 0;
 ```
 
-The kind attribute is a netlink routing attribute of type `TCA_KIND` and
+The kind attribute is a Netlink routing attribute of type `TCA_KIND` and
 contains the kind `clsact` as string.
 
 ```c
@@ -509,7 +509,7 @@ int load_bpf(const char* file) {
 }
 ```
 
-Function for creating a netlink socket:
+Function for creating a Netlink socket:
 
 ```c
 /* create netlink socket and return socket fd */
@@ -531,7 +531,7 @@ int create_socket() {
 }
 ```
 
-Function for adding a qdisc on a network interface using the netlink socket:
+Function for adding a qdisc on a network interface using the Netlink socket:
 
 ```c
 /* add qdisc with netlink request */
@@ -578,7 +578,7 @@ int send_request_qdisc(int fd, const char *if_name) {
 ```
 
 Function for adding a TC filter for a BPF program on a network interface using
-the netlink socket:
+the Netlink socket:
 
 ```c
 /* add tc filter with netlink request */
@@ -734,7 +734,7 @@ Include headers:
 #include <linux/pkt_sched.h>
 ```
 
-Function for creating a netlink socket:
+Function for creating a Netlink socket:
 
 ```c
 /* create netlink socket and return socket fd */
@@ -756,7 +756,7 @@ int create_socket() {
 }
 ```
 
-Function for removing the qdisc on a network interface using the netlink
+Function for removing the qdisc on a network interface using the Netlink
 socket:
 
 ```c
