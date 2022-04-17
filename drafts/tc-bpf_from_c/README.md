@@ -57,12 +57,12 @@ steps for attaching and detaching such a TC-BPF program.
 Attaching BPF programs to a network interface consists of the following steps:
 
 1. Load BPF program
-2. Add qdisc on network interface
+2. Add QDISC on network interface
 3. Add TC filter with BPF program on network interface
 
 You can detach BPF programs from a network interface with the following step:
 
-4. Remove qdisc on network interface
+4. Remove QDISC on network interface
 
 Steps 2,3 and 4 require communication with TC inside the kernel. So, there is
 an additional section describing the TC Netlink interface before them. Also,
@@ -531,7 +531,7 @@ int create_socket() {
 }
 ```
 
-Function for adding a qdisc on a network interface using the Netlink socket:
+Function for adding a QDISC on a network interface using the Netlink socket:
 
 ```c
 /* add qdisc with netlink request */
@@ -756,7 +756,7 @@ int create_socket() {
 }
 ```
 
-Function for removing the qdisc on a network interface using the Netlink
+Function for removing the QDISC on a network interface using the Netlink
 socket:
 
 ```c
