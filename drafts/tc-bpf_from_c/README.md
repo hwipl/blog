@@ -1,4 +1,4 @@
-# TC-BPF from C code
+# TC-BPF from C Code
 
 This document describes how you can attach and detach an eBPF program for TC on
 a network interface from C code, without using the `tc` tool. It shows an
