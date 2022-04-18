@@ -398,7 +398,7 @@ memcpy(RTA_DATA(kind_rta), "clsact", strlen("clsact") + 1);
 
 ## Conclusion
 
-This document describes how you can load a TC BPF program into the kernel and,
+This document describes how you can load a TC-BPF program into the kernel and,
 then, attach and detach it on a network interface using the TC Netlink
 interface without external tools like `tc` in C code. The main steps are adding
 or removing a QDISC and a TC Filter that passes every packet to the loaded BPF
@@ -410,7 +410,7 @@ detaching. So, there might be a libbpf version of this document in the future.
 ## Appendix: Code
 
 The sections below contain C code of a dummy BPF program and an implementation
-of TC BPF attaching and detaching as described above, build instructions, as
+of TC-BPF attaching and detaching as described above, build instructions, as
 well as usage examples. You can also find the source code here:
 
 - [Dummy BPF Program](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-accept.c)
