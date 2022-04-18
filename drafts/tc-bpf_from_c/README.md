@@ -49,7 +49,7 @@ Attaching BPF programs to a network interface consists of the following steps:
 
 1. Load BPF program
 2. Add QDISC on network interface
-3. Add TC filter with BPF program on network interface
+3. Add TC Filter with BPF program on network interface
 
 You can detach BPF programs from a network interface with the following step:
 
@@ -259,7 +259,7 @@ hdr->nlmsg_flags = NLM_F_REQUEST | NLM_F_CREATE;
 ```
 
 The TC message specifies the TC family `AF_UNSPEC`, the index of the network
-interface where the filter should be added, the TC handle `0`, the TC parent
+interface where the TC Filter should be added, the TC handle `0`, the TC parent
 `TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_INGRESS)` for ingress or
 `TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_EGRESS)` for egress, and the TC info
 `TC_H_MAKE(0, htons(ETH_P_ALL))`.
@@ -566,7 +566,7 @@ int send_request_qdisc(int fd, const char *if_name) {
 }
 ```
 
-Function for adding a TC filter for a BPF program on a network interface using
+Function for adding a TC Filter for a BPF program on a network interface using
 the Netlink socket:
 
 ```c
