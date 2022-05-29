@@ -9,6 +9,31 @@ please refer to [1] for more details such as how TC, Netlink and BPF interact.
 
 [1]: https://github.com/hwipl/blog/tree/main/posts/tc-bpf_from_c
 
+## Attaching
+
+Create hook:
+
+```c
+// create bpf hook
+struct bpf_tc_hook hook;
+memset(&hook, 0, sizeof(hook));
+hook.sz			= sizeof(struct bpf_tc_hook);
+hook.ifindex		= if_nametoindex(if_name);
+hook.attach_point	= BPF_TC_INGRESS; // BPF_TC_EGRESS, BPF_TC_CUSTOM
+bpf_tc_hook_create(&hook);
+```
+
+Attach:
+
+```c
+// attach bpf program
+struct bpf_tc_opts opts;
+memset(&opts, 0, sizeof(opts));
+opts.sz		= sizeof(struct bpf_tc_opts);
+opts.prog_fd	= prog_fd;
+bpf_tc_attach(&hook, &opts);
+```
+
 ## Appendix: Code
 
 - [Dummy BPF Program](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-accept.c)
