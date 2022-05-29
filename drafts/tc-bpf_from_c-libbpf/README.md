@@ -34,6 +34,23 @@ opts.prog_fd	= prog_fd;
 bpf_tc_attach(&hook, &opts);
 ```
 
+## Detaching
+
+Destroy hook:
+
+```c
+// destroy bpf hook
+struct bpf_tc_hook hook;
+memset(&hook, 0, sizeof(hook));
+hook.sz			= sizeof(struct bpf_tc_hook);
+hook.ifindex		= if_nametoindex(if_name);
+// specify BPF_TC_INGRESS | BPF_TC_EGRESS to delete the qdisc;
+// specifying only BPF_TC_INGRESS or only BPF_TC_EGRESS
+// deletes the respective filter only
+hook.attach_point	= BPF_TC_INGRESS | BPF_TC_EGRESS;
+bpf_tc_hook_destroy(&hook);
+```
+
 ## Appendix: Code
 
 - [Dummy BPF Program](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-accept.c)
