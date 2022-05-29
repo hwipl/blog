@@ -11,6 +11,10 @@ please refer to [1] for more details such as how TC, Netlink and BPF interact.
 
 ## Appendix: Code
 
+- [Dummy BPF Program](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-accept.c)
+- [TC-BPF Attaching](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-attach2.c)
+- [TC-BPF Detaching](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-detach2.c)
+
 ### Attaching a BPF Program on a Network Interface
 
 Include headers:
