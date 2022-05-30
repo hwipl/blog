@@ -11,7 +11,17 @@ please refer to [1] for more details such as how TC, Netlink and BPF interact.
 
 ## Attaching
 
-Create hook:
+Attaching a TC-BPF program on a network interface with libbpf consists of two
+steps: (1) creating a BPF TC hook and then (2) attaching the program using this
+hook and additional BPF TC options.
+
+In order to create the hook, you need to use a `struct bpf_tc_hook` and set its
+members `ifindex` and `attach_point`. The member `ifindex` specifies the ID of
+the network interface you want to attach the BPF program on. The member
+`attach_point` specifies if the program should be used for outgoing
+(`BPF_TC_EGRESS`) or incoming (`BPF_TC_INGRESS`) packets on the network
+interface. A call to the function `bpf_tc_hook_create()` finally creates the
+hook:
 
 ```c
 // create bpf hook
@@ -23,6 +33,8 @@ hook.attach_point	= BPF_TC_INGRESS; // BPF_TC_EGRESS, BPF_TC_CUSTOM
 bpf_tc_hook_create(&hook);
 ```
 
+This creates a TC QDISC on the network interface.
+
 Attach:
 
 ```c
@@ -33,6 +45,8 @@ opts.sz		= sizeof(struct bpf_tc_opts);
 opts.prog_fd	= prog_fd;
 bpf_tc_attach(&hook, &opts);
 ```
+
+TODO: add `tc` and `bpftool` commands to check if attaching was successful?
 
 ## Detaching
 
