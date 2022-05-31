@@ -35,7 +35,12 @@ bpf_tc_hook_create(&hook);
 
 This creates a TC QDISC on the network interface.
 
-Attach:
+In order to attach the program using the hook created above, you need to
+provide additional BPF TC options. For this, you can use a `struct bpf_tc_opts`
+and set its member `prog_fd`. The member `prog_fd` identifies the loaded BPF
+program via its file descriptor. A call to the function `bpf_tc_attach` with
+the hook and the options as parameters then attaches the BPF program to the
+network interface:
 
 ```c
 // attach bpf program
@@ -45,6 +50,9 @@ opts.sz		= sizeof(struct bpf_tc_opts);
 opts.prog_fd	= prog_fd;
 bpf_tc_attach(&hook, &opts);
 ```
+
+This creates a TC Filter rule for the BPF program in the TC QDISC you created
+in the previous step.
 
 TODO: add `tc` and `bpftool` commands to check if attaching was successful?
 
