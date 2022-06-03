@@ -54,8 +54,6 @@ bpf_tc_attach(&hook, &opts);
 This creates a TC Filter rule for the BPF program in the TC QDISC you created
 in the previous step.
 
-TODO: add `tc` and `bpftool` commands to check if attaching was successful?
-
 After running the code above, you can check if attaching was successful, e.g.,
 with the command line tools `tc` and `bpftool`.
 
