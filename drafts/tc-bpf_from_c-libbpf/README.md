@@ -56,6 +56,41 @@ in the previous step.
 
 TODO: add `tc` and `bpftool` commands to check if attaching was successful?
 
+After running the code above, you can check if attaching was successful, e.g.,
+with the command line tools `tc` and `bpftool`.
+
+With `tc` you can display the TC QDISCs and TC Filter on your network
+interface. The following example shows the respective commands and their output
+for the attachment point `BPF_TC_INGRESS` and the network interface `eth0`. You
+can see that the `_accept_all` program was attached successfully:
+
+```console
+$ tc qdisc show dev eth0
+qdisc mq 0: root
+qdisc fq_codel 0: parent :2 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64
+qdisc fq_codel 0: parent :1 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64
+qdisc clsact ffff: parent ffff:fff1
+$ tc filter show dev eth0 ingress
+filter protocol all pref 49152 bpf chain 0
+filter protocol all pref 49152 bpf chain 0 handle 0x1 _accept_all:[33] direct-action not_in_hw id 33 tag a04f5eef06a7f555
+```
+
+With `bpftool` you can display BPF program information. The following example
+shows the command for inspecting network related BPF program attachments and
+its output. Again, you can see that the TC-BPF program `_accept_all` was
+attached successfully on the network interface `eth0` for incoming packets:
+
+```console
+$ sudo bpftool net
+xdp:
+
+tc:
+eth0(2) clsact/ingress _accept_all:[33] id 33
+
+flow_dissector:
+
+```
+
 ## Detaching
 
 Destroy hook:
