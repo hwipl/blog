@@ -57,10 +57,10 @@ in the previous step.
 After running the code above, you can check if attaching was successful, e.g.,
 with the command line tools `tc` and `bpftool`.
 
-With `tc` you can display the TC QDISCs and TC Filter on your network
-interface. The following example shows the respective commands and their output
-for the attachment point `BPF_TC_INGRESS` and the network interface `eth0`. You
-can see that the `_accept_all` program was attached successfully:
+With `tc` you can display TC QDISCs and TC Filters on your network interface.
+The following example shows the respective commands and their output for the
+attachment point `BPF_TC_INGRESS` and the network interface `eth0`. You can see
+that the `_accept_all` program was attached successfully:
 
 ```console
 $ tc qdisc show dev eth0
