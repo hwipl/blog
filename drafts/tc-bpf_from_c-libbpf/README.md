@@ -91,7 +91,18 @@ flow_dissector:
 
 ## Detaching
 
-Destroy hook:
+Detaching the TC-BPF program on a network interface with libbpf only requires a
+single step: destroying the BPF TC hook.
+
+In order to destroy the hook, you need to use a `struct bpf_tc_hook` again and
+set its members `ifindex` and `attach_point`. The member `ifindex` specifies
+the ID of the network interface you want to detach the BPF program from. The
+member `attach_point` can be used in two different ways. If you specify
+`BPF_TC_EGRESS` or `BPF_TC_INGRESS`, only the respective TC Filter for outgoing
+or incoming packets will be removed. The underlying TC QDISC will remain on the
+network interface. If you specify `BPF_TC_EGRESS | BPF_TC_INGRESS`, both the TC
+Filter and the underlying TC QDISC will be removed from the network interface.
+A call to the function `bpf_tc_hook_destroy()` finally destroys the hook:
 
 ```c
 // destroy bpf hook
