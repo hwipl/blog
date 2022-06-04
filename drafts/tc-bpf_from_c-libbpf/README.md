@@ -117,6 +117,36 @@ hook.attach_point	= BPF_TC_INGRESS | BPF_TC_EGRESS;
 bpf_tc_hook_destroy(&hook);
 ```
 
+This removes the TC QDISC and the TC Filter rule for the BPF program you
+created in the previous section. This also removes the loaded BPF program.
+
+After running the code above, you can check if detaching was successful, e.g.,
+with the command line tools `tc` and `bpftool`, as described in the previous
+section.
+
+With `tc` you can see that the program is not attached to `eth0` any more:
+
+```console
+$ tc qdisc show dev eth0
+qdisc mq 0: root
+qdisc fq_codel 0: parent :2 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64
+qdisc fq_codel 0: parent :1 limit 10240p flows 1024 quantum 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64
+$ tc filter show dev eth0 ingress
+```
+
+With `bpftool` you can also see that there is no more TC-BPF program loaded and
+attached to a network interface:
+
+```console
+$ sudo bpftool net
+xdp:
+
+tc:
+
+flow_dissector:
+
+```
+
 ## Appendix: Code
 
 - [Dummy BPF Program](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-accept.c)
