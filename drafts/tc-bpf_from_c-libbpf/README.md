@@ -160,6 +160,10 @@ implementation in the appendix below.
 
 ## Appendix: Code
 
+The sections below contain C code of attaching and detaching programs, build
+instructions and usage examples. You can also find the source code, including a
+dummy TC-BPF program, here:
+
 - [Dummy BPF Program](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-accept.c)
 - [TC-BPF Attaching](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-attach2.c)
 - [TC-BPF Detaching](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-detach2.c)
