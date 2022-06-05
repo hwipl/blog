@@ -147,6 +147,17 @@ flow_dissector:
 
 ```
 
+## Conclusion
+
+This document describes how you can attach and detach TC-BPF programs on
+network interfaces with libbpf in C code without using the `tc` tool. Attaching
+and detaching TC-BPF programs requires only a few steps compared to a manual
+implementation: in order to attach a program, you create a TC BPF hook on the
+network interface for incoming or outgoing packets; to detach the program
+again, you destroy the TC BPF hook. All sections contain code examples you can
+use for your own implementation. Additionally, you can find a complete
+implementation in the appendix below.
+
 ## Appendix: Code
 
 - [Dummy BPF Program](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-accept.c)
