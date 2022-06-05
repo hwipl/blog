@@ -339,3 +339,17 @@ int main(int argc, char **argv) {
 	return 0;
 }
 ```
+
+You can, for example, save the code in `tc-detach2.c` and then build it as
+`tc-detach2` with clang:
+
+```console
+$ clang tc-detach2.c -o tc-detach2
+```
+
+You can then detach the previously attached BPF program, for example, on
+network interface `eth0` with the following command:
+
+```console
+$ sudo ./tc-detach2 eth0
+```
