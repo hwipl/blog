@@ -266,6 +266,20 @@ int main(int argc, char **argv) {
 }
 ```
 
+You can, for example, save the code in `tc-attach2.c` and then build it as
+`tc-attach2` with clang:
+
+```console
+$ clang tc-attach2.c -o tc-attach2 -l bpf
+```
+
+You can then attach the BPF program `tc-accept.o`, for example, to
+the network interface `eth0` with the following command:
+
+```console
+$ sudo ./tc-attach2 tc-accept.o eth0
+```
+
 ### Detaching BPF Programs on a Network Interface
 
 Include headers:
