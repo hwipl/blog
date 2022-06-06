@@ -172,8 +172,8 @@ dummy TC-BPF program, here:
 Note: for more information on the dummy TC-BPF program, how to build it and how
 to load it, please see the [previous
 document](https://github.com/hwipl/blog/tree/main/posts/tc-bpf_from_c) or the
-documentation of the [source
-code](https://github.com/hwipl/snippets-c/blob/main/bpf/).
+[documentation](https://github.com/hwipl/snippets-c/blob/main/bpf/) of the
+source code.
 
 ### Attaching a BPF Program on a Network Interface
 
