@@ -169,6 +169,12 @@ dummy TC-BPF program, here:
 - [TC-BPF Attaching](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-attach2.c)
 - [TC-BPF Detaching](https://github.com/hwipl/snippets-c/blob/main/bpf/tc-detach2.c)
 
+Note: for more information on the dummy TC-BPF program, how to build it and how
+to load it, please see the [previous
+document](https://github.com/hwipl/blog/tree/main/posts/tc-bpf_from_c) or the
+documentation of the [source
+code](https://github.com/hwipl/snippets-c/blob/main/bpf/).
+
 ### Attaching a BPF Program on a Network Interface
 
 Include headers:
