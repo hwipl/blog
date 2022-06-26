@@ -188,7 +188,7 @@ Include headers:
 ```
 
 Function for loading the BPF program in the file identified by the filename in
-`file` and returning the file descriptor of the loaded porgram:
+`file` and returning the file descriptor of the loaded program:
 
 ```c
 /* load bpf program from file and return program fd */
