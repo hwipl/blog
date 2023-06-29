@@ -29,6 +29,41 @@ Access Control
 
 Zones
 
+/etc/bind/named.conf.options:
+
+```
+acl goodclients {
+        localhost;
+        localnets;
+        10.20.0.0/16;
+};
+
+options {
+        directory "/var/cache/bind";
+
+        recursion yes;
+        allow-query { goodclients; };
+
+        forwarders {
+                10.1.1.1;
+                10.2.2.2;
+        };
+        forward only;
+        max-ncache-ttl 1;
+
+        dnssec-validation auto;
+
+        auth-nxdomain no;
+        listen-on {
+                127.0.0.1;
+                10.20.1.1;
+        };
+        listen-on-v6 {
+                ::1;
+        };
+};
+```
+
 ## Ansible
 
 Roles and Playbooks
