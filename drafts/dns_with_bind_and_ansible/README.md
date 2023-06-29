@@ -8,7 +8,9 @@ Assume scenario: one or more isolated networks, each with its own DNS server.
 DNS server responsible for internal DNS names, forwards other requests to other
 (external) DNS servers.
 
-DNS Serer: Bind 9
+OS: Ubuntu 22.04 LTS
+
+DNS Server: ISC Bind 9
 
 DNS installed and configured with Ansible. Zone files configured automatically.
 Support for subdomain aliases.
