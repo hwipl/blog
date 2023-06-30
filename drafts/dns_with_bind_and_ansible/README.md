@@ -64,6 +64,70 @@ options {
 };
 ```
 
+/etc/bind/named.conf.local:
+
+```
+# network zone
+zone "network.lan" {
+    type master;
+    file "/etc/bind/db.network.lan";
+};
+```
+
+/etc/bind/db.network.lan:
+
+```
+$TTL    604800
+@       IN      SOA     network.lan. root.network.lan. (
+                              1         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+
+@       IN      NS      ns.network.lan.
+@       IN      A       10.20.1.1
+@       IN      AAAA    ::1
+ns      IN      A       10.20.1.1
+
+$INCLUDE "/etc/bind/db.network.lan-site1" site1.network.lan.
+$INCLUDE "/etc/bind/db.network.lan-site1" s1.network.lan.
+$INCLUDE "/etc/bind/db.network.lan-site2" site2.network.lan.
+$INCLUDE "/etc/bind/db.network.lan-site2" s2.network.lan.
+$INCLUDE "/etc/bind/db.network.lan-all" network.lan.
+```
+
+/etc/bind/db.network.lan-site1:
+
+```
+node1       IN    A    10.20.1.1
+node2       IN    A    10.20.1.2
+node3       IN    A    10.20.1.3
+
+service1    IN    A    10.20.1.1
+service2    IN    A    10.20.1.1
+```
+
+/etc/bind/db.network.lan-site2:
+
+```
+node1       IN    A    10.20.2.1
+node2       IN    A    10.20.2.2
+node3       IN    A    10.20.2.3
+
+service1    IN    A    10.20.2.1
+service2    IN    A    10.20.2.1
+```
+
+/etc/bind/db.network.lan-all:
+
+```
+service1    IN    A    10.20.1.1
+service1    IN    A    10.20.2.1
+service2    IN    A    10.20.1.1
+service2    IN    A    10.20.2.1
+```
+
 ## Ansible
 
 Roles and Playbooks
