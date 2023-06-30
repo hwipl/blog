@@ -15,7 +15,7 @@ DNS Server: ISC Bind 9
 DNS installed and configured with Ansible. Zone files configured automatically.
 Support for subdomain aliases.
 
-Limitations: only A records for now.
+Limitations: only A records for now. only IPv4 for now.
 
 ## DNS Configuration
 
