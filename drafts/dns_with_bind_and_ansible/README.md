@@ -131,3 +131,181 @@ service2    IN    A    10.20.2.1
 ## Ansible
 
 Roles and Playbooks
+
+```
+roles/bind/
+├── handlers
+│   └── main.yml
+├── tasks
+│   └── main.yml
+└── templates
+    ├── db-actual.j2
+    ├── db-includes.j2
+    ├── named.conf.local.j2
+    └── named.conf.options.j2
+```
+
+roles/bind/handlers/main.yml:
+
+```yaml
+---
+# handlers for bind
+
+- name: Restart bind9
+  become: true
+  ansible.builtin.service:
+    name: bind9
+    state: restarted
+```
+
+roles/bind/tasks/main.yml:
+
+```yaml
+---
+# these tasks install and configure bind9 name servers
+
+- name: Update apt cache if older than 3600 seconds
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+- name: Ensure bind9 is installed
+  become: true
+  ansible.builtin.apt:
+    name: bind9
+    state: present
+- name: Create named.conf.options from template
+  become: true
+  ansible.builtin.template:
+    src: named.conf.options.j2
+    dest: "/etc/bind/named.conf.options"
+    owner: root
+    group: bind
+    mode: '0644'
+    backup: true
+  notify:
+    - Restart bind9
+- name: Create named.conf.local from template
+  become: true
+  ansible.builtin.template:
+    src: named.conf.local.j2
+    dest: "/etc/bind/named.conf.local"
+    owner: root
+    group: bind
+    mode: '0644'
+  notify:
+    - Restart bind9
+- name: Create db files with includes from template
+  become: true
+  ansible.builtin.template:
+    src: db-includes.j2
+    dest: "/etc/bind/db.{{ item.name }}"
+    owner: root
+    group: bind
+    mode: '0644'
+  loop: "{{ zones }}"
+  notify:
+    - Restart bind9
+- name: Create actual db files from template
+  become: true
+  ansible.builtin.template:
+    src: db-actual.j2
+    dest: "/etc/bind/{{ item.1.file }}"
+    owner: root
+    group: bind
+    mode: '0644'
+  loop: "{{ zones | subelements('dbs') }}"
+  notify:
+    - Restart bind9
+```
+
+roles/bind/templates/named.conf.options.j2:
+
+```jinja
+acl goodclients {
+{% for client in goodclients %}
+	{{ client }};
+{% endfor %}
+};
+
+options {
+	directory "/var/cache/bind";
+
+	recursion yes;
+	allow-query { goodclients; };
+
+	forwarders {
+{% for forwarder in forwarders %}
+		{{ forwarder }};
+{% endfor %}
+	};
+	forward only;
+	max-ncache-ttl 1;
+
+	dnssec-validation auto;
+
+	auth-nxdomain no;
+	listen-on {
+{% for listen in bind_listen_on %}
+		{{ listen }};
+{% endfor %}
+	};
+	listen-on-v6 {
+{% for listen in bind_listen_on_v6 %}
+		{{ listen }};
+{% endfor %}
+	};
+};
+```
+
+roles/bind/templates/named.conf.local.j2:
+
+```jinja
+{% for zone in zones %}
+# {{ zone.description }}
+zone "{{ zone.name }}" {
+    type master;
+    file "/etc/bind/db.{{ zone.name }}";
+};
+{% endfor %}
+```
+
+roles/bind/templates/db-includes.j2:
+
+```jinja
+$TTL    604800
+@       IN      SOA     {{ item.name }}. {{ item.contact }} (
+                              {{ item.serial}}         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+
+@       IN      NS      ns.{{ item.name }}.
+@       IN      A       {{ item.nameserver_ip }}
+@       IN      AAAA    ::1
+ns      IN      A       {{ item.nameserver_ip }}
+
+{% for include in item.includes %}
+$INCLUDE "/etc/bind/{{ include.file }}" {{ include.name }}
+{% endfor %}
+```
+
+roles/bind/templates/db-actual.j2:
+
+```jinja
+{% for a in item.1.a_records %}
+{{ a.name }}	IN	A	{{ a.ip }}
+{% endfor %}
+```
+
+bind.yml:
+
+```yaml
+---
+- name: Configure dns servers
+  hosts: dns_servers
+
+  roles:
+    - bind
+```
