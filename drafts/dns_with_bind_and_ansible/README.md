@@ -312,7 +312,7 @@ bind.yml:
 
 hosts:
 
-```toml
+```ini
 [dns_servers]
 node1
 ```
