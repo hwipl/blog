@@ -309,3 +309,100 @@ bind.yml:
   roles:
     - bind
 ```
+
+hosts:
+
+```toml
+[dns_servers]
+node1
+```
+
+host configuration on DNS server, host_vars/node1:
+
+```yaml
+---
+# dns server configuration
+bind_listen_on:
+  - "127.0.0.1"
+  - "10.20.1.1"
+bind_listen_on_v6:
+  - "::1"
+```
+
+group_vars/dns_servers:
+
+```yaml
+---
+# dns server configuration
+
+forwarders:
+  - 10.1.1.1
+  - 10.2.2.2
+
+goodclients:
+  - localhost
+  - localnets
+  - 10.20.0.0/16
+
+zones:
+  - name: network.lan
+    description: network zone
+    nameserver_ip: 10.20.1.1
+    contact: root.network.lan.
+    serial: 1
+    includes:   # references to actual db files, allows aliases
+      - name: site1.network.lan.
+        file: db.network.lan-site1
+      - name: s1.network.lan.   # alias for site1
+        file: db.network.lan-site1
+      - name: site2.network.lan.
+        file: db.network.lan-site2
+      - name: s2.network.lan.   # alias for site2
+        file: db.network.lan-site2
+      - name: network.lan.
+        file: db.network.lan-all
+    dbs:    # actual db files that contain host names
+      - file: db.network.lan-site1
+        a_records:
+          - name: node1
+            ip: 10.20.1.1
+          - name: node2
+            ip: 10.20.1.2
+          - name: node3
+            ip: 10.20.1.3
+          - name: service1
+            ip: 10.20.1.1
+          - name: service2
+            ip: 10.20.1.1
+      - file: db.network.lan-site2
+        a_records:
+          - name: node1
+            ip: 10.20.2.1
+          - name: node2
+            ip: 10.20.2.2
+          - name: node3
+            ip: 10.20.2.3
+          - name: service1
+            ip: 10.20.2.1
+          - name: service2
+            ip: 10.20.2.1
+      - file: db.network.lan-all
+        a_records:
+          - name: service1
+            ip: 10.20.1.1
+          - name: service1
+            ip: 10.20.2.1
+          - name: service2
+            ip: 10.20.1.1
+          - name: service2
+            ip: 10.20.2.1
+```
+
+Deployment:
+
+```console
+$ # site 1
+$ ansible-playbook -i site1/hosts bind.yml
+$ # site 2
+$ ansible-playbook -i site2/hosts bind.yml
+```
