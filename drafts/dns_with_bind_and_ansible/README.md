@@ -21,13 +21,19 @@ Limitations: only A records for now. only IPv4 for now.
 
 Bind 9
 
-Listen addresses
+### Listen Addresses
 
-Forwarders
+The DNS servers listen on IP addresses to receive queries from DNS clients.
+Each DNS server listens on two IPv4 addresses: the loopback address `127.0.0.1`
+and the IP address of the server node's network interface (`10.20.1.1` in Site
+1 and `10.20.2.1` in Site 2).  Listening on the loopback interface allows local
+processes on the server node itself to query the DNS server. Listening on the
+node's network interface allows other nodes in the network to query the DNS
+server.
 
-Access Control
+### Forwarders
 
-Zones
+### Access Control
 
 /etc/bind/named.conf.options:
 
@@ -63,6 +69,8 @@ options {
         };
 };
 ```
+
+### Zones
 
 /etc/bind/named.conf.local:
 
