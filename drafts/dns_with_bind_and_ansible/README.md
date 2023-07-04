@@ -31,6 +31,10 @@ processes on the server node itself to query the DNS server. Listening on the
 node's network interface allows other nodes in the network to query the DNS
 server.
 
+Each DNS server only listens on one IPv6 address: the loopback address `::1`.
+Thus, the server only receives IPv6 queries from processes on the server node
+itself and not from any other nodes in the network.
+
 ### Forwarders
 
 ### Access Control
