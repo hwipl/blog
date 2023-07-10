@@ -36,10 +36,10 @@ Each DNS server only listens on one IPv6 address: the loopback address `::1`.
 Thus, the server only receives IPv6 queries from processes on the server node
 itself and not from any other nodes in the network.
 
-Note: Alternatively, the DNS server can receive DNS queries on all the server's
-IPv4 addresses with the IPv4 listen address `any`. To allow receiving IPv6
-queries from other nodes in the network, the server's IPv6 addresses or `any`
-can be added to IPv6 listen addresses.
+Note: Alternatively, each DNS server can receive DNS queries on all the
+server's IPv4 addresses with the IPv4 listen address `any`. To allow receiving
+IPv6 queries from other nodes in the network, the server's IPv6 addresses or
+`any` can be added to IPv6 listen addresses.
 
 ### Forwarders
 
