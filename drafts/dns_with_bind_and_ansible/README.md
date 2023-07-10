@@ -43,6 +43,10 @@ can be added to IPv6 listen addresses.
 
 ### Forwarders
 
+The DNS servers are recursive forwarders. They forward queries, except for
+local domain names (see Zones) or cached records, to the other DNS servers
+`10.1.1.1` and `10.2.2.2`.
+
 ### Access Control
 
 /etc/bind/named.conf.options:
