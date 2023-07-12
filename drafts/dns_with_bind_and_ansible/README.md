@@ -49,6 +49,16 @@ local domain names (see Zones) or cached records, to the other DNS servers
 
 ### Access Control
 
+The clients that are allowed to query the DNS servers are restricted with
+access control lists.
+
+Each DNS server accepts queries only from the configured `good clients`
+addresses `localhost`, `localnets`, `10.20.0.0/16` and ignores other queries.
+The special address `localhost` is the DNS server itself. The special address
+`localnets` are the IP addresses of the networks the server is connected to.
+The IPv4 prefix `10.20.0.0/16` specifies the IPv4 addresses in the respective
+range.
+
 /etc/bind/named.conf.options:
 
 ```
