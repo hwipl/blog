@@ -96,6 +96,22 @@ options {
 
 ### Zones
 
+The DNS servers are responsible for local domain names and answer queries of
+these names directly without forwarding them to other servers. These domain
+names are configured in the zone files.
+
+The local domain is `network.lan` with additional subdomains `s1.network.lan`,
+`site1.network.lan`, `s2.network.lan`, and `site2.network.lan`. The subdomain
+`s1.network.lan` is just an alias for `site1.network.lan` and contains the same
+domain names.  Accordingly, `s2.network.lan` is an alias for
+`site2.network.lan`.
+
+The aliasing is realized with domain-specific `$INCLUDE` statements in the zone
+file of the domain `network.lan`. The domain names are included from other
+files. For the subdomains `site1.network.lan` and `s1.network.lan`, the same
+file is included. Accordingly, `site2.network.lan` and `s1.network.lan` point
+to the same file.
+
 /etc/bind/named.conf.local:
 
 ```
