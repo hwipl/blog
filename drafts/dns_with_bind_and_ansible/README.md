@@ -112,6 +112,13 @@ files. For the subdomains `site1.network.lan` and `s1.network.lan`, the same
 file is included. Accordingly, `site2.network.lan` and `s1.network.lan` point
 to the same file.
 
+The configuration of Site 1 contains five `A` records: the three nodes `node1`
+to `node3` and the two services `service1` and `service2`. The `A` records of
+the nodes resolve to the addresses of the respective nodes in the Site 1
+network. The `A` records of the services both resolve to the address of
+`node1`. The configuration of Site 2 only differs in the addresses of the
+nodes: the addresses of the respective nodes inside the Site 2 network.
+
 /etc/bind/named.conf.local:
 
 ```
