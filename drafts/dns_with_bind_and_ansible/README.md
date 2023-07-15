@@ -119,6 +119,14 @@ network. The `A` records of the services both resolve to the address of
 `node1`. The configuration of Site 2 only differs in the addresses of the
 nodes: the addresses of the respective nodes inside the Site 2 network.
 
+In addition to the two site-specific subdomains above, there are domain names
+in the domain `network.lan`: the two services `service1` and `service2`. Like
+the services in the two sites, they resolve to the address of `node1`. But the
+DNS servers in Site 1 and Site 2 use different configurations: in Site 1 the
+domain names resolve to the node in Site 1 and in Site 2 to the node in Site 2.
+This way, clients in one site can use these domain names to access the services
+in their respective site without having to know in which site they are.
+
 /etc/bind/named.conf.local:
 
 ```
@@ -174,12 +182,17 @@ service1    IN    A    10.20.2.1
 service2    IN    A    10.20.2.1
 ```
 
-/etc/bind/db.network.lan-all:
+/etc/bind/db.network.lan-all in Site 1:
 
 ```
 service1    IN    A    10.20.1.1
-service1    IN    A    10.20.2.1
 service2    IN    A    10.20.1.1
+```
+
+/etc/bind/db.network.lan-all in Site 2:
+
+```
+service1    IN    A    10.20.2.1
 service2    IN    A    10.20.2.1
 ```
 
