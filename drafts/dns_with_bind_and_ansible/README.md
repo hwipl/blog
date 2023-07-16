@@ -198,6 +198,12 @@ service2    IN    A    10.20.2.1
 
 ## Ansible
 
+Ansible allows for automatic installation and configuration of the DNS servers.
+Ansible uses roles and playbooks. Roles consist of tasks, templates and
+handlers. Tasks are the individual installation and configuration steps. They
+use the templates to generate configuration files and trigger events that are
+handled by the handlers.
+
 Roles and Playbooks
 
 ```
