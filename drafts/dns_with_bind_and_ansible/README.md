@@ -206,6 +206,10 @@ handled by the handlers.
 
 Roles and Playbooks
 
+### Role
+
+The Ansible role is called `bind` and structured as shown in the listing below:
+
 ```
 roles/bind/
 ├── handlers
@@ -218,6 +222,13 @@ roles/bind/
     ├── named.conf.local.j2
     └── named.conf.options.j2
 ```
+
+The role consists of one `main.yml` file for handlers, one `main.yml` file for
+tasks and four files for templates. The tasks use `db-includes.j2` to create
+the base zone file that includes the other files. The other files are created
+with `db-actual.j2`. The template `named.conf.local.j2` is used for the DNS
+server configuration for the zone and `named.conf.options.j2` is used for the
+DNS server options.
 
 roles/bind/handlers/main.yml:
 
@@ -373,6 +384,8 @@ roles/bind/templates/db-actual.j2:
 {% endfor %}
 ```
 
+### Configuration and Playbook
+
 bind.yml:
 
 ```yaml
@@ -471,6 +484,8 @@ zones:
           - name: service2
             ip: 10.20.2.1
 ```
+
+### Deployment
 
 Deployment:
 
