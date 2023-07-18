@@ -230,7 +230,7 @@ with `db-actual.j2`. The template `named.conf.local.j2` is used for the DNS
 server configuration for the zone and `named.conf.options.j2` is used for the
 DNS server options.
 
-roles/bind/handlers/main.yml:
+A handler is defined as follows in the file `roles/bind/handlers/main.yml`:
 
 ```yaml
 ---
@@ -242,6 +242,11 @@ roles/bind/handlers/main.yml:
     name: bind9
     state: restarted
 ```
+
+The handler is called `Restart bind9` and restarts the DNS server when it is
+triggered. It requires root privileges to manipulate the state of the system
+services, so `become` is set to `true`. To restart the DNS server, it sets the
+system service `bind9` to state `restarted`.
 
 roles/bind/tasks/main.yml:
 
