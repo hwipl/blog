@@ -248,7 +248,7 @@ triggered. It requires root privileges to manipulate the state of the system
 services, so `become` is set to `true`. To restart the DNS server, it sets the
 system service `bind9` to state `restarted`.
 
-roles/bind/tasks/main.yml:
+The tasks are defined as follows in the file `roles/bind/tasks/main.yml`:
 
 ```yaml
 ---
@@ -308,6 +308,25 @@ roles/bind/tasks/main.yml:
   notify:
     - Restart bind9
 ```
+
+These tasks install the bind9 DNS server, configure it with templates and
+trigger the restart event if changes are actually made by the tasks:
+
+The first task updates the `apt` cache if it is older than one hour to make
+sure the following installation task can run with up-to-date package sources.
+
+The second task installs the bind9 DNS server with `apt` if it is not already
+installed.
+
+The third task creates or updates the DNS server options file
+`named.conf.options` in the directory `/etc/bind` from the template
+`named.conf.options.j2`. If a different version already exists, the task
+creates a backup of the existing file. If the file is changed, the restart
+event is triggered.
+
+The fourth task creates or updates the local zone configuration file
+`named.conf.local` in the directory `/etc/bind` from the template
+`named.conf.local.j2`. If the file is changed, the restart event is triggered.
 
 roles/bind/templates/named.conf.options.j2:
 
