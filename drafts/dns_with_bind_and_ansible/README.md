@@ -324,9 +324,22 @@ The third task creates or updates the DNS server options file
 creates a backup of the existing file. If the file is changed, the restart
 event is triggered.
 
+The following three tasks create the local DNS zones configuration and trigger
+the restart event if any files changed.
+
 The fourth task creates or updates the local zone configuration file
 `named.conf.local` in the directory `/etc/bind` from the template
-`named.conf.local.j2`. If the file is changed, the restart event is triggered.
+`named.conf.local.j2`.
+
+The fifth task creates or updates the base zone files in the directory
+`/etc/bind` that include the actual domain name files.  For each zone, a base
+file is created using the template `db-includes.j2`. The file name consists of
+the prefix `db.` and the name of the zone as defined in the configuration.
+
+The sixth task creates or updates the files that contain the actual domain
+names in the directory `/etc/bind`. For each such file in the configuration, a
+file is created using the template `db-actual.j2`. The file name is also
+defined in the configuration.
 
 roles/bind/templates/named.conf.options.j2:
 
