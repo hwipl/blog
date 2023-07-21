@@ -230,6 +230,8 @@ with `db-actual.j2`. The template `named.conf.local.j2` is used for the DNS
 server configuration for the zone and `named.conf.options.j2` is used for the
 DNS server options.
 
+#### Handlers
+
 A handler is defined as follows in the file `roles/bind/handlers/main.yml`:
 
 ```yaml
@@ -247,6 +249,8 @@ The handler is called `Restart bind9` and restarts the DNS server when it is
 triggered. It requires root privileges to manipulate the state of the system
 services, so `become` is set to `true`. To restart the DNS server, it sets the
 system service `bind9` to state `restarted`.
+
+#### Tasks
 
 The tasks are defined as follows in the file `roles/bind/tasks/main.yml`:
 
@@ -312,6 +316,11 @@ The tasks are defined as follows in the file `roles/bind/tasks/main.yml`:
 These tasks install the bind9 DNS server, configure it with templates and
 trigger the restart event if changes are actually made by the tasks:
 
+All tasks need root privileges to manipulate the system configuration. So,
+`become` is set to `true`.  All configuration files are stored in the directory
+`/etc/bind`. File owner is set to `root`, group is set to `bind` and privileges
+are set to `644`.
+
 The first task updates the `apt` cache if it is older than one hour to make
 sure the following installation task can run with up-to-date package sources.
 
@@ -319,27 +328,26 @@ The second task installs the bind9 DNS server with `apt` if it is not already
 installed.
 
 The third task creates or updates the DNS server options file
-`named.conf.options` in the directory `/etc/bind` from the template
-`named.conf.options.j2`. If a different version already exists, the task
-creates a backup of the existing file. If the file is changed, the restart
-event is triggered.
+`named.conf.options` from the template `named.conf.options.j2`. If a different
+version already exists, the task creates a backup of the existing file. If the
+file is changed, the restart event is triggered.
 
 The following three tasks create the local DNS zones configuration and trigger
 the restart event if any files changed.
 
 The fourth task creates or updates the local zone configuration file
-`named.conf.local` in the directory `/etc/bind` from the template
-`named.conf.local.j2`.
+`named.conf.local` from the template `named.conf.local.j2`.
 
-The fifth task creates or updates the base zone files in the directory
-`/etc/bind` that include the actual domain name files.  For each zone, a base
-file is created using the template `db-includes.j2`. The file name consists of
-the prefix `db.` and the name of the zone as defined in the configuration.
+The fifth task creates or updates the base zone files that include the actual
+domain name files.  For each zone, a base file is created using the template
+`db-includes.j2`. The file name consists of the prefix `db.` and the name of
+the zone as defined in the configuration.
 
 The sixth task creates or updates the files that contain the actual domain
-names in the directory `/etc/bind`. For each such file in the configuration, a
-file is created using the template `db-actual.j2`. The file name is also
-defined in the configuration.
+names. For each such file in the configuration, a file is created using the
+template `db-actual.j2`. The file name is also defined in the configuration.
+
+#### Templates
 
 roles/bind/templates/named.conf.options.j2:
 
