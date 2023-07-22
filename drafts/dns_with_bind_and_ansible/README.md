@@ -349,7 +349,8 @@ template `db-actual.j2`. The file name is also defined in the configuration.
 
 #### Templates
 
-roles/bind/templates/named.conf.options.j2:
+The template for the file `named.conf.options` is defined as follows in the
+file `roles/bind/templates/named.conf.options.j2`:
 
 ```jinja
 acl goodclients {
@@ -387,6 +388,21 @@ options {
 	};
 };
 ```
+
+The template reflects the DNS server options shown in the DNS configuration
+section above with parts dynamically generated based on the Ansible
+configuration:
+
+For each client configured in the list of `good clients`, the template creates
+an entry in the access control list (ACL) `good clients`. This ACL is used in
+`allow-query` in the `options` to allow these clients to query the DNS server.
+
+For each DNS server configured in the list of forwarders, the template creates
+an entry in the `forwarders`.
+
+For each IPv4 address configured in the list `bind listen on`, a listen address
+is created in `listen-on`. For each IPv6 address configured in the list `bind
+listen on v6`, a listen address is created in `listen-on-v6`.
 
 roles/bind/templates/named.conf.local.j2:
 
