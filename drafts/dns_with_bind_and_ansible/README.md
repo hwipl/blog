@@ -404,7 +404,8 @@ For each IPv4 address configured in the list `bind listen on`, a listen address
 is created in `listen-on`. For each IPv6 address configured in the list `bind
 listen on v6`, a listen address is created in `listen-on-v6`.
 
-roles/bind/templates/named.conf.local.j2:
+The template for the file `named.conf.local` is defined as follows in the file
+`roles/bind/templates/named.conf.local.j2`:
 
 ```jinja
 {% for zone in zones %}
@@ -415,6 +416,17 @@ zone "{{ zone.name }}" {
 };
 {% endfor %}
 ```
+
+The template reflects the DNS zone configuration shown in the DNS configuration
+section above with parts dynamically generated based on the Ansible
+configuration:
+
+For each zone configured in the list `zones`, a zone entry is generated in the
+file. The entry is started with a comment that is filled with the zone
+`description`.  The name is taken from the zone `name`. The name is also used
+as a suffix of the name of the referenced `file` where the content of the zone
+is configured.
+
 
 roles/bind/templates/db-includes.j2:
 
