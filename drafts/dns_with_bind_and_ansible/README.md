@@ -427,8 +427,8 @@ file. The entry is started with a comment that is filled with the zone
 as a suffix of the name of the referenced `file` where the content of the zone
 is configured.
 
-
-roles/bind/templates/db-includes.j2:
+The template for the files referenced in `named.conf.local` is defined as
+follows in the file `roles/bind/templates/db-includes.j2`:
 
 ```jinja
 $TTL    604800
@@ -448,6 +448,18 @@ ns      IN      A       {{ item.nameserver_ip }}
 $INCLUDE "/etc/bind/{{ include.file }}" {{ include.name }}
 {% endfor %}
 ```
+
+The template creates the base file for the content of a zone. It creates the
+following records:
+
+- `SOA` record with the zone `name`, `contact` and current `serial` number.
+- `NS` with the concatenation of `ns.` with the zone `name`
+- `A` record for the zone name with the IP address of the DNS server
+- `AAAA` record for the zone name with the IPv6 loopback address
+- `A record for the name `ns` with the IP address of the DNS server
+
+For each `file` in the list `includes`, the template creates an `$INCLUDE`
+entry with the `file` and DNS `name`.
 
 roles/bind/templates/db-actual.j2:
 
