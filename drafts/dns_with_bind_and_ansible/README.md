@@ -456,7 +456,7 @@ following records:
 - `NS` with the concatenation of `ns.` with the zone `name`
 - `A` record for the zone name with the IP address of the DNS server
 - `AAAA` record for the zone name with the IPv6 loopback address
-- `A record for the name `ns` with the IP address of the DNS server
+- `A` record for the name `ns` with the IP address of the DNS server
 
 For each `file` in the list `includes`, the template creates an `$INCLUDE`
 entry with the `file` and DNS `name`.
