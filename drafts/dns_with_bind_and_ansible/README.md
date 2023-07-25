@@ -461,13 +461,17 @@ following records:
 For each `file` in the list `includes`, the template creates an `$INCLUDE`
 entry with the `file` and DNS `name`.
 
-roles/bind/templates/db-actual.j2:
+The template for the files referenced by the base files above is defined as
+follows in the file `roles/bind/templates/db-actual.j2`:
 
 ```jinja
 {% for a in item.1.a_records %}
 {{ a.name }}	IN	A	{{ a.ip }}
 {% endfor %}
 ```
+
+The template creates an `A` record entry for each `A` record in the list of `A`
+records. Each entry maps the `name` of the record to the address `ip`.
 
 ### Configuration and Playbook
 
