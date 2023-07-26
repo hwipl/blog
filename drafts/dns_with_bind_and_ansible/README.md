@@ -475,7 +475,7 @@ records. Each entry maps the `name` of the record to the address `ip`.
 
 ### Configuration and Playbook
 
-bind.yml:
+The playbook is defined as follows in the file `bind.yml`:
 
 ```yaml
 ---
@@ -485,6 +485,10 @@ bind.yml:
   roles:
     - bind
 ```
+
+The playbook assigns the role `bind` that is described above to all hosts in
+the group `dns_servers`. On execution, this playbook runs all the tasks of the
+role on all the hosts in the group to install and configure the DNS servers.
 
 hosts:
 
