@@ -490,14 +490,14 @@ The playbook assigns the role `bind` that is described above to all hosts in
 the group `dns_servers`. On execution, this playbook runs all the tasks of the
 role on all the hosts in the group to install and configure the DNS servers.
 
-hosts:
+site1/hosts and site2/hosts:
 
 ```ini
 [dns_servers]
 node1
 ```
 
-host configuration on DNS server, host_vars/node1:
+host configuration on DNS server, site1/host_vars/node1:
 
 ```yaml
 ---
@@ -509,7 +509,19 @@ bind_listen_on_v6:
   - "::1"
 ```
 
-group_vars/dns_servers:
+site2/host_vars/node1:
+
+```yaml
+---
+# dns server configuration
+bind_listen_on:
+  - "127.0.0.1"
+  - "10.20.2.1"
+bind_listen_on_v6:
+  - "::1"
+```
+
+site1/group_vars/dns_servers:
 
 ```yaml
 ---
@@ -570,10 +582,71 @@ zones:
         a_records:
           - name: service1
             ip: 10.20.1.1
+          - name: service2
+            ip: 10.20.1.1
+```
+
+site2/group_vars/dns_servers:
+
+```yaml
+---
+# dns server configuration
+
+forwarders:
+  - 10.1.1.1
+  - 10.2.2.2
+
+goodclients:
+  - localhost
+  - localnets
+  - 10.20.0.0/16
+
+zones:
+  - name: network.lan
+    description: network zone
+    nameserver_ip: 10.20.2.1
+    contact: root.network.lan.
+    serial: 1
+    includes:   # references to actual db files, allows aliases
+      - name: site1.network.lan.
+        file: db.network.lan-site1
+      - name: s1.network.lan.   # alias for site1
+        file: db.network.lan-site1
+      - name: site2.network.lan.
+        file: db.network.lan-site2
+      - name: s2.network.lan.   # alias for site2
+        file: db.network.lan-site2
+      - name: network.lan.
+        file: db.network.lan-all
+    dbs:    # actual db files that contain host names
+      - file: db.network.lan-site1
+        a_records:
+          - name: node1
+            ip: 10.20.1.1
+          - name: node2
+            ip: 10.20.1.2
+          - name: node3
+            ip: 10.20.1.3
+          - name: service1
+            ip: 10.20.1.1
+          - name: service2
+            ip: 10.20.1.1
+      - file: db.network.lan-site2
+        a_records:
+          - name: node1
+            ip: 10.20.2.1
+          - name: node2
+            ip: 10.20.2.2
+          - name: node3
+            ip: 10.20.2.3
           - name: service1
             ip: 10.20.2.1
           - name: service2
-            ip: 10.20.1.1
+            ip: 10.20.2.1
+      - file: db.network.lan-all
+        a_records:
+          - name: service1
+            ip: 10.20.2.1
           - name: service2
             ip: 10.20.2.1
 ```
