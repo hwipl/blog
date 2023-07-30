@@ -490,14 +490,20 @@ The playbook assigns the role `bind` that is described above to all hosts in
 the group `dns_servers`. On execution, this playbook runs all the tasks of the
 role on all the hosts in the group to install and configure the DNS servers.
 
-site1/hosts and site2/hosts:
+The Ansible hosts are defined as follows in the files `site1/hosts` and
+`site2/hosts`:
 
 ```ini
 [dns_servers]
 node1
 ```
 
-host configuration on DNS server, site1/host_vars/node1:
+The hosts file of each site defines the group `dns_servers` and assigns the
+node `node1` to it. Thus, `node1` is defined as DNS server for the playbook.
+
+The host-specific configuration of the DNS servers is in the `host_vars` of
+`node1` in each site. The configuration for the DNS server in Site 1 is defined
+as follows in the file `site1/host_vars/node1`:
 
 ```yaml
 ---
@@ -509,7 +515,8 @@ bind_listen_on_v6:
   - "::1"
 ```
 
-site2/host_vars/node1:
+The configuration of the DNS server in Site 2 is defined as follows in the file
+`site2/host_vars/node1`:
 
 ```yaml
 ---
@@ -520,6 +527,11 @@ bind_listen_on:
 bind_listen_on_v6:
   - "::1"
 ```
+
+Both configuration files set the IPv4 and IPv6 listen addresses as described in
+the DNS configuration section above. The only difference between both files is
+the address of the network interface: `10.20.1.1` in Site 1 and `10.20.2.1` in
+Site 2.
 
 site1/group_vars/dns_servers:
 
