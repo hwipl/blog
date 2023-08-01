@@ -533,7 +533,8 @@ the DNS configuration section above. The only difference between both files is
 the address of the network interface: `10.20.1.1` in Site 1 and `10.20.2.1` in
 Site 2.
 
-site1/group_vars/dns_servers:
+The site-specific DNS configuration of Site 1 is defined as follows in the file
+`site1/group_vars/dns_servers`:
 
 ```yaml
 ---
@@ -598,7 +599,8 @@ zones:
             ip: 10.20.1.1
 ```
 
-site2/group_vars/dns_servers:
+The site-specific DNS configuration of Site 2 is defined as follows in the file
+`site2/group_vars/dns_servers`:
 
 ```yaml
 ---
@@ -662,6 +664,14 @@ zones:
           - name: service2
             ip: 10.20.2.1
 ```
+
+Both files set the configuration for the DNS server options and the zone files
+as described in the DNS configuration section above. The forwarders and good
+clients are identical in both sites. The zone configuration differs: the IP
+address of the DNS server is set to `10.20.1.1` in Site 1 and `10.20.2.1` in
+Site 2. Additionally, the names `service1` and `service2` in the domain
+`network.lan` both resolve to the address `10.20.1.1` in Site 1. In Site 2 they
+resolve to `10.20.2.1`.
 
 ### Deployment
 
