@@ -675,7 +675,9 @@ resolve to `10.20.2.1`.
 
 ### Deployment
 
-Deployment:
+The DNS servers can be installed and configured with the Ansible role,
+configuration and playbook described above. You can use the following Ansible
+commands:
 
 ```console
 $ # site 1
@@ -683,3 +685,6 @@ $ ansible-playbook -i site1/hosts bind.yml
 $ # site 2
 $ ansible-playbook -i site2/hosts bind.yml
 ```
+
+Both commands run the playbook `bind.yml` with the site-specific hosts files
+specified with the command line argument `-i`.
