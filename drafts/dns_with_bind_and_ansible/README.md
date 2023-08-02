@@ -686,5 +686,5 @@ $ # site 2
 $ ansible-playbook -i site2/hosts bind.yml
 ```
 
-Both commands run the playbook `bind.yml` with the site-specific hosts files
-specified with the command line argument `-i`.
+Both `ansible-playbook` commands run the playbook `bind.yml` with the
+site-specific hosts files specified with the command line argument `-i`.
