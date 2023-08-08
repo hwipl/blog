@@ -31,11 +31,13 @@ Limitations: only A records for now. only IPv4 for now.
  \________/         \________/
 ```
 
+The network is shown in the following figure:
+
 ```
                  ________
                 /        \
                /   Other  \
-               \          /
+               \ Networks /
                 \________/
    __________       |       __________
   /          \      |      /          \
@@ -55,6 +57,12 @@ Limitations: only A records for now. only IPv4 for now.
  \            /           \            /
   \__________/             \__________/
 ```
+
+The network consists of the two sites `Site 1` and `Site 2`. Each site contains
+the three nodes `Node 1`, `Node 2` and `Node 3`. All nodes within a site can
+reach each other. Both sites are connected with each-other. Also, both sites
+are connected to other external networks.
+
 
 ## DNS Configuration
 
