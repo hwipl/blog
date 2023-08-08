@@ -60,9 +60,8 @@ The network is shown in the following figure:
 
 The network consists of the two sites `Site 1` and `Site 2`. Each site contains
 the three nodes `Node 1`, `Node 2` and `Node 3`. All nodes within a site can
-reach each other. Both sites are connected with each-other. Also, both sites
-are connected to other external networks.
-
+reach each-other. Both sites are interconnected. Also, both sites are connected
+to other external networks.
 
 ## DNS Configuration
 
