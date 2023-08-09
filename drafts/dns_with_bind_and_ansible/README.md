@@ -34,34 +34,39 @@ Limitations: only A records for now. only IPv4 for now.
 The network is shown in the following figure:
 
 ```
-                 ________
-                /        \
-               /   Other  \
-               \ Networks /
-                \________/
-   __________       |       __________
-  /          \      |      /          \
- /   Site 1   \     |     /   Site 2   \
-/              \    |    /              \
-|  +--------+  |    |    |  +--------+  |
-|  | Node 1 |  |    |    |  | Node 1 |  |
-|  +--------+  |    |    |  +--------+  |
-|              |    |    |              |
-|  +--------+  |    |    |  +--------+  |
-|  | Node 2 |  |____|____|  | Node 2 |  |
-|  +--------+  |         |  +--------+  |
-|              |         |              |
-|  +--------+  |         |  +--------+  |
-|  | Node 3 |  |         |  | Node 3 |  |
-\  +--------+  /         \  +--------+  /
- \            /           \            /
-  \__________/             \__________/
+                    ________
+                   /        \
+                  /   Other  \
+                  \ Networks /
+                   \________/
+                       |
+.......................|.......................
+: Network              |                      :
+:     __________       |       __________     :
+:    /          \      |      /          \    :
+:   /   Site 1   \     |     /   Site 2   \   :
+:  /              \    |    /              \  :
+:  |  +--------+  |    |    |  +--------+  |  :
+:  |  | Node 1 |  |    |    |  | Node 1 |  |  :
+:  |  +--------+  |    |    |  +--------+  |  :
+:  |              |    |    |              |  :
+:  |  +--------+  |    |    |  +--------+  |  :
+:  |  | Node 2 |  |____|____|  | Node 2 |  |  :
+:  |  +--------+  |         |  +--------+  |  :
+:  |              |         |              |  :
+:  |  +--------+  |         |  +--------+  |  :
+:  |  | Node 3 |  |         |  | Node 3 |  |  :
+:  \  +--------+  /         \  +--------+  /  :
+:   \            /           \            /   :
+:    \__________/             \__________/    :
+:.............................................:
 ```
 
 The network consists of the two sites `Site 1` and `Site 2`. Each site contains
 the three nodes `Node 1`, `Node 2` and `Node 3`. All nodes within a site can
 reach each-other. Both sites are interconnected. Also, both sites are connected
-to other external networks.
+to other external networks. So, a node in one site can reach all nodes in the
+other site as well as nodes in the other networks.
 
 ## DNS Configuration
 
