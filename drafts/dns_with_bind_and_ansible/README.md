@@ -68,6 +68,36 @@ reach each-other. Both sites are interconnected. Also, both sites are connected
 to other external networks. So, a node in one site can reach all nodes in the
 other site as well as nodes in the other networks.
 
+| Entity   | IP           | DNS Name                |
+|----------|--------------|-------------------------|
+| Network  | 10.20.0.0/16 | network.lan             |
+| Site 1   | 10.20.1.0/24 | site1.network.lan       |
+| - Node 1 | 10.20.1.1    | node1.site1.network.lan |
+| - Node 2 | 10.20.1.2    | node2.site1.network.lan |
+| - Node 3 | 10.20.1.3    | node3.site1.network.lan |
+| Site 2   | 10.20.2.0/24 | site2.network.lan       |
+| - Node 1 | 10.20.2.1    | node1.site2.network.lan |
+| - Node 2 | 10.20.2.2    | node2.site2.network.lan |
+| - Node 3 | 10.20.2.3    | node3.site2.network.lan |
+
+| Entity   | DNS Name(s)                                   |
+|----------|-----------------------------------------------|
+| Network  | network.lan                                   |
+| Site 1   | site1.network.lan, s1.network.lan             |
+| - Node 1 | node1.site1.network.lan, node1.s1.network.lan |
+| - Node 2 | node2.site1.network.lan, node2.s1.network.lan |
+| - Node 3 | node3.site1.network.lan, node3.s1.network.lan |
+| Site 2   | site2.network.lan, s2.network.lan             |
+| - Node 1 | node1.site2.network.lan, node1.s2.network.lan |
+| - Node 2 | node2.site2.network.lan, node2.s2.network.lan |
+| - Node 3 | node3.site2.network.lan, node3.s2.network.lan |
+
+| Node   | Site 1    | Site 2    |
+|--------|-----------|-----------|
+| Node 1 | 10.20.1.1 | 10.20.2.1 |
+| Node 2 | 10.20.1.2 | 10.20.2.2 |
+| Node 3 | 10.20.1.3 | 10.20.2.3 |
+
 ## DNS Configuration
 
 Bind 9
