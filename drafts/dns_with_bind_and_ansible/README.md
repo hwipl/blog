@@ -7,34 +7,26 @@ to install and configure each DNS server automatically.
 
 ## Overview
 
-Assume scenario: one or more isolated networks, each with its own DNS server.
-DNS server responsible for internal DNS names, forwards other requests to other
-(external) DNS servers.
+The network consists of one or more individual sites, each with its own DNS
+server. The DNS servers are responsible for internal DNS names and forwards
+other requests to other (external) DNS servers.
 
-OS: Ubuntu 22.04 LTS
+All nodes in the network run Ubuntu 22.04 LTS as operating system. This is
+mostly relevant for the installation part of this document. The configuration
+should be distribution-independent.
 
-DNS Server: ISC Bind 9
+The DNS servers use ISC Bind 9 as DNS Server software. So, the DNS
+configuration is specific for Bind 9.
 
-DNS installed and configured with Ansible. Zone files configured automatically.
-Support for subdomain aliases.
+The DNS servers are installed and configured automatically with Ansible. This
+includes the basic server configuration as well as the zone files.
+Additionally, there is support for subdomain aliases.
 
-Limitations: only A records for now. only IPv4 for now.
+Note: The DNS configuration only contains A records and only IPv4 addressing is
+used.
 
-```
-            ________
-           /        \
-          /   Other  \
-          \          /
-           \________/
-               |
-  ________     |     ________
- /        \    |    /        \
-/  Site 1  \___|___/  Site 2  \
-\          /       \          /
- \________/         \________/
-```
-
-The network is shown in the following figure:
+The example network that is used in this document is shown in the following
+figure:
 
 ```
                     ________
@@ -69,31 +61,8 @@ The network consists of the two sites `Site 1` and `Site 2`. Each site contains
 the three nodes `Node 1`, `Node 2` and `Node 3`. All nodes within a site can
 reach each-other. Both sites are interconnected. Also, both sites are connected
 to other external networks. So, a node in one site can reach all nodes in the
-other site as well as nodes in the other networks.
-
-| Entity   | IP           | DNS Name                |
-|----------|--------------|-------------------------|
-| Network  | 10.20.0.0/16 | network.lan             |
-| Site 1   | 10.20.1.0/24 | site1.network.lan       |
-| - Node 1 | 10.20.1.1    | node1.site1.network.lan |
-| - Node 2 | 10.20.1.2    | node2.site1.network.lan |
-| - Node 3 | 10.20.1.3    | node3.site1.network.lan |
-| Site 2   | 10.20.2.0/24 | site2.network.lan       |
-| - Node 1 | 10.20.2.1    | node1.site2.network.lan |
-| - Node 2 | 10.20.2.2    | node2.site2.network.lan |
-| - Node 3 | 10.20.2.3    | node3.site2.network.lan |
-
-| Entity   | IP           | DNS Name                | DNS Name Alias       |
-|----------|--------------|-------------------------|----------------------|
-| Network  | 10.20.0.0/16 | network.lan             |                      |
-| Site 1   | 10.20.1.0/24 | site1.network.lan       | s1.network.lan       |
-| - Node 1 | 10.20.1.1    | node1.site1.network.lan | node1.s1.network.lan |
-| - Node 2 | 10.20.1.2    | node2.site1.network.lan | node2.s1.network.lan |
-| - Node 3 | 10.20.1.3    | node3.site1.network.lan | node3.s1.network.lan |
-| Site 2   | 10.20.2.0/24 | site2.network.lan       | s2.network.lan       |
-| - Node 1 | 10.20.2.1    | node1.site2.network.lan | node1.s2.network.lan |
-| - Node 2 | 10.20.2.2    | node2.site2.network.lan | node2.s2.network.lan |
-| - Node 3 | 10.20.2.3    | node3.site2.network.lan | node3.s2.network.lan |
+other site as well as nodes in the other networks. The IP addressing is shown
+in the following table:
 
 | Entity   | IP           |
 |----------|--------------|
@@ -107,6 +76,12 @@ other site as well as nodes in the other networks.
 | - Node 2 | 10.20.2.2    |
 | - Node 3 | 10.20.2.3    |
 
+TODO: mention addresses?
+
+Further details about the IP addressing and routing are omitted here.
+
+The domain names are shown in the following table:
+
 | Entity   | DNS Name                |  DNS Name Alias      |
 |----------|-------------------------|----------------------|
 | Network  | network.lan             |                      |
@@ -119,11 +94,7 @@ other site as well as nodes in the other networks.
 | - Node 2 | node2.site2.network.lan | node2.s2.network.lan |
 | - Node 3 | node3.site2.network.lan | node3.s2.network.lan |
 
-| Node   | Site 1    | Site 2    |
-|--------|-----------|-----------|
-| Node 1 | 10.20.1.1 | 10.20.2.1 |
-| Node 2 | 10.20.1.2 | 10.20.2.2 |
-| Node 3 | 10.20.1.3 | 10.20.2.3 |
+TODO: mention DNS names and aliases?
 
 ## DNS Configuration
 
