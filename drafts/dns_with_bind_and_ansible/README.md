@@ -1,6 +1,9 @@
 # DNS with Bind and Ansible
 
-DNS server for small networks with Bind 9, configured with Ansible.
+This document describes how you can deploy Bind 9 DNS servers in a network that
+consists of individual sites with Ansible. It shows the DNS configuration of
+Bind 9 as well as the Ansible roles, playbooks and configuration that are used
+to install and configure each DNS server automatically.
 
 ## Overview
 
