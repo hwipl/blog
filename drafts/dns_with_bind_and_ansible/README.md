@@ -8,19 +8,20 @@ to install and configure each DNS server automatically.
 ## Overview
 
 The network consists of one or more individual sites, each with its own DNS
-server. The DNS servers are responsible for internal DNS names and forwards
+server. The DNS servers are responsible for internal domain names and forward
 other requests to other (external) DNS servers.
 
 All nodes in the network run Ubuntu 22.04 LTS as operating system. This is
 mostly relevant for the installation part of this document. The configuration
-should be distribution-independent.
+of the DNS servers should be distribution-independent.
 
 The DNS servers use ISC Bind 9 as DNS Server software. So, the DNS
 configuration is specific for Bind 9.
 
 The DNS servers are installed and configured automatically with Ansible. This
 includes the basic server configuration as well as the zone files.
-Additionally, there is support for subdomain aliases.
+Additionally, multiple subdomains containing the same records - called aliases
+in this document - are supported.
 
 Note: The DNS configuration only contains A records and only IPv4 addressing is
 used.
@@ -76,13 +77,15 @@ in the following table:
 | - Node 2 | 10.20.2.2    |
 | - Node 3 | 10.20.2.3    |
 
-TODO: mention addresses?
+The network uses IP addresses in the range `10.20.0.0/16`. Site 1 uses the
+subnet `10.20.1.0/24`, Site 2 uses `10.20.2.0/24`. In each site, each node uses
+its number as host part of its address. Further details about the IP addressing
+and routing are omitted here.
 
-Further details about the IP addressing and routing are omitted here.
+The domain names to be used in the example network are shown in the following
+table:
 
-The domain names are shown in the following table:
-
-| Entity   | DNS Name                |  DNS Name Alias      |
+| Entity   | Domain Name             |  Domain Name Alias   |
 |----------|-------------------------|----------------------|
 | Network  | network.lan             |                      |
 | Site 1   | site1.network.lan       | s1.network.lan       |
@@ -94,7 +97,11 @@ The domain names are shown in the following table:
 | - Node 2 | node2.site2.network.lan | node2.s2.network.lan |
 | - Node 3 | node3.site2.network.lan | node3.s2.network.lan |
 
-TODO: mention DNS names and aliases?
+The network uses the domain `network.lan`. Site 1 uses the subdomain
+`site1.network.lan` and the alias `s1.network.lan`. Site 2 uses
+`site2.network.lan` and `s2.network.lan`. In each site, each node gets its name
+as domain name and alias, e.g., `node1.site1.network.lan` and
+`node1.s1.network.lan`.
 
 ## DNS Configuration
 
