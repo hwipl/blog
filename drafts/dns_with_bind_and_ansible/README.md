@@ -29,8 +29,10 @@ in this document - are supported.
 Note: The DNS configuration only contains A records and only IPv4 addressing is
 used.
 
-The example network that is used in this document is shown in the following
-figure:
+### Example Network
+
+In order to describe and show an complete DNS and Ansible configuration, an
+example network is used in this document. It is shown in the following figure:
 
 ```
                     ________
@@ -84,6 +86,8 @@ The network uses IP addresses in the range `10.20.0.0/16`. Site 1 uses the
 subnet `10.20.1.0/24`, Site 2 uses `10.20.2.0/24`. In each site, each node uses
 its number as host part of its address. Further details about the IP addressing
 and routing are omitted here.
+
+### Domain Names
 
 The domain names to be used in the example network are shown in the following
 table:
