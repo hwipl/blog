@@ -112,7 +112,9 @@ as domain name and alias, e.g., `node1.site1.network.lan` and
 
 ## DNS Configuration
 
-Bind 9
+The configuration of the Bind 9 DNS servers is described in the following
+subsections. This includes the configuration of listen addresses, forwarders
+and access control list as well as the zone files for the DNS records.
 
 ### Listen Addresses
 
