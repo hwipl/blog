@@ -120,6 +120,20 @@ and access control list as well as the zone files for the DNS records.
 
 The DNS servers listen on IP addresses to receive queries from DNS clients.
 
+```
+// ...
+options {
+        // ...
+        listen-on {
+                127.0.0.1;
+                10.20.1.1;
+        };
+        listen-on-v6 {
+                ::1;
+        };
+};
+```
+
 Each DNS server listens on two IPv4 addresses: the loopback address `127.0.0.1`
 and the IP address of the server node's network interface (`10.20.1.1` in Site
 1 and `10.20.2.1` in Site 2).  Listening on the loopback interface allows local
@@ -142,10 +156,37 @@ The DNS servers are recursive forwarders. They forward queries, except for
 local domain names (see Zones) or cached records, to the other DNS servers
 `10.1.1.1` and `10.2.2.2`.
 
+```
+// ...
+options {
+        // ...
+        forwarders {
+                10.1.1.1;
+                10.2.2.2;
+        };
+        forward only;
+        // ...
+};
+```
+
 ### Access Control
 
 The clients that are allowed to query the DNS servers are restricted with
 access control lists.
+
+```
+acl goodclients {
+        localhost;
+        localnets;
+        10.20.0.0/16;
+};
+
+options {
+        // ...
+        allow-query { goodclients; };
+        // ...
+};
+```
 
 Each DNS server accepts queries only from the configured `good clients`
 addresses `localhost`, `localnets`, `10.20.0.0/16` and ignores other queries.
