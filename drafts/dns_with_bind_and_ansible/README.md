@@ -10,13 +10,12 @@ contain the same domain names.
 
 ## Overview
 
-The network consists of one or more individual sites, each with its own DNS
-server. The DNS servers are responsible for internal domain names and forward
+The DNS servers are responsible for internal domain names and forward
 other requests to other (external) DNS servers.
 
-All nodes in the network run Ubuntu 22.04 LTS as operating system. This is
-mostly relevant for the installation part of this document. The configuration
-of the DNS servers should be distribution-independent.
+The DNS servers run Ubuntu 22.04 LTS as operating system. This is mostly
+relevant for the installation part of this document. The configuration of the
+DNS servers should be distribution-independent.
 
 The DNS servers use ISC Bind 9 as DNS Server software. So, the DNS
 configuration is specific for Bind 9.
