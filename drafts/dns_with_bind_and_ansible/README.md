@@ -136,41 +136,6 @@ The special address `localhost` is the DNS server itself. The special address
 The IPv4 prefix `10.20.0.0/16` specifies the IPv4 addresses in the respective
 range.
 
-/etc/bind/named.conf.options:
-
-```
-acl goodclients {
-        localhost;
-        localnets;
-        10.20.0.0/16;
-};
-
-options {
-        directory "/var/cache/bind";
-
-        recursion yes;
-        allow-query { goodclients; };
-
-        forwarders {
-                10.1.1.1;
-                10.2.2.2;
-        };
-        forward only;
-        max-ncache-ttl 1;
-
-        dnssec-validation auto;
-
-        auth-nxdomain no;
-        listen-on {
-                127.0.0.1;
-                10.20.1.1;
-        };
-        listen-on-v6 {
-                ::1;
-        };
-};
-```
-
 ### Zones
 
 The DNS servers are responsible for local domain names and answer queries of
@@ -765,3 +730,40 @@ $ ansible-playbook -i site2/hosts bind.yml
 
 Both `ansible-playbook` commands run the playbook `bind.yml` with the
 site-specific hosts files specified with the command line argument `-i`.
+
+## Appendix: DNS Configuration
+
+DNS configuration in file `/etc/bind/named.conf.options`:
+
+```
+acl goodclients {
+        localhost;
+        localnets;
+        10.20.0.0/16;
+};
+
+options {
+        directory "/var/cache/bind";
+
+        recursion yes;
+        allow-query { goodclients; };
+
+        forwarders {
+                10.1.1.1;
+                10.2.2.2;
+        };
+        forward only;
+        max-ncache-ttl 1;
+
+        dnssec-validation auto;
+
+        auth-nxdomain no;
+        listen-on {
+                127.0.0.1;
+                10.20.1.1;
+        };
+        listen-on-v6 {
+                ::1;
+        };
+};
+```
