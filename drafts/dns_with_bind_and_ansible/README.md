@@ -28,29 +28,6 @@ in this document - are supported.
 Note: The DNS configuration only contains A records and only IPv4 addressing is
 used.
 
-### Domain Names
-
-The domain names to be used for the nodes in the example network are shown in
-the following table:
-
-| Entity   | Domain Name             |  Domain Name Alias   |
-|----------|-------------------------|----------------------|
-| Network  | network.lan             |                      |
-| Site 1   | site1.network.lan       | s1.network.lan       |
-| - Node 1 | node1.site1.network.lan | node1.s1.network.lan |
-| - Node 2 | node2.site1.network.lan | node2.s1.network.lan |
-| - Node 3 | node3.site1.network.lan | node3.s1.network.lan |
-| Site 2   | site2.network.lan       | s2.network.lan       |
-| - Node 1 | node1.site2.network.lan | node1.s2.network.lan |
-| - Node 2 | node2.site2.network.lan | node2.s2.network.lan |
-| - Node 3 | node3.site2.network.lan | node3.s2.network.lan |
-
-The network uses the domain `network.lan`. Site 1 uses the subdomain
-`site1.network.lan` and the alias `s1.network.lan`. Site 2 uses
-`site2.network.lan` and `s2.network.lan`. In each site, each node gets its name
-as domain name and alias, e.g., `node1.site1.network.lan` and
-`node1.s1.network.lan`.
-
 ## DNS Configuration
 
 The configuration of the Bind 9 DNS servers is described in the following
