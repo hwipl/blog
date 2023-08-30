@@ -53,11 +53,10 @@ options {
 ```
 
 Each DNS server listens on two IPv4 addresses: the loopback address `127.0.0.1`
-and the IP address of the server node's network interface (`10.20.1.1` in Site
-1 and `10.20.2.1` in Site 2).  Listening on the loopback interface allows local
-processes on the server node itself to query the DNS server. Listening on the
-node's network interface allows other nodes in the network to query the DNS
-server.
+and the IP address of the server node's network interface `10.20.1.1`.
+Listening on the loopback interface allows local processes on the server node
+itself to query the DNS server. Listening on the node's network interface
+allows other nodes in the network to query the DNS server.
 
 Each DNS server only listens on one IPv6 address: the loopback address `::1`.
 Thus, the server only receives IPv6 queries from processes on the server node
@@ -119,33 +118,6 @@ The DNS servers are responsible for local domain names and answer queries of
 these names directly without forwarding them to other servers. These domain
 names are configured in the zone files.
 
-The local domain is `network.lan` with additional subdomains `s1.network.lan`,
-`site1.network.lan`, `s2.network.lan`, and `site2.network.lan`. The subdomain
-`s1.network.lan` is just an alias for `site1.network.lan` and contains the same
-domain names.  Accordingly, `s2.network.lan` is an alias for
-`site2.network.lan`.
-
-The aliasing is realized with domain-specific `$INCLUDE` statements in the zone
-file of the domain `network.lan`. The domain names are included from other
-files. For the subdomains `site1.network.lan` and `s1.network.lan`, the same
-file is included. Accordingly, `site2.network.lan` and `s1.network.lan` point
-to the same file.
-
-The configuration of Site 1 contains five `A` records: the three nodes `node1`
-to `node3` and the two services `service1` and `service2`. The `A` records of
-the nodes resolve to the addresses of the respective nodes in the Site 1
-network. The `A` records of the services both resolve to the address of
-`node1`. The configuration of Site 2 only differs in the addresses of the
-nodes: the addresses of the respective nodes inside the Site 2 network.
-
-In addition to the two site-specific subdomains above, there are domain names
-in the domain `network.lan`: the two services `service1` and `service2`. Like
-the services in the two sites, they resolve to the address of `node1`. But the
-DNS servers in Site 1 and Site 2 use different configurations: in Site 1 the
-domain names resolve to the node in Site 1 and in Site 2 to the node in Site 2.
-This way, clients in one site can use these domain names to access the services
-in their respective site without having to know in which site they are.
-
 /etc/bind/named.conf.local:
 
 ```
@@ -155,6 +127,13 @@ zone "network.lan" {
     file "/etc/bind/db.network.lan";
 };
 ```
+
+
+The local domain is `network.lan` with additional subdomains `s1.network.lan`,
+`site1.network.lan`, `s2.network.lan`, and `site2.network.lan`. The subdomain
+`s1.network.lan` is just an alias for `site1.network.lan` and contains the same
+domain names.  Accordingly, `s2.network.lan` is an alias for
+`site2.network.lan`.
 
 /etc/bind/db.network.lan:
 
@@ -179,6 +158,12 @@ $INCLUDE "/etc/bind/db.network.lan-site2" s2.network.lan.
 $INCLUDE "/etc/bind/db.network.lan-all" network.lan.
 ```
 
+The aliasing is realized with domain-specific `$INCLUDE` statements in the zone
+file of the domain `network.lan`. The domain names are included from other
+files. For the subdomains `site1.network.lan` and `s1.network.lan`, the same
+file is included. Accordingly, `site2.network.lan` and `s1.network.lan` point
+to the same file.
+
 /etc/bind/db.network.lan-site1:
 
 ```
@@ -190,6 +175,12 @@ service1    IN    A    10.20.1.1
 service2    IN    A    10.20.1.1
 ```
 
+The configuration of Site 1 contains five `A` records: the three nodes `node1`
+to `node3` and the two services `service1` and `service2`. The `A` records of
+the nodes resolve to the addresses of the respective nodes in the Site 1
+network. The `A` records of the services both resolve to the address of
+`node1`.
+
 /etc/bind/db.network.lan-site2:
 
 ```
@@ -200,6 +191,9 @@ node3       IN    A    10.20.2.3
 service1    IN    A    10.20.2.1
 service2    IN    A    10.20.2.1
 ```
+
+The configuration of Site 2 only differs in the addresses of the nodes: the
+addresses of the respective nodes inside the Site 2 network.
 
 /etc/bind/db.network.lan-all in Site 1:
 
@@ -214,6 +208,14 @@ service2    IN    A    10.20.1.1
 service1    IN    A    10.20.2.1
 service2    IN    A    10.20.2.1
 ```
+
+In addition to the two site-specific subdomains above, there are domain names
+in the domain `network.lan`: the two services `service1` and `service2`. Like
+the services in the two sites, they resolve to the address of `node1`. But the
+DNS servers in Site 1 and Site 2 use different configurations: in Site 1 the
+domain names resolve to the node in Site 1 and in Site 2 to the node in Site 2.
+This way, clients in one site can use these domain names to access the services
+in their respective site without having to know in which site they are.
 
 ## Ansible
 
