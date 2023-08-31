@@ -37,6 +37,8 @@ and access control list as well as the zone files for the DNS records.
 ### Listen Addresses
 
 The DNS servers listen on IP addresses to receive queries from DNS clients.
+These addresses are configured in the DNS server options in the file
+`/etc/bind/named.conf.options` as shown in the following example:
 
 ```
 // ...
@@ -52,20 +54,20 @@ options {
 };
 ```
 
-Each DNS server listens on two IPv4 addresses: the loopback address `127.0.0.1`
+The DNS server listens on two IPv4 addresses: the loopback address `127.0.0.1`
 and the IP address of the server node's network interface `10.20.1.1`.
 Listening on the loopback interface allows local processes on the server node
 itself to query the DNS server. Listening on the node's network interface
 allows other nodes in the network to query the DNS server.
 
-Each DNS server only listens on one IPv6 address: the loopback address `::1`.
+The DNS server only listens on one IPv6 address: the loopback address `::1`.
 Thus, the server only receives IPv6 queries from processes on the server node
 itself and not from any other nodes in the network.
 
-Note: Alternatively, each DNS server can receive DNS queries on all the
-server's IPv4 addresses with the IPv4 listen address `any`. To allow receiving
-IPv6 queries from other nodes in the network, the server's IPv6 addresses or
-`any` can be added to IPv6 listen addresses.
+Note: Alternatively, a DNS server can receive DNS queries on all the server's
+IPv4 addresses with the IPv4 listen address `any`. To allow receiving IPv6
+queries from other nodes in the network, the server's IPv6 addresses or `any`
+can be added to IPv6 listen addresses.
 
 ### Forwarders
 
