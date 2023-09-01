@@ -34,7 +34,44 @@ The configuration of the Bind 9 DNS servers is described in the following
 subsections. This includes the configuration of listen addresses, forwarders
 and access control list as well as the zone files for the DNS records.
 
-### Listen Addresses
+### Server Options
+
+DNS server options in file `/etc/bind/named.conf.options`:
+
+```
+acl goodclients {
+        localhost;
+        localnets;
+        10.20.0.0/16;
+};
+
+options {
+        directory "/var/cache/bind";
+
+        recursion yes;
+        allow-query { goodclients; };
+
+        forwarders {
+                10.1.1.1;
+                10.2.2.2;
+        };
+        forward only;
+        max-ncache-ttl 1;
+
+        dnssec-validation auto;
+
+        auth-nxdomain no;
+        listen-on {
+                127.0.0.1;
+                10.20.1.1;
+        };
+        listen-on-v6 {
+                ::1;
+        };
+};
+```
+
+#### Listen Addresses
 
 The DNS servers listen on IP addresses to receive queries from DNS clients.
 These addresses are configured in the DNS server options in the file
@@ -69,7 +106,7 @@ IPv4 addresses with the IPv4 listen address `any`. To allow receiving IPv6
 queries from other nodes in the network, the server's IPv6 addresses or `any`
 can be added to IPv6 listen addresses.
 
-### Forwarders
+#### Forwarders
 
 The DNS servers are recursive forwarders. They forward queries, except for
 local domain names (see Zones) or cached records, to the other DNS servers
@@ -88,7 +125,7 @@ options {
 };
 ```
 
-### Access Control
+#### Access Control
 
 The clients that are allowed to query the DNS servers are restricted with
 access control lists.
