@@ -31,12 +31,14 @@ used.
 ## DNS Configuration
 
 The configuration of the Bind 9 DNS servers is described in the following
-subsections. This includes the configuration of listen addresses, forwarders
-and access control list as well as the zone files for the DNS records.
+subsections. First, the server options are shown. This includes the
+configuration of listen addresses, forwarders and access control list. Then,
+the zone files that contain the DNS records are described.
 
 ### Server Options
 
-DNS server options in file `/etc/bind/named.conf.options`:
+The DNS server options are configured as follows in the in file
+`/etc/bind/named.conf.options`:
 
 ```
 acl goodclients {
@@ -74,8 +76,8 @@ options {
 #### Listen Addresses
 
 The DNS servers listen on IP addresses to receive queries from DNS clients.
-These addresses are configured in the DNS server options in the file
-`/etc/bind/named.conf.options` as shown in the following example:
+These addresses are configured with the following settings in the DNS server
+options:
 
 ```
 // ...
