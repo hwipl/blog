@@ -111,8 +111,8 @@ can be added to IPv6 listen addresses.
 #### Forwarders
 
 The DNS servers are recursive forwarders. They forward queries, except for
-local domain names (see Zones) or cached records, to the other DNS servers
-`10.1.1.1` and `10.2.2.2`.
+local domain names (see Zones) or cached records, to other DNS servers. This
+is configured with the following settings in the DNS server options:
 
 ```
 // ...
@@ -127,10 +127,14 @@ options {
 };
 ```
 
+The DNS servers use the two other servers with the IPv4 addresses `10.1.1.1`
+and `10.2.2.2` as forwarders.
+
 #### Access Control
 
 The clients that are allowed to query the DNS servers are restricted with
-access control lists.
+access control lists. This is configured with the following settings in the DNS
+server options:
 
 ```
 acl goodclients {
@@ -157,9 +161,8 @@ range.
 
 The DNS servers are responsible for local domain names and answer queries of
 these names directly without forwarding them to other servers. These domain
-names are configured in the zone files.
-
-/etc/bind/named.conf.local:
+names are configured in the zone files. The zone files are specified in the
+file `/etc/bind/named.conf.local`:
 
 ```
 # network zone
@@ -169,14 +172,9 @@ zone "network.lan" {
 };
 ```
 
-
-The local domain is `network.lan` with additional subdomains `s1.network.lan`,
-`site1.network.lan`, `s2.network.lan`, and `site2.network.lan`. The subdomain
-`s1.network.lan` is just an alias for `site1.network.lan` and contains the same
-domain names.  Accordingly, `s2.network.lan` is an alias for
-`site2.network.lan`.
-
-/etc/bind/db.network.lan:
+The DNS server is responsible for the domain `network.lan` and the actual DNS
+records are configured in the file `/etc/bind/db.network.lan`. This file
+contains the following entries:
 
 ```
 $TTL    604800
@@ -199,13 +197,20 @@ $INCLUDE "/etc/bind/db.network.lan-site2" s2.network.lan.
 $INCLUDE "/etc/bind/db.network.lan-all" network.lan.
 ```
 
+The local domain is `network.lan` with additional subdomains `s1.network.lan`,
+`site1.network.lan`, `s2.network.lan`, and `site2.network.lan`. The subdomain
+`s1.network.lan` is just an alias for `site1.network.lan` and contains the same
+domain names.  Accordingly, `s2.network.lan` is an alias for
+`site2.network.lan`.
+
 The aliasing is realized with domain-specific `$INCLUDE` statements in the zone
 file of the domain `network.lan`. The domain names are included from other
 files. For the subdomains `site1.network.lan` and `s1.network.lan`, the same
 file is included. Accordingly, `site2.network.lan` and `s1.network.lan` point
 to the same file.
 
-/etc/bind/db.network.lan-site1:
+The subdomain `site1.network.lan` is configured in the file
+`/etc/bind/db.network.lan-site1` and contains the following records:
 
 ```
 node1       IN    A    10.20.1.1
@@ -222,7 +227,8 @@ the nodes resolve to the addresses of the respective nodes in the Site 1
 network. The `A` records of the services both resolve to the address of
 `node1`.
 
-/etc/bind/db.network.lan-site2:
+The subdomain `site2.network.lan` is configured in the file
+`/etc/bind/db.network.lan-site2` and contains the following records:
 
 ```
 node1       IN    A    10.20.2.1
