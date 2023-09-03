@@ -37,7 +37,7 @@ the zone files that contain the DNS records are described.
 
 ### Server Options
 
-The DNS server options are configured as follows in the in file
+The DNS server options are configured as follows in the file
 `/etc/bind/named.conf.options`:
 
 ```
