@@ -221,11 +221,10 @@ service1    IN    A    10.20.1.1
 service2    IN    A    10.20.1.1
 ```
 
-The configuration of Site 1 contains five `A` records: the three nodes `node1`
-to `node3` and the two services `service1` and `service2`. The `A` records of
-the nodes resolve to the addresses of the respective nodes in the Site 1
-network. The `A` records of the services both resolve to the address of
-`node1`.
+This configuration contains five `A` records: the three nodes `node1` to
+`node3` and the two services `service1` and `service2`. The `A` records of the
+nodes resolve to the addresses `10.20.1.1`, `10.20.1.2` and `10.20.1.3`. The
+`A` records of the services both resolve to the address of `node1`.
 
 The subdomain `site2.network.lan` is configured in the file
 `/etc/bind/db.network.lan-site2` and contains the following records:
@@ -239,17 +238,19 @@ service1    IN    A    10.20.2.1
 service2    IN    A    10.20.2.1
 ```
 
-The configuration of Site 2 only differs in the addresses of the nodes: the
-addresses of the respective nodes inside the Site 2 network.
+This configuration only differs from the previous in the addresses of the
+nodes: `10.20.2.1`, `10.20.2.2` and `10.20.2.3`. Again, the address of `node1`
+is used for the services.
 
-/etc/bind/db.network.lan-all in Site 1:
+The domain `network.lan` is configured in file `/etc/bind/db.network.lan-all`
+and could contain the following records on one DNS server:
 
 ```
 service1    IN    A    10.20.1.1
 service2    IN    A    10.20.1.1
 ```
 
-/etc/bind/db.network.lan-all in Site 2:
+On another DNS server it could contain the following records:
 
 ```
 service1    IN    A    10.20.2.1
@@ -258,11 +259,11 @@ service2    IN    A    10.20.2.1
 
 In addition to the two site-specific subdomains above, there are domain names
 in the domain `network.lan`: the two services `service1` and `service2`. Like
-the services in the two sites, they resolve to the address of `node1`. But the
-DNS servers in Site 1 and Site 2 use different configurations: in Site 1 the
-domain names resolve to the node in Site 1 and in Site 2 to the node in Site 2.
-This way, clients in one site can use these domain names to access the services
-in their respective site without having to know in which site they are.
+the services in the two subdomains, they resolve to the address of `node1`. But
+the DNS servers use different configurations: on one server, the domain names
+resolve to the node `10.20.1.1` and on the other to `10.20.2.1`. This way,
+nodes can use these domain names to access the services in their respective
+subdomain without having to know in which subdomain they are.
 
 ## Ansible
 
