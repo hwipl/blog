@@ -273,8 +273,6 @@ handlers. Tasks are the individual installation and configuration steps. They
 use the templates to generate configuration files and trigger events that are
 handled by the handlers.
 
-Roles and Playbooks
-
 ### Role
 
 The Ansible role is called `bind` and structured as shown in the listing below:
@@ -402,7 +400,7 @@ version already exists, the task creates a backup of the existing file. If the
 file is changed, the restart event is triggered.
 
 The following three tasks create the local DNS zones configuration and trigger
-the restart event if any files changed.
+the restart event if any files changed:
 
 The fourth task creates or updates the local zone configuration file
 `named.conf.local` from the template `named.conf.local.j2`.
