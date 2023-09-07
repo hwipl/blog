@@ -257,13 +257,12 @@ service1    IN    A    10.20.2.1
 service2    IN    A    10.20.2.1
 ```
 
-In addition to the two site-specific subdomains above, there are domain names
-in the domain `network.lan`: the two services `service1` and `service2`. Like
-the services in the two subdomains, they resolve to the address of `node1`. But
-the DNS servers use different configurations: on one server, the domain names
-resolve to the node `10.20.1.1` and on the other to `10.20.2.1`. This way,
-nodes can use these domain names to access the services in their respective
-subdomain without having to know in which subdomain they are.
+Like in the two subdomains above, the two services `service1` and `service2`
+both resolve to the address of `node1`. But the DNS servers use different
+configurations: on one server, the domain names resolve to the node `10.20.1.1`
+and on the other to `10.20.2.1`. This way, nodes can use these domain names to
+access the services in their respective subdomain without having to know in
+which subdomain they are.
 
 ## Ansible
 
