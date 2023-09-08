@@ -28,6 +28,16 @@ in this document - are supported.
 Note: The DNS configuration only contains A records and only IPv4 addressing is
 used.
 
+TODO: nodes belong to subdomains (maybe based on their location in the network)
+and use individual nameservers?
+
+TODO: asymetric/individual configuration per dns server?
+
+TODO: configuration examples assume a network consisting of two
+sites/subdomains, each with a DNS server, each with a subdomain, services in
+each, and "common" DNS names in network.lan that lead to the closest service
+instance in the network depending on node's location within the network?
+
 ## DNS Configuration
 
 The configuration of the Bind 9 DNS servers is described in the following
