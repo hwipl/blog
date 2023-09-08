@@ -253,14 +253,15 @@ nodes: `10.20.2.1`, `10.20.2.2` and `10.20.2.3`. Again, the address of `node1`
 is used for the services.
 
 The domain `network.lan` is configured in file `/etc/bind/db.network.lan-all`
-and could contain the following records on one DNS server:
+and the records it contains depend on the DNS server. On one server it contains
+the following records:
 
 ```
 service1    IN    A    10.20.1.1
 service2    IN    A    10.20.1.1
 ```
 
-On another DNS server it could contain the following records:
+On another DNS server it contains these records:
 
 ```
 service1    IN    A    10.20.2.1
