@@ -764,3 +764,80 @@ $ ansible-playbook -i site2/hosts bind.yml
 
 Both `ansible-playbook` commands run the playbook `bind.yml` with the
 site-specific hosts files specified with the command line argument `-i`.
+
+## Conclusion
+
+TODO: Add a conclusion?
+
+# Dump
+
+TODO: use or remove
+
+```
+            ________
+           /        \
+          /   Other  \
+          \          /
+           \________/
+               |
+  ________     |     ________
+ /        \    |    /        \
+/  Site 1  \___|___/  Site 2  \
+\          /       \          /
+ \________/         \________/
+```
+
+| Entity   | IP           | DNS Name                |
+|----------|--------------|-------------------------|
+| Network  | 10.20.0.0/16 | network.lan             |
+| Site 1   | 10.20.1.0/24 | site1.network.lan       |
+| - Node 1 | 10.20.1.1    | node1.site1.network.lan |
+| - Node 2 | 10.20.1.2    | node2.site1.network.lan |
+| - Node 3 | 10.20.1.3    | node3.site1.network.lan |
+| Site 2   | 10.20.2.0/24 | site2.network.lan       |
+| - Node 1 | 10.20.2.1    | node1.site2.network.lan |
+| - Node 2 | 10.20.2.2    | node2.site2.network.lan |
+| - Node 3 | 10.20.2.3    | node3.site2.network.lan |
+
+| Entity   | IP           | DNS Name                | DNS Name Alias       |
+|----------|--------------|-------------------------|----------------------|
+| Network  | 10.20.0.0/16 | network.lan             |                      |
+| Site 1   | 10.20.1.0/24 | site1.network.lan       | s1.network.lan       |
+| - Node 1 | 10.20.1.1    | node1.site1.network.lan | node1.s1.network.lan |
+| - Node 2 | 10.20.1.2    | node2.site1.network.lan | node2.s1.network.lan |
+| - Node 3 | 10.20.1.3    | node3.site1.network.lan | node3.s1.network.lan |
+| Site 2   | 10.20.2.0/24 | site2.network.lan       | s2.network.lan       |
+| - Node 1 | 10.20.2.1    | node1.site2.network.lan | node1.s2.network.lan |
+| - Node 2 | 10.20.2.2    | node2.site2.network.lan | node2.s2.network.lan |
+| - Node 3 | 10.20.2.3    | node3.site2.network.lan | node3.s2.network.lan |
+
+| Node   | Site 1    | Site 2    |
+|--------|-----------|-----------|
+| Node 1 | 10.20.1.1 | 10.20.2.1 |
+| Node 2 | 10.20.1.2 | 10.20.2.2 |
+| Node 3 | 10.20.1.3 | 10.20.2.3 |
+
+### Domain Names
+
+The domain names to be used for the nodes in the example network are shown in
+the following table:
+
+| Entity   | Domain Name             |  Domain Name Alias   |
+|----------|-------------------------|----------------------|
+| Network  | network.lan             |                      |
+| Site 1   | site1.network.lan       | s1.network.lan       |
+| - Node 1 | node1.site1.network.lan | node1.s1.network.lan |
+| - Node 2 | node2.site1.network.lan | node2.s1.network.lan |
+| - Node 3 | node3.site1.network.lan | node3.s1.network.lan |
+| Site 2   | site2.network.lan       | s2.network.lan       |
+| - Node 1 | node1.site2.network.lan | node1.s2.network.lan |
+| - Node 2 | node2.site2.network.lan | node2.s2.network.lan |
+| - Node 3 | node3.site2.network.lan | node3.s2.network.lan |
+
+The network uses the domain `network.lan`. Site 1 uses the subdomain
+`site1.network.lan` and the alias `s1.network.lan`. Site 2 uses
+`site2.network.lan` and `s2.network.lan`. In each site, each node gets its name
+as domain name and alias, e.g., `node1.site1.network.lan` and
+`node1.s1.network.lan`.
+
+TODO: service names?
