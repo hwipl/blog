@@ -38,6 +38,33 @@ sites/subdomains, each with a DNS server, each with a subdomain, services in
 each, and "common" DNS names in network.lan that lead to the closest service
 instance in the network depending on node's location within the network?
 
+```
+                       +---------------------+
+                       |  Other DNS Servers  |
+                       +---------------------+
+                       | 10.1.1.1 | 10.2.2.2 |
+                       +---------------------+
+                  __________|___________|___________
+                 |                                  |
+.................|..................................|................
+: Site 1         |                :                 |        Site 2 :
+: 10.20.1.0/24   |                :                 |  10.20.2.0/24 :
+:                |                :                 |               :
+:         +------------+          :          +------------+         :
+:         | Node 1     |          :          | Node 1     |         :
+:         | DNS Server |          :          | DNS Server |         :
+:         | 10.20.1.1  |          :          | 10.20.2.1  |         :
+:         +------------+          :          +------------+         :
+:         _______|_______         :         _______|_______         :
+:        |               |        :        |               |        :
+:  +------------+ +------------+  :  +------------+ +------------+  :
+:  | Node 2     | | Node 3     |  :  | Node 1     | | Node 2     |  :
+:  | DNS Client | | DNS Client |  :  | DNS Client | | DNS Client |  :
+:  | 10.20.1.2  | | 10.20.1.3  |  :  | 10.20.2.2  | | 10.20.2.3  |  :
+:  +------------+ +------------+  :  +------------+ +------------+  :
+:.................................:.................................:
+```
+
 ## DNS Configuration
 
 The configuration of the Bind 9 DNS servers is described in the following
