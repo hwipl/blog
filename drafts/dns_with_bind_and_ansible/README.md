@@ -53,6 +53,8 @@ instance in the network depending on node's location within the network?
 :         +------------+          :          +------------+         :
 :         | Node 1     |          :          | Node 1     |         :
 :         | DNS Server |          :          | DNS Server |         :
+:         | Service 1  |          :          | Service 1  |         :
+:         | Service 2  |          :          | Service 2  |         :
 :         | 10.20.1.1  |          :          | 10.20.2.1  |         :
 :         +------------+          :          +------------+         :
 :         _______|_______         :         _______|_______         :
@@ -65,6 +67,35 @@ instance in the network depending on node's location within the network?
 :.................................:.................................:
                         Network: 10.20.0.0/16
 ```
+
+The domain names to be used for the nodes in the example network are shown in
+the following table:
+
+| Entity      | Domain Name                |  Domain Name Alias      |
+|-------------|----------------------------|-------------------------|
+| Network     | network.lan                |                         |
+| - Service 1 | service1.network.lan       |                         |
+| - Service 2 | service2.network.lan       |                         |
+| Site 1      | site1.network.lan          | s1.network.lan          |
+| - Node 1    | node1.site1.network.lan    | node1.s1.network.lan    |
+| - Node 2    | node2.site1.network.lan    | node2.s1.network.lan    |
+| - Node 3    | node3.site1.network.lan    | node3.s1.network.lan    |
+| - Service 1 | service1.site1.network.lan | service1.s1.network.lan |
+| - Service 2 | service2.site1.network.lan | service2.s1.network.lan |
+| Site 2      | site2.network.lan          | s2.network.lan          |
+| - Node 1    | node1.site2.network.lan    | node1.s2.network.lan    |
+| - Node 2    | node2.site2.network.lan    | node2.s2.network.lan    |
+| - Node 3    | node3.site2.network.lan    | node3.s2.network.lan    |
+| - Service 1 | service1.site2.network.lan | service1.s2.network.lan |
+| - Service 2 | service2.site2.network.lan | service2.s2.network.lan |
+
+The network uses the domain `network.lan`. Site 1 uses the subdomain
+`site1.network.lan` and the alias `s1.network.lan`. Site 2 uses
+`site2.network.lan` and `s2.network.lan`. In each site, each node gets its name
+as domain name and alias, e.g., `node1.site1.network.lan` and
+`node1.s1.network.lan`.
+
+TODO: service names?
 
 ## DNS Configuration
 
@@ -845,28 +876,3 @@ TODO: use or remove
 | Node 1 | 10.20.1.1 | 10.20.2.1 |
 | Node 2 | 10.20.1.2 | 10.20.2.2 |
 | Node 3 | 10.20.1.3 | 10.20.2.3 |
-
-### Domain Names
-
-The domain names to be used for the nodes in the example network are shown in
-the following table:
-
-| Entity   | Domain Name             |  Domain Name Alias   |
-|----------|-------------------------|----------------------|
-| Network  | network.lan             |                      |
-| Site 1   | site1.network.lan       | s1.network.lan       |
-| - Node 1 | node1.site1.network.lan | node1.s1.network.lan |
-| - Node 2 | node2.site1.network.lan | node2.s1.network.lan |
-| - Node 3 | node3.site1.network.lan | node3.s1.network.lan |
-| Site 2   | site2.network.lan       | s2.network.lan       |
-| - Node 1 | node1.site2.network.lan | node1.s2.network.lan |
-| - Node 2 | node2.site2.network.lan | node2.s2.network.lan |
-| - Node 3 | node3.site2.network.lan | node3.s2.network.lan |
-
-The network uses the domain `network.lan`. Site 1 uses the subdomain
-`site1.network.lan` and the alias `s1.network.lan`. Site 2 uses
-`site2.network.lan` and `s2.network.lan`. In each site, each node gets its name
-as domain name and alias, e.g., `node1.site1.network.lan` and
-`node1.s1.network.lan`.
-
-TODO: service names?
