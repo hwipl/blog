@@ -68,8 +68,8 @@ instance in the network depending on node's location within the network?
                         Network: 10.20.0.0/16
 ```
 
-The domain names to be used for the nodes in the example network are shown in
-the following table:
+The domain names to be used in the example network are shown in the following
+table:
 
 | Entity      | Domain Name                |  Domain Name Alias      |
 |-------------|----------------------------|-------------------------|
@@ -93,9 +93,9 @@ The network uses the domain `network.lan`. Site 1 uses the subdomain
 `site1.network.lan` and the alias `s1.network.lan`. Site 2 uses
 `site2.network.lan` and `s2.network.lan`. In each site, each node gets its name
 as domain name and alias, e.g., `node1.site1.network.lan` and
-`node1.s1.network.lan`.
-
-TODO: service names?
+`node1.s1.network.lan`. Each service in a site gets its name, e.g.,
+`service2.site2.network.lan` and `service2.s2.network.lan`. Additionally, the
+services get the names `service1.network.lan` and `service2.network.lan`.
 
 ## DNS Configuration
 
