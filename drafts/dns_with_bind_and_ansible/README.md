@@ -38,6 +38,9 @@ sites/subdomains, each with a DNS server, each with a subdomain, services in
 each, and "common" DNS names in network.lan that lead to the closest service
 instance in the network depending on node's location within the network?
 
+The configuration examples in this document assume the network in the following
+figure:
+
 ```
                        +---------------------+
                        |  Other DNS Servers  |
@@ -68,6 +71,16 @@ instance in the network depending on node's location within the network?
                         Network: 10.20.0.0/16
 ```
 
+The example network consists of the two sites `Site 1` and `Site 2`. Each site
+contains three nodes. Node 1 runs the DNS server and two additional services
+`Service 1` and `Service 2`. `Node 2` and `Node 3` are DNS clients. The DNS
+clients in a site use the DNS server in the same site as their primary DNS
+server. But in case of a server failure, they could also use the DNS server in
+the other site as fallback. So, both DNS servers must be able to resolve all
+local domain names. The DNS server in each site are only responsible for local
+domain names. They forward all other DNS requests to the other DNS servers
+`10.1.1.1` and `10.2.2.2`.
+
 The domain names to be used in the example network are shown in the following
 table:
 
@@ -95,7 +108,9 @@ The network uses the domain `network.lan`. Site 1 uses the subdomain
 as domain name and alias, e.g., `node1.site1.network.lan` and
 `node1.s1.network.lan`. Each service in a site gets its name, e.g.,
 `service2.site2.network.lan` and `service2.s2.network.lan`. Additionally, the
-services get the names `service1.network.lan` and `service2.network.lan`.
+services get the names `service1.network.lan` and `service2.network.lan`. The
+DNS server in Site 1 resolves these names to Node 1 in Site 1, the DNS server
+in Site 2 resolves them to Node 1 in Site 2.
 
 ## DNS Configuration
 
