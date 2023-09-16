@@ -10,35 +10,13 @@ contain the same domain names.
 
 ## Overview
 
-The DNS servers are responsible for internal domain names and forward
-other requests to other (external) DNS servers.
+The DNS servers in this document are responsible for local domain names and
+forward other requests to other DNS servers. They run ISC Bind 9 on Ubuntu
+22.04 LTS. Bind 9 is installed and configured automatically with Ansible. This
+includes the configuration of the server options as well as the zone files.
+The DNS configuration only contains A records and only IPv4 addressing is used.
 
-The DNS servers run Ubuntu 22.04 LTS as operating system. This is mostly
-relevant for the installation part of this document. The configuration of the
-DNS servers should be distribution-independent.
-
-The DNS servers use ISC Bind 9 as DNS Server software. So, the DNS
-configuration is specific for Bind 9.
-
-The DNS servers are installed and configured automatically with Ansible. This
-includes the basic server configuration as well as the zone files.
-Additionally, multiple subdomains containing the same records - called aliases
-in this document - are supported.
-
-Note: The DNS configuration only contains A records and only IPv4 addressing is
-used.
-
-TODO: nodes belong to subdomains (maybe based on their location in the network)
-and use individual nameservers?
-
-TODO: asymetric/individual configuration per dns server?
-
-TODO: configuration examples assume a network consisting of two
-sites/subdomains, each with a DNS server, each with a subdomain, services in
-each, and "common" DNS names in network.lan that lead to the closest service
-instance in the network depending on node's location within the network?
-
-The configuration examples in this document assume the network in the following
+The DNS configuration in this document assumes the network in the following
 figure:
 
 ```
@@ -81,8 +59,12 @@ local domain names. The DNS server in each site are only responsible for local
 domain names. They forward all other DNS requests to the other DNS servers
 `10.1.1.1` and `10.2.2.2`.
 
-The domain names to be used in the example network are shown in the following
-table:
+The network uses IPs in the range `10.20.0.0/16`: Site 1 gets `10.20.1.0/24`
+and Site 2 gets `10.20.2.0/24`. Nodes 1, 2 and 3 in Site 1 get the IPs
+`10.20.1.1`, `10.20.1.2` and `10.20.1.3`. In Site 2 they get `10.20.2.1`,
+`10.20.2.2` and `10.20.2.3`.
+
+The domain names in the example network are shown in the following table:
 
 | Entity      | Domain Name                |  Domain Name Alias      |
 |-------------|----------------------------|-------------------------|
