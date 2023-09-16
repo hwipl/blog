@@ -64,7 +64,7 @@ and Site 2 gets `10.20.2.0/24`. Nodes 1, 2 and 3 in Site 1 get the IPs
 `10.20.1.1`, `10.20.1.2` and `10.20.1.3`. In Site 2 they get `10.20.2.1`,
 `10.20.2.2` and `10.20.2.3`.
 
-The domain names in the example network are shown in the following table:
+The local domain names in the example network are shown in the following table:
 
 | Entity      | Domain Name                |  Domain Name Alias      |
 |-------------|----------------------------|-------------------------|
