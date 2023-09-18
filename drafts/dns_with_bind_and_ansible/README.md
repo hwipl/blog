@@ -159,14 +159,15 @@ options {
 };
 ```
 
-The DNS server listens on two IPv4 addresses: the loopback address `127.0.0.1`
-and the IP address of the server node's network interface `10.20.1.1`.
-Listening on the loopback interface allows local processes on the server node
-itself to query the DNS server. Listening on the node's network interface
-allows other nodes in the network to query the DNS server.
+The DNS servers listen on two IPv4 addresses: the loopback address `127.0.0.1`
+and the IP address of the server node's network interface. On the DNS server in
+Site 1 this is the Address `10.20.1.1`. In Site 2 it is `10.20.2.1`. Listening
+on the loopback interface allows local processes on a server node itself to
+query the DNS server. Listening on a node's network interface allows other
+nodes in the network to query the DNS server.
 
-The DNS server only listens on one IPv6 address: the loopback address `::1`.
-Thus, the server only receives IPv6 queries from processes on the server node
+The DNS servers only listen on one IPv6 address: the loopback address `::1`.
+Thus, each server only receives IPv6 queries from processes on the server node
 itself and not from any other nodes in the network.
 
 Note: Alternatively, a DNS server can receive DNS queries on all the server's
@@ -309,15 +310,15 @@ nodes: `10.20.2.1`, `10.20.2.2` and `10.20.2.3`. Again, the address of `node1`
 is used for the services.
 
 The domain `network.lan` is configured in file `/etc/bind/db.network.lan-all`
-and the records it contains depend on the DNS server. On one server it contains
-the following records:
+and the records it contains depend on the DNS server. On the DNS server in Site
+1 it contains the following records:
 
 ```
 service1    IN    A    10.20.1.1
 service2    IN    A    10.20.1.1
 ```
 
-On another DNS server it contains these records:
+On the DNS server in Site 2 it contains these records:
 
 ```
 service1    IN    A    10.20.2.1
@@ -326,10 +327,10 @@ service2    IN    A    10.20.2.1
 
 Like in the two subdomains above, the two services `service1` and `service2`
 both resolve to the address of `node1`. But the DNS servers use different
-configurations: on one server, the domain names resolve to the node `10.20.1.1`
-and on the other to `10.20.2.1`. This way, nodes can use these domain names to
-access the services in their respective subdomain without having to know in
-which subdomain they are.
+configurations: on the server in Site 1, the domain names resolve to Node 1 in
+Site 1 (IP `10.20.1.1`) and on the server in Site 2 to Node 1 in Site 2 (IP
+`10.20.2.1`). This way, nodes can use these domain names to access the services
+in their respective site without having to know in which site they are.
 
 ## Ansible
 
