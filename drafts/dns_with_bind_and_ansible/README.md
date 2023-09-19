@@ -131,7 +131,8 @@ options {
         auth-nxdomain no;
         listen-on {
                 127.0.0.1;
-                10.20.1.1;
+                10.20.1.1; // Node 1 in Site 1
+                // 10.20.2.1; // Node 1 in Site 2
         };
         listen-on-v6 {
                 ::1;
@@ -151,7 +152,8 @@ options {
         // ...
         listen-on {
                 127.0.0.1;
-                10.20.1.1;
+                10.20.1.1; // Node 1 in Site 1
+                // 10.20.2.1; // Node 1 in Site 2
         };
         listen-on-v6 {
                 ::1;
