@@ -457,31 +457,28 @@ All tasks need root privileges to manipulate the system configuration. So,
 `/etc/bind`. File owner is set to `root`, group is set to `bind` and privileges
 are set to `644`.
 
-The first task updates the `apt` cache if it is older than one hour to make
-sure the following installation task can run with up-to-date package sources.
-
-The second task installs the bind9 DNS server with `apt` if it is not already
-installed.
-
-The third task creates or updates the DNS server options file
-`named.conf.options` from the template `named.conf.options.j2`. If a different
-version already exists, the task creates a backup of the existing file. If the
-file is changed, the restart event is triggered.
+1. The first task updates the `apt` cache if it is older than one hour to make
+   sure the following installation task can run with up-to-date package
+   sources.
+2. The second task installs the bind9 DNS server with `apt` if it is not
+   already installed.
+3. The third task creates or updates the DNS server options file
+   `named.conf.options` from the template `named.conf.options.j2`. If a
+   different version already exists, the task creates a backup of the existing
+   file. If the file is changed, the restart event is triggered.
 
 The following three tasks create the local DNS zones configuration and trigger
 the restart event if any files changed:
 
-The fourth task creates or updates the local zone configuration file
-`named.conf.local` from the template `named.conf.local.j2`.
-
-The fifth task creates or updates the base zone files that include the actual
-domain name files.  For each zone, a base file is created using the template
-`db-includes.j2`. The file name consists of the prefix `db.` and the name of
-the zone as defined in the configuration.
-
-The sixth task creates or updates the files that contain the actual domain
-names. For each such file in the configuration, a file is created using the
-template `db-actual.j2`. The file name is also defined in the configuration.
+4. The fourth task creates or updates the local zone configuration file
+   `named.conf.local` from the template `named.conf.local.j2`.
+5. The fifth task creates or updates the base zone files that include the
+   actual domain name files.  For each zone, a base file is created using the
+   template `db-includes.j2`. The file name consists of the prefix `db.` and
+   the name of the zone as defined in the configuration.
+6. The sixth task creates or updates the files that contain the actual domain
+   names. For each such file in the configuration, a file is created using the
+   template `db-actual.j2`. The file name is also defined in the configuration.
 
 #### Templates
 
