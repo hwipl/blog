@@ -526,16 +526,15 @@ The template reflects the DNS server options shown in the DNS configuration
 section above with parts dynamically generated based on the Ansible
 configuration:
 
-For each client configured in the list of `good clients`, the template creates
-an entry in the access control list (ACL) `good clients`. This ACL is used in
-`allow-query` in the `options` to allow these clients to query the DNS server.
-
-For each DNS server configured in the list of forwarders, the template creates
-an entry in the `forwarders`.
-
-For each IPv4 address configured in the list `bind listen on`, a listen address
-is created in `listen-on`. For each IPv6 address configured in the list `bind
-listen on v6`, a listen address is created in `listen-on-v6`.
+- For each client configured in the list of `good clients`, the template
+  creates an entry in the access control list (ACL) `good clients`. This ACL is
+  used in `allow-query` in the `options` to allow these clients to query the
+  DNS server.
+- For each DNS server configured in the list of forwarders, the template
+  creates an entry in the `forwarders`.
+- For each IPv4 address configured in the list `bind listen on`, a listen
+  address is created in `listen-on`. For each IPv6 address configured in the
+  list `bind listen on v6`, a listen address is created in `listen-on-v6`.
 
 The template for the file `named.conf.local` is defined as follows in the file
 `roles/bind/templates/named.conf.local.j2`:
