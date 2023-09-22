@@ -107,6 +107,7 @@ The DNS server options are configured as follows in the file
 `/etc/bind/named.conf.options`:
 
 ```
+// access control list "good clients"
 acl goodclients {
         localhost;
         localnets;
@@ -115,20 +116,12 @@ acl goodclients {
 
 options {
         directory "/var/cache/bind";
-
         recursion yes;
-        allow-query { goodclients; };
-
-        forwarders {
-                10.1.1.1;
-                10.2.2.2;
-        };
-        forward only;
         max-ncache-ttl 1;
-
         dnssec-validation auto;
-
         auth-nxdomain no;
+
+        // listen addresses
         listen-on {
                 127.0.0.1;
                 10.20.1.1; // Node 1 in Site 1
@@ -137,6 +130,16 @@ options {
         listen-on-v6 {
                 ::1;
         };
+
+        // forwarders
+        forwarders {
+                10.1.1.1;
+                10.2.2.2;
+        };
+        forward only;
+
+        // access control with acl "good clients"
+        allow-query { goodclients; };
 };
 ```
 
