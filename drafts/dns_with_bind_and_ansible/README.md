@@ -158,6 +158,7 @@ options {
         listen-on-v6 {
                 ::1;
         };
+        // ...
 };
 ```
 
@@ -215,7 +216,6 @@ acl goodclients {
 options {
         // ...
         allow-query { goodclients; };
-        // ...
 };
 ```
 
