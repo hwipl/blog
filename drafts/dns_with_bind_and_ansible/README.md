@@ -115,11 +115,8 @@ acl goodclients {
 };
 
 options {
+        // set working directory of bind
         directory "/var/cache/bind";
-        recursion yes;
-        max-ncache-ttl 1;
-        dnssec-validation auto;
-        auth-nxdomain no;
 
         // listen addresses
         listen-on {
