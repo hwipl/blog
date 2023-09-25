@@ -486,39 +486,39 @@ The template for the file `named.conf.options` is defined as follows in the
 file `roles/bind/templates/named.conf.options.j2`:
 
 ```jinja
+// access control list "good clients"
 acl goodclients {
 {% for client in goodclients %}
-	{{ client }};
+    {{ client }};
 {% endfor %}
 };
 
 options {
-	directory "/var/cache/bind";
+    // set working directory of bind
+    directory "/var/cache/bind";
 
-	recursion yes;
-	allow-query { goodclients; };
-
-	forwarders {
-{% for forwarder in forwarders %}
-		{{ forwarder }};
-{% endfor %}
-	};
-	forward only;
-	max-ncache-ttl 1;
-
-	dnssec-validation auto;
-
-	auth-nxdomain no;
-	listen-on {
+    // listen addresses
+    listen-on {
 {% for listen in bind_listen_on %}
-		{{ listen }};
+        {{ listen }};
 {% endfor %}
-	};
-	listen-on-v6 {
+    };
+    listen-on-v6 {
 {% for listen in bind_listen_on_v6 %}
-		{{ listen }};
+        {{ listen }};
 {% endfor %}
-	};
+    };
+
+    // forwarders
+    forwarders {
+{% for forwarder in forwarders %}
+        {{ forwarder }};
+{% endfor %}
+    };
+    forward only;
+
+    // access control with acl "good clients"
+    allow-query { goodclients; };
 };
 ```
 
