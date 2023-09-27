@@ -526,15 +526,16 @@ The template reflects the DNS server options shown in the DNS configuration
 section above with parts dynamically generated based on the Ansible
 configuration:
 
-- For each client configured in the list `goodclients`, the template creates an
-  entry in the access control list (ACL) `goodclients`. This ACL is used in
-  `allow-query` in the `options` to allow these clients to query the DNS
-  server.
-- For each IPv4 address configured in the list `bind_listen_on`, a listen
-  address is created in `listen-on`. For each IPv6 address configured in the
-  list `bind_listen_on_v6`, a listen address is created in `listen-on-v6`.
-- For each DNS server configured in the list `forwarders`, the template creates
-  an entry in the `forwarders`.
+- For each client configured in the Ansible list `goodclients`, the template
+  creates an entry in the access control list (ACL) block `goodclients`. This
+  ACL is used in the `allow-query` statement in the `options` block to allow
+  these clients to query the DNS server.
+- For each IPv4 address configured in the Ansible list `bind_listen_on`, a
+  listen address is created in the `listen-on` statement. For each IPv6 address
+  configured in the Ansible list `bind_listen_on_v6`, a listen address is
+  created in the `listen-on-v6` statement.
+- For each DNS server configured in the Ansible list `forwarders`, the
+  template creates an entry in the `forwarders` statement.
 
 The template for the file `named.conf.local` is defined as follows in the file
 `roles/bind/templates/named.conf.local.j2`:
@@ -553,11 +554,11 @@ The template reflects the DNS zone configuration shown in the DNS configuration
 section above with parts dynamically generated based on the Ansible
 configuration:
 
-For each zone configured in the list `zones`, a zone entry is generated in the
-file. The entry is started with a comment that is filled with the zone
-`description`.  The name is taken from the zone `name`. The name is also used
-as a suffix of the name of the referenced `file` where the content of the zone
-is configured.
+For each zone configured in the Ansible list `zones`, a `zone` block is
+generated in the file. The entry is started with a comment that is filled with
+the zone `description`.  The name is taken from the zone `name`. The name is
+also used as a suffix of the name of the referenced `file` where the content of
+the zone is configured.
 
 The template for the files referenced in `named.conf.local` is defined as
 follows in the file `roles/bind/templates/db-includes.j2`:
