@@ -140,11 +140,19 @@ options {
 };
 ```
 
+The
+[directory](https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-directory)
+statement configures the working directory of bind. The other settings are
+configured as follows.
+
 #### Listen Addresses
 
 The DNS servers listen on IP addresses to receive queries from DNS clients.
-These addresses are configured with the following settings in the DNS server
-options:
+These addresses are configured with the following
+[listen-on](https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-listen-on)
+and
+[listen-on-v6](https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-listen-on-v6)
+statements in the DNS server options:
 
 ```
 // ...
@@ -181,8 +189,12 @@ can be added to IPv6 listen addresses.
 #### Forwarders
 
 The DNS servers are recursive forwarders. They forward queries, except for
-local domain names (see Zones) or cached records, to other DNS servers. This
-is configured with the following settings in the DNS server options:
+local domain names (see Zones) or cached records, to other DNS servers. This is
+configured with the following
+[forwarders](https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-forwarders)
+and
+[forward](https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-forward)
+statements in the DNS server options:
 
 ```
 // ...
@@ -198,13 +210,17 @@ options {
 ```
 
 The DNS servers use the two other servers with the IPv4 addresses `10.1.1.1`
-and `10.2.2.2` as forwarders.
+and `10.2.2.2` as forwarders. They are configured to only forward queries and
+to not resolve them themselves if the forwarders do not return an answer.
 
 #### Access Control
 
 The clients that are allowed to query the DNS servers are restricted with
-access control lists. This is configured with the following settings in the DNS
-server options:
+access control lists. This is configured with the following
+[acl](https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-acl)
+block and
+[allow-query](https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-allow-query)
+statement in the DNS server options:
 
 ```
 acl goodclients {
@@ -219,12 +235,12 @@ options {
 };
 ```
 
-Each DNS server accepts queries only from the configured `good clients`
-addresses `localhost`, `localnets`, `10.20.0.0/16` and ignores other queries.
-The special address `localhost` is the DNS server itself. The special address
-`localnets` are the IP addresses of the networks the server is connected to.
-The IPv4 prefix `10.20.0.0/16` specifies the IPv4 addresses in the respective
-range.
+Each DNS server accepts queries only from the addresses configured in the `acl`
+block `goodclients`: `localhost`, `localnets`, `10.20.0.0/16`. Other queries
+are ignored. The special address `localhost` is the DNS server itself. The
+special address `localnets` are the IP addresses of the networks the server is
+connected to. The IPv4 prefix `10.20.0.0/16` specifies the IPv4 addresses in
+the respective range.
 
 ### Zones
 
