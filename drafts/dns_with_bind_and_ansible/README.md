@@ -358,6 +358,10 @@ handlers. Tasks are the individual installation and configuration steps. They
 use the templates to generate configuration files and trigger events that are
 handled by the handlers.
 
+TODO: add playbook and configuration?
+
+TODO: add link to ansible role repository somewhere?
+
 ### Role
 
 The Ansible role is called `bind` and structured as shown in the listing below:
@@ -572,7 +576,7 @@ configuration:
 
 For each zone configured in the Ansible list `zones`, a `zone` block is
 generated in the file. The entry is started with a comment that is filled with
-the zone `description`.  The name is taken from the zone `name`. The name is
+the zone `description`. The name is taken from the zone `name`. The name is
 also used as a suffix of the name of the referenced `file` where the content of
 the zone is configured.
 
@@ -622,7 +626,7 @@ follows in the file `roles/bind/templates/db-actual.j2`:
 The template creates an `A` record entry for each `A` record in the list of `A`
 records. Each entry maps the `name` of the record to the address `ip`.
 
-### Configuration and Playbook
+### Playbook
 
 The playbook is defined as follows in the file `bind.yml`:
 
@@ -638,6 +642,12 @@ The playbook is defined as follows in the file `bind.yml`:
 The playbook assigns the role `bind` that is described above to all hosts in
 the group `dns_servers`. On execution, this playbook runs all the tasks of the
 role on all the hosts in the group to install and configure the DNS servers.
+
+### Configuration
+
+TODO: mention possibility of different configs for sites?
+
+#### Hosts
 
 The Ansible hosts are defined as follows in the files `site1/hosts` and
 `site2/hosts`:
@@ -681,6 +691,8 @@ Both configuration files set the IPv4 and IPv6 listen addresses as described in
 the DNS configuration section above. The only difference between both files is
 the address of the network interface: `10.20.1.1` in Site 1 and `10.20.2.1` in
 Site 2.
+
+#### Groups
 
 The site-specific DNS configuration of Site 1 is defined as follows in the file
 `site1/group_vars/dns_servers`:
