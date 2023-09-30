@@ -140,19 +140,14 @@ options {
 };
 ```
 
-The
-[directory](https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-directory)
-statement configures the working directory of bind. The other settings are
-configured as follows.
+The [directory][directory] statement configures the working directory of bind.
+The other settings are configured as follows.
 
 #### Listen Addresses
 
 The DNS servers listen on IP addresses to receive queries from DNS clients.
-These addresses are configured with the following
-[listen-on](https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-listen-on)
-and
-[listen-on-v6](https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-listen-on-v6)
-statements in the DNS server options:
+These addresses are configured with the following [listen-on][listen-on] and
+[listen-on-v6][listen-on-v6] statements in the DNS server options:
 
 ```
 // ...
@@ -190,10 +185,7 @@ can be added to IPv6 listen addresses.
 
 The DNS servers are recursive forwarders. They forward queries, except for
 local domain names (see Zones) or cached records, to other DNS servers. This is
-configured with the following
-[forwarders](https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-forwarders)
-and
-[forward](https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-forward)
+configured with the following [forwarders][forwarders] and [forward][forward]
 statements in the DNS server options:
 
 ```
@@ -216,11 +208,8 @@ to not resolve them themselves if the forwarders do not return an answer.
 #### Access Control
 
 The clients that are allowed to query the DNS servers are restricted with
-access control lists. This is configured with the following
-[acl](https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-acl)
-block and
-[allow-query](https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-allow-query)
-statement in the DNS server options:
+access control lists. This is configured with the following [acl][acl] block
+and [allow-query][allow-query] statement in the DNS server options:
 
 ```
 acl goodclients {
@@ -853,3 +842,11 @@ site-specific hosts files specified with the command line argument `-i`.
 ## Conclusion
 
 TODO: Add a conclusion?
+
+[directory]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-directory
+[listen-on]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-listen-on
+[listen-on-v6]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-listen-on-v6
+[forwarders]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-forwarders
+[forward]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-forward
+[acl]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-acl
+[allow-query]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-allow-query
