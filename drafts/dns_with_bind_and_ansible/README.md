@@ -235,8 +235,9 @@ the respective range.
 
 The DNS servers are responsible for local domain names and answer queries of
 these names directly without forwarding them to other servers. These domain
-names are configured in the zone files. The zone files are specified in the
-file `/etc/bind/named.conf.local`:
+names are configured in the zone files. The zone files are specified with
+[file][file] statements in [zone][zone] blocks in the file
+`/etc/bind/named.conf.local`:
 
 ```
 # network zone
@@ -277,11 +278,11 @@ The local domain is `network.lan` with additional subdomains `s1.network.lan`,
 domain names.  Accordingly, `s2.network.lan` is an alias for
 `site2.network.lan`.
 
-The aliasing is realized with domain-specific `$INCLUDE` statements in the zone
-file of the domain `network.lan`. The domain names are included from other
-files. For the subdomains `site1.network.lan` and `s1.network.lan`, the same
-file is included. Accordingly, `site2.network.lan` and `s1.network.lan` point
-to the same file.
+The aliasing is realized with domain-specific [$INCLUDE][include] directive in
+the zone file of the domain `network.lan`. The domain names are included from
+other files. For the subdomains `site1.network.lan` and `s1.network.lan`, the
+same file is included. Accordingly, `site2.network.lan` and `s1.network.lan`
+point to the same file.
 
 The subdomain `site1.network.lan` is configured in the file
 `/etc/bind/db.network.lan-site1` and contains the following records:
@@ -856,3 +857,6 @@ examples you can use as a basis for your own setup.
 [forward]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-forward
 [acl]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-acl
 [allow-query]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-allow-query
+[zone]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-zone
+[file]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-file
+[include]: https://bind9.readthedocs.io/en/latest/chapter3.html#the-include-directive
