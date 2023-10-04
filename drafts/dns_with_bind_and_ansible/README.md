@@ -635,7 +635,9 @@ role on all the hosts in the group to install and configure the DNS servers.
 
 ### Configuration
 
-TODO: mention possibility of different configs for sites?
+The configuration is derived from host and group files. They contain the
+variables that the tasks of the role use. Each site uses different host and
+group files to allow for site-specific configurations as shown below.
 
 #### Hosts
 
