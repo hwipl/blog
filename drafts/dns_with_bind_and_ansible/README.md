@@ -380,6 +380,12 @@ DNS server options.
 
 A handler is defined as follows in the file `roles/bind/handlers/main.yml`:
 
+[handlers]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html
+[notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
+[become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
+[become2]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
+[service]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
+
 ```yaml
 ---
 # handlers for bind
@@ -399,6 +405,9 @@ system service `bind9` to state `restarted`.
 #### Tasks
 
 The tasks are defined as follows in the file `roles/bind/tasks/main.yml`:
+
+[apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+[template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
 
 ```yaml
 ---
@@ -494,6 +503,9 @@ the restart event if any files changed:
 
 The template for the file `named.conf.options` is defined as follows in the
 file `roles/bind/templates/named.conf.options.j2`:
+
+[templating]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html
+[jinja2]: https://jinja.palletsprojects.com/en/latest/templates/
 
 ```jinja
 // access control list "good clients"
