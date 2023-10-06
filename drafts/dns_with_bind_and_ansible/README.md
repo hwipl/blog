@@ -343,12 +343,10 @@ in their respective site without having to know in which site they are.
 ## Ansible
 
 Ansible allows for automatic installation and configuration of the DNS servers.
-Ansible uses roles and playbooks. Roles consist of tasks, templates and
-handlers. Tasks are the individual installation and configuration steps. They
-use the templates to generate configuration files and trigger events that are
-handled by the handlers.
-
-TODO: add playbook and configuration?
+Ansible uses [roles][roles] and [playbooks][playbooks]. Roles consist of tasks,
+templates and handlers. Tasks are the individual installation and configuration
+steps. They use the [templates][templates] to generate configuration files and
+trigger events that are handled by the [handlers][handlers].
 
 TODO: add link to ansible role repository somewhere?
 
@@ -380,12 +378,6 @@ DNS server options.
 
 A handler is defined as follows in the file `roles/bind/handlers/main.yml`:
 
-[handlers]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html
-[notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
-[become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
-[become2]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
-[service]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
-
 ```yaml
 ---
 # handlers for bind
@@ -397,17 +389,15 @@ A handler is defined as follows in the file `roles/bind/handlers/main.yml`:
     state: restarted
 ```
 
-The handler is called `Restart bind9` and restarts the DNS server when it is
-triggered. It requires root privileges to manipulate the state of the system
-services, so `become` is set to `true`. To restart the DNS server, it sets the
-system service `bind9` to state `restarted`.
+The handler is called `Restart bind9` and restarts the DNS server with the
+[service module][service] when it is triggered. It requires root privileges to
+manipulate the state of the system services, so [become][become] is set to
+`true` for [privilege escalation][privilege]. To restart the DNS server, it
+sets the system service `bind9` to state `restarted`.
 
 #### Tasks
 
 The tasks are defined as follows in the file `roles/bind/tasks/main.yml`:
-
-[apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
-[template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
 
 ```yaml
 ---
@@ -468,13 +458,14 @@ The tasks are defined as follows in the file `roles/bind/tasks/main.yml`:
     - Restart bind9
 ```
 
-These tasks install the bind9 DNS server, configure it with templates and
-trigger the restart event if changes are actually made by the tasks:
+These tasks install the bind9 DNS server with the [apt module][apt], configure
+it with templates and the [template module][template] and trigger the restart
+event with [notify][notify] if changes are actually made by the tasks:
 
 All tasks need root privileges to manipulate the system configuration. So,
-`become` is set to `true`.  All configuration files are stored in the directory
-`/etc/bind`. File owner is set to `root`, group is set to `bind` and privileges
-are set to `644`.
+[become][become] is set to `true`. All configuration files are stored in the
+directory `/etc/bind`. File owner is set to `root`, group is set to `bind` and
+privileges are set to `644`.
 
 1. The first task updates the `apt` cache if it is older than one hour to make
    sure the following installation task can run with up-to-date package
@@ -501,11 +492,10 @@ the restart event if any files changed:
 
 #### Templates
 
+All templates in the role are defined as [Jinja2 templates][jinja2].
+
 The template for the file `named.conf.options` is defined as follows in the
 file `roles/bind/templates/named.conf.options.j2`:
-
-[templating]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html
-[jinja2]: https://jinja.palletsprojects.com/en/latest/templates/
 
 ```jinja
 // access control list "good clients"
@@ -874,3 +864,15 @@ examples you can use as a basis for your own setup.
 [zone]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-zone
 [file]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-file
 [include]: https://bind9.readthedocs.io/en/latest/chapter3.html#the-include-directive
+
+[roles]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
+[playbooks]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
+[templates]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html
+[handlers]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html
+[service]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
+[become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
+[privilege]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
+[apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+[template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
+[notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
+[jinja2]: https://jinja.palletsprojects.com/en/latest/templates/
