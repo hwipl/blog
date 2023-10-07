@@ -637,9 +637,10 @@ role on all the hosts in the group to install and configure the DNS servers.
 
 ### Configuration
 
-The configuration is derived from host and group files. They contain the
-variables that the tasks of the role use. Each site uses different host and
-group files to allow for site-specific configurations as shown below.
+The configuration is derived from host and group files in the Ansible
+[inventory][inventory]. They contain the variables that the tasks of the role
+use. Each site uses a different inventory and, thus, different host and group
+files to allow for site-specific configurations as shown below.
 
 #### Hosts
 
@@ -831,8 +832,8 @@ resolve to `10.20.2.1`.
 ### Deployment
 
 The DNS servers can be installed and configured with the Ansible role,
-configuration and playbook described above. You can use the following Ansible
-commands:
+configuration and playbook described above. You can use the following
+[ansible-playbook][ansible-playbook] commands:
 
 ```console
 $ # site 1
@@ -876,3 +877,5 @@ examples you can use as a basis for your own setup.
 [template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
 [notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
 [jinja2]: https://jinja.palletsprojects.com/en/latest/templates/
+[inventory]: https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
+[ansible-playbook]: https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html
