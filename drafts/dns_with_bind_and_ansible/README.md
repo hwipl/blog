@@ -348,6 +348,14 @@ templates and handlers. Tasks are the individual installation and configuration
 steps. They use the [templates][templates] to generate configuration files and
 trigger events that are handled by the [handlers][handlers].
 
+A role and a playbook are used to deploy the DNS servers. The playbook assigns
+the role to all nodes of a group defined in the Ansible [inventory][inventory].
+The configuration of each DNS server is derived from host and group variables
+in the inventory. Each site uses a different inventory to allow for
+site-specific configurations. The deployment is finally performed with the
+[ansible-playbook][ansible-playbook] command. The role, playbook, configuration
+and deployment are shown in the following subsections.
+
 TODO: add link to ansible role repository somewhere?
 
 ### Role
@@ -870,6 +878,8 @@ examples you can use as a basis for your own setup.
 [playbooks]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
 [templates]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html
 [handlers]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html
+[inventory]: https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
+[ansible-playbook]: https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html
 [service]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
 [become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
 [privilege]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
@@ -877,5 +887,3 @@ examples you can use as a basis for your own setup.
 [template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
 [notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
 [jinja2]: https://jinja.palletsprojects.com/en/latest/templates/
-[inventory]: https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
-[ansible-playbook]: https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html
