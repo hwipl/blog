@@ -863,6 +863,22 @@ templates together with Ansible host and group variables to create the Bind 9
 configuration and zone files. All sections contain configuration or code
 examples you can use as a basis for your own setup.
 
+## Appendix: Code
+
+You can find an implementation of the Ansible role and playbook at the
+following links:
+
+- [Ansible Role](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/cluster/roles/bind)
+- [Ansible Playbook](https://github.com/hwipl/ansible-playbooks/blob/main/ubuntu/cluster/bind.yml)
+
+The repository also contains the configuration for two sites at the following
+links. However, the site 1 and 2 inventories do not match the configuration
+shown in this document and also contain the configuration for other roles,
+groups and hosts. But you can use them as another configuration example.
+
+- [Site 1 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/cluster/site1)
+- [Site 2 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/cluster/site2)
+
 [directory]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-directory
 [listen-on]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-listen-on
 [listen-on-v6]: https://bind9.readthedocs.io/en/latest/reference.html#namedconf-statement-listen-on-v6
