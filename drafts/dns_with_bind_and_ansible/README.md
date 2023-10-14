@@ -354,9 +354,9 @@ The configuration of each DNS server is derived from host and group variables
 in the inventory. Each site uses a different inventory to allow for
 site-specific configurations. The deployment is finally performed with the
 [ansible-playbook][ansible-playbook] command. The role, playbook, configuration
-and deployment are shown in the following subsections.
-
-TODO: add link to ansible role repository somewhere?
+and deployment are shown in the following subsections. Additionally, you can
+find links to the code and configuration examples in the appendix at the end of
+this document.
 
 ### Role
 
@@ -851,7 +851,10 @@ $ ansible-playbook -i site2/hosts bind.yml
 ```
 
 Both `ansible-playbook` commands run the playbook `bind.yml` with the
-site-specific hosts files specified with the command line argument `-i`.
+site-specific hosts files specified with the command line argument `-i`. The
+first command installs and configures all DNS servers in Site 1 and the second
+command in Site 2. After successful execution of the commands above, the DNS
+servers should be configured and running.
 
 ## Conclusion
 
