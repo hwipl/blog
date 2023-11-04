@@ -50,12 +50,12 @@ figure:
 ```
 
 The example network consists of the two sites `Site 1` and `Site 2`. Each site
-contains three nodes. Node 1 runs the DNS server and two additional services
+contains three nodes. `Node 1` runs the DNS server and two additional services
 `Service 1` and `Service 2`. `Node 2` and `Node 3` are DNS clients. The DNS
 clients in a site use the DNS server in the same site as their primary DNS
 server. But in case of a server failure, they could also use the DNS server in
 the other site as fallback. So, both DNS servers must be able to resolve all
-local domain names. The DNS server in each site are only responsible for local
+local domain names. The DNS servers in each site are only responsible for local
 domain names. They forward all other DNS requests to the other DNS servers
 `10.1.1.1` and `10.2.2.2`.
 
