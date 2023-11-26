@@ -55,4 +55,98 @@ automatically.
 
 ## Ansible
 
+```
+roles/dhcpd/
+├── handlers
+│   └── main.yml
+├── tasks
+│   └── main.yml
+└── templates
+    ├── dhcp.conf.j2
+    └── isc-dhcp-server.j2
+```
+
+handlers/main.yml:
+
+```yaml
+---
+# handlers for dhcpd
+
+- name: Restart dhcpd
+  become: true
+  ansible.builtin.service:
+    name: isc-dhcp-server
+    state: restarted
+```
+
+tasks/main.yml:
+
+```yaml
+---
+# these tasks setup dhcpd with static host configuration
+
+- name: Update apt cache if older than 3600 seconds
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+- name: Ensure dhcpd is installed
+  become: true
+  ansible.builtin.apt:
+    name: isc-dhcp-server
+    state: present
+- name: Create dhcpd configuration from template
+  become: true
+  ansible.builtin.template:
+    src: dhcp.conf.j2
+    dest: "/etc/dhcp/dhcpd.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Restart dhcpd
+- name: Create isc-dhcp-server defaults from template
+  become: true
+  ansible.builtin.template:
+    src: isc-dhcp-server.j2
+    dest: "/etc/default/isc-dhcp-server"
+    owner: root
+    group: root
+    mode: '0644'
+    backup: true
+  notify:
+    - Restart dhcpd
+```
+
+templates/dhcp.conf.j2:
+
+```jinja
+default-lease-time 86400;
+max-lease-time 86400;
+
+{% for subnet in subnets %}
+subnet {{ subnet.ip }} netmask {{ subnet.netmask }} {
+
+        option routers                  {{ subnet.routers }};
+        option domain-name-servers      {{ subnet.dns_servers }};
+        option ntp-servers              {{ subnet.ntp_servers }};
+        option domain-name              "{{ subnet.domain_name }}";
+
+{% for host in subnet.hosts %}
+        host {{ host.name }}  {
+                hardware ethernet {{ host.mac }};
+                fixed-address {{ host.ip }};
+        }
+{% endfor %}
+}
+{% endfor %}
+```
+
+templates/isc-dhcp-server.j2:
+
+```jinja
+INTERFACESv4="{{ dhcpd_interfaces }}"
+INTERFACESv6=""
+```
+
 ## Conclusion
