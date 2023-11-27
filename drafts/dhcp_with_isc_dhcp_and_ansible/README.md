@@ -55,6 +55,8 @@ automatically.
 
 ## Ansible
 
+### Role
+
 ```
 roles/dhcpd/
 ├── handlers
@@ -65,6 +67,8 @@ roles/dhcpd/
     ├── dhcp.conf.j2
     └── isc-dhcp-server.j2
 ```
+
+#### Handlers
 
 handlers/main.yml:
 
@@ -78,6 +82,8 @@ handlers/main.yml:
     name: isc-dhcp-server
     state: restarted
 ```
+
+#### Tasks
 
 tasks/main.yml:
 
@@ -118,6 +124,8 @@ tasks/main.yml:
     - Restart dhcpd
 ```
 
+#### Templates
+
 templates/dhcp.conf.j2:
 
 ```jinja
@@ -147,6 +155,129 @@ templates/isc-dhcp-server.j2:
 ```jinja
 INTERFACESv4="{{ dhcpd_interfaces }}"
 INTERFACESv6=""
+```
+
+### Playbook
+
+```yaml
+---
+- name: Configure dhcp servers
+  hosts: dhcp_servers
+
+  roles:
+    - dhcpd
+```
+
+### Configuration
+
+hosts:
+
+```toml
+[dhcp_servers]
+node1
+
+```
+
+host_vars/node1:
+
+```yaml
+# dhcp server configuration
+dhcpd_interfaces: "eth0 eth1"
+```
+
+group_vars/dhcp_servers:
+
+```yaml
+---
+# dhcp server configuration
+
+subnets:
+  # site 1 network
+  - ip: 10.20.1.0
+    netmask: 255.255.255.0
+    routers: 10.20.1.1
+    dns_servers: 10.20.1.1
+    ntp_servers: 10.20.1.1
+    domain_name: s1.network.lan
+    hosts:
+      # - name: node1 # static
+      #   mac: ca:fe:ca:fe:11:01
+      #   ip: 10.20.1.1
+      - name: node2
+        mac: ca:fe:ca:fe:12:01
+        ip: 10.20.1.2
+      - name: node3
+        mac: ca:fe:ca:fe:13:01
+        ip: 10.20.1.3
+  # site 1 management network
+  - ip: 10.20.201.0
+    netmask: 255.255.255.0
+    routers: 10.20.201.1
+    dns_servers: 10.20.201.1
+    ntp_servers: 10.20.201.1
+    domain_name: s1-mgmt.network.lan
+    hosts:
+      # hosts
+      # - name: node1 # static
+      #   mac: ca:fe:ca:fe:11:0a
+      #   ip: 10.20.201.1
+      - name: node2
+        mac: ca:fe:ca:fe:12:0a
+        ip: 10.20.201.2
+      - name: node3
+        mac: ca:fe:ca:fe:13:0a
+        ip: 10.20.201.3
+```
+
+```yaml
+---
+# dhcp server configuration
+
+subnets:
+  # site 2 network
+  - ip: 10.20.2.0
+    netmask: 255.255.255.0
+    routers: 10.20.2.1
+    dns_servers: 10.20.2.1
+    ntp_servers: 10.20.2.1
+    domain_name: s2.network.lan
+    hosts:
+      # - name: node1 # static
+      #   mac: ca:fe:ca:fe:21:01
+      #   ip: 10.20.2.1
+      - name: node2
+        mac: ca:fe:ca:fe:22:01
+        ip: 10.20.2.2
+      - name: node3
+        mac: ca:fe:ca:fe:23:01
+        ip: 10.20.2.3
+  # site 2 management network
+  - ip: 10.20.202.0
+    netmask: 255.255.255.0
+    routers: 10.20.202.1
+    dns_servers: 10.20.202.1
+    ntp_servers: 10.20.202.1
+    domain_name: s2-mgmt.network.lan
+    hosts:
+      # hosts
+      # - name: node1 # static
+      #   mac: ca:fe:ca:fe:21:0a
+      #   ip: 10.20.202.1
+      - name: node2
+        mac: ca:fe:ca:fe:22:0a
+        ip: 10.20.202.2
+      - name: node3
+        mac: ca:fe:ca:fe:23:0a
+        ip: 10.20.202.3
+```
+
+### Deployment
+
+```console
+$ # site 1
+$ ansible-playbook -i site1/hosts dhcpd.yml
+$ # site 2
+$ ansible-playbook -i site2/hosts dhcpd.yml
 ```
 
 ## Conclusion
