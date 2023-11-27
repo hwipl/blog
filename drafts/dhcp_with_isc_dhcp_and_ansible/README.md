@@ -172,7 +172,7 @@ INTERFACESv6=""
 
 hosts:
 
-```toml
+```ini
 [dhcp_servers]
 node1
 
