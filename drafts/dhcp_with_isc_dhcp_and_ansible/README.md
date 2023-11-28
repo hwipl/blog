@@ -53,6 +53,89 @@ automatically.
 
 ## DHCP Configuration
 
+/etc/default/isc-dhcp-server:
+
+```
+INTERFACESv4="eth0 eth1"
+INTERFACESv6=""
+```
+
+/etc/dhcp/dhcpd.conf, Site 1:
+
+```
+default-lease-time 86400;
+max-lease-time 86400;
+
+subnet 10.20.1.0 netmask 255.255.255.0 {
+
+        option routers                  10.20.1.1;
+        option domain-name-servers      10.20.1.1;
+        option ntp-servers              10.20.1.1;
+        option domain-name              "s1.network.lan";
+
+        host node2 {
+                hardware ethernet ca:fe:ca:fe:12:01;
+                fixed-address 10.20.1.2;
+        host node3 {
+                hardware ethernet ca:fe:ca:fe:13:01;
+                fixed-address 10.20.1.3;
+        }
+}
+subnet 10.20.201.0 netmask 255.255.255.0 {
+
+        option routers                  10.20.201.1;
+        option domain-name-servers      10.20.201.1;
+        option ntp-servers              10.20.201.1;
+        option domain-name              "s1-mgmt.network.lan";
+
+        host node2 {
+                hardware ethernet ca:fe:ca:fe:12:0a;
+                fixed-address 10.20.201.2;
+        host node3 {
+                hardware ethernet ca:fe:ca:fe:13:0a;
+                fixed-address 10.20.201.3;
+        }
+}
+```
+
+/etc/dhcp/dhcpd.conf, Site 2:
+
+```
+default-lease-time 86400;
+max-lease-time 86400;
+
+subnet 10.20.2.0 netmask 255.255.255.0 {
+
+        option routers                  10.20.2.1;
+        option domain-name-servers      10.20.2.1;
+        option ntp-servers              10.20.2.1;
+        option domain-name              "s2.network.lan";
+
+        host node2  {
+                hardware ethernet ca:fe:ca:fe:22:01;
+                fixed-address 10.20.2.2;
+        host node3  {
+                hardware ethernet ca:fe:ca:fe:23:01;
+                fixed-address 10.20.2.3;
+        }
+}
+subnet 10.20.202.0 netmask 255.255.255.0 {
+
+        option routers                  10.20.202.1;
+        option domain-name-servers      10.20.202.1;
+        option ntp-servers              10.20.202.1;
+        option domain-name              "s2-mgmt.network.lan";
+
+        host node2 {
+                hardware ethernet ca:fe:ca:fe:22:0a;
+                fixed-address 10.20.202.2;
+        host node3 {
+                hardware ethernet ca:fe:ca:fe:23:0a;
+                fixed-address 10.20.202.3;
+        }
+}
+```
+
 ## Ansible
 
 ### Role
