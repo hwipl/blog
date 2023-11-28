@@ -141,7 +141,7 @@ subnet {{ subnet.ip }} netmask {{ subnet.netmask }} {
         option domain-name              "{{ subnet.domain_name }}";
 
 {% for host in subnet.hosts %}
-        host {{ host.name }}  {
+        host {{ host.name }} {
                 hardware ethernet {{ host.mac }};
                 fixed-address {{ host.ip }};
         }
