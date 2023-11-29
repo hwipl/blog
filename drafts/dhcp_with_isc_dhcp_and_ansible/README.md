@@ -31,6 +31,8 @@ automatically.
                         Network: 10.20.0.0/16
 ```
 
+Site 1 and 2 networks:
+
 | Entity      | IP Address     |  MAC Address      |
 |-------------|----------------|-------------------|
 | Network     | 10.20.0.0/16   |                   |
@@ -42,6 +44,11 @@ automatically.
 | - Node 1    | 10.20.2.1      | ca:fe:ca:fe:21:01 |
 | - Node 2    | 10.20.2.2      | ca:fe:ca:fe:22:01 |
 | - Node 3    | 10.20.2.3      | ca:fe:ca:fe:23:01 |
+
+Site 1 and 2 management networks:
+
+| Entity      | IP Address     |  MAC Address      |
+|-------------|----------------|-------------------|
 | Site 1 Mgmt | 10.20.201.0/24 |                   |
 | - Node 1    | 10.20.201.1    | ca:fe:ca:fe:11:0a |
 | - Node 2    | 10.20.201.2    | ca:fe:ca:fe:12:0a |
