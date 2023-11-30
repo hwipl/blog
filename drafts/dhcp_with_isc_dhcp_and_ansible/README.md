@@ -7,6 +7,14 @@ automatically.
 
 ## Overview
 
+The DHCP servers in this document run the ISC DHCP Server on Ubuntu 22.04 LTS.
+ISC DHCP is installed and configured automatically with Ansible. This includes
+the configuration of the used network interfaces as well as the subnets. The
+DHCP configuration only contains IPv4 addressing.
+
+The DHCP configuration in this document assumes the network in the following
+figure:
+
 ```
 .........................................................................
 : Site 1                            :                            Site 2 :
@@ -30,6 +38,24 @@ automatically.
 :...................................:...................................:
                         Network: 10.20.0.0/16
 ```
+
+The example network consists of the two sites `Site 1` and `Site 2`. Each site
+contains three nodes. `Node 1` runs the DHCP server. `Node 2` and `Node 3` are
+DHCP clients. The DHCP clients in a site use the DHCP server in the same site.
+All nodes have two network interfaces: one for regular network traffic and one
+for management access. Both interfaces use different IP address ranges and, on
+the clients, they are configured by DHCP.
+
+The network uses IPs in the range `10.20.0.0/16`: Site 1 gets `10.20.1.0/24`
+for regular traffic and `10.20.201.0/24` for management. Site 2 gets
+`10.20.2.0/24` for regular traffic and `10.20.202.0/24` for management. Nodes
+1, 2 and 3 in Site 1 get the IPs `10.20.1.1`, `10.20.1.2` and `10.20.1.3` for
+regular traffic. For management, they get `10.20.201.1`, `10.20.201.2` and
+`10.20.201.3`. In Site 2, they get `10.20.2.1`, `10.20.2.2`, `10.20.2.3` as
+well as `10.20.202.1`, `10.20.202.2` and `10.20.202.3`.
+
+The IP addressing and the MAC addresses of all network interfaces are shown in
+the following two tables.
 
 Site 1 and 2 networks:
 
