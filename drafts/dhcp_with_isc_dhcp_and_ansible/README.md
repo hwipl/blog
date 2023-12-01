@@ -55,34 +55,34 @@ regular traffic. For management, they get `10.20.201.1`, `10.20.201.2` and
 well as `10.20.202.1`, `10.20.202.2` and `10.20.202.3`.
 
 The IP addressing and the MAC addresses of all network interfaces are shown in
-the following two tables.
+the following two tables. The first table shows Site 1:
 
-Site 1 and 2 networks:
+| Entity            | IP Address     |  MAC Address      |
+|-------------------|----------------|-------------------|
+| Site 1            | 10.20.1.0/24   |                   |
+| - Node 1          | 10.20.1.1      | ca:fe:ca:fe:11:01 |
+| - Node 2          | 10.20.1.2      | ca:fe:ca:fe:12:01 |
+| - Node 3          | 10.20.1.3      | ca:fe:ca:fe:13:01 |
+| Site 1 Management | 10.20.201.0/24 |                   |
+| - Node 1          | 10.20.201.1    | ca:fe:ca:fe:11:0a |
+| - Node 2          | 10.20.201.2    | ca:fe:ca:fe:12:0a |
+| - Node 3          | 10.20.201.3    | ca:fe:ca:fe:13:0a |
 
-| Entity      | IP Address     |  MAC Address      |
-|-------------|----------------|-------------------|
-| Network     | 10.20.0.0/16   |                   |
-| Site 1      | 10.20.1.0/24   |                   |
-| - Node 1    | 10.20.1.1      | ca:fe:ca:fe:11:01 |
-| - Node 2    | 10.20.1.2      | ca:fe:ca:fe:12:01 |
-| - Node 3    | 10.20.1.3      | ca:fe:ca:fe:13:01 |
-| Site 2      | 10.20.2.0/24   |                   |
-| - Node 1    | 10.20.2.1      | ca:fe:ca:fe:21:01 |
-| - Node 2    | 10.20.2.2      | ca:fe:ca:fe:22:01 |
-| - Node 3    | 10.20.2.3      | ca:fe:ca:fe:23:01 |
+The second table shows Site 2:
 
-Site 1 and 2 management networks:
+| Entity            | IP Address     |  MAC Address      |
+|-------------------|----------------|-------------------|
+| Site 2            | 10.20.2.0/24   |                   |
+| - Node 1          | 10.20.2.1      | ca:fe:ca:fe:21:01 |
+| - Node 2          | 10.20.2.2      | ca:fe:ca:fe:22:01 |
+| - Node 3          | 10.20.2.3      | ca:fe:ca:fe:23:01 |
+| Site 2 Management | 10.20.202.0/24 |                   |
+| - Node 1          | 10.20.202.1    | ca:fe:ca:fe:21:0a |
+| - Node 2          | 10.20.202.2    | ca:fe:ca:fe:22:0a |
+| - Node 3          | 10.20.202.3    | ca:fe:ca:fe:23:0a |
 
-| Entity      | IP Address     |  MAC Address      |
-|-------------|----------------|-------------------|
-| Site 1 Mgmt | 10.20.201.0/24 |                   |
-| - Node 1    | 10.20.201.1    | ca:fe:ca:fe:11:0a |
-| - Node 2    | 10.20.201.2    | ca:fe:ca:fe:12:0a |
-| - Node 3    | 10.20.201.3    | ca:fe:ca:fe:13:0a |
-| Site 2 Mgmt | 10.20.202.0/24 |                   |
-| - Node 1    | 10.20.202.1    | ca:fe:ca:fe:21:0a |
-| - Node 2    | 10.20.202.2    | ca:fe:ca:fe:22:0a |
-| - Node 3    | 10.20.202.3    | ca:fe:ca:fe:23:0a |
+The DHCP configuration uses fixed addresses. So, the network interfaces of the
+nodes always get these IP addresses based on their MAC addresses.
 
 ## DHCP Configuration
 
