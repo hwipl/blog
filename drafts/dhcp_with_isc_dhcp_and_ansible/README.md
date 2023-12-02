@@ -86,14 +86,31 @@ nodes always get these IP addresses based on their MAC addresses.
 
 ## DHCP Configuration
 
-/etc/default/isc-dhcp-server:
+The configuration of the ISC DHCP servers is described in the following
+subsections. First, the configuration of the interfaces used by the servers is
+shown. Then, the main configuration file is described. It contains the subnets
+that specify the configuration of the nodes in the network.
+
+### Interfaces
+
+The network interfaces the DHCP server uses and listens on are configured as
+follows in the file `/etc/default/isc-dhcp-server`:
 
 ```
 INTERFACESv4="eth0 eth1"
 INTERFACESv6=""
 ```
 
-/etc/dhcp/dhcpd.conf, Site 1:
+The server uses its interfaces `eth0` and `eth1` for DHCPv4. No interface is
+used for DHCPv6. So, the servers do not provide DHCP-based configuration of
+IPv6 addresses.
+
+### Subnets
+
+The subnets of the DHCP servers are configured as follows in the file
+`/etc/dhcp/dhcpd.conf`:
+
+Site 1:
 
 ```
 default-lease-time 86400;
