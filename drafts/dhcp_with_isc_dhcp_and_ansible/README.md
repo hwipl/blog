@@ -107,10 +107,8 @@ IPv6 addresses.
 
 ### Subnets
 
-The subnets of the DHCP servers are configured as follows in the file
-`/etc/dhcp/dhcpd.conf`:
-
-Site 1:
+The subnets of the DHCP servers are configured in the file
+`/etc/dhcp/dhcpd.conf`. The following listing shows the file for Site 1:
 
 ```
 default-lease-time 86400;
@@ -148,7 +146,7 @@ subnet 10.20.201.0 netmask 255.255.255.0 {
 }
 ```
 
-/etc/dhcp/dhcpd.conf, Site 2:
+The next listing shows the file for Site 2:
 
 ```
 default-lease-time 86400;
@@ -185,6 +183,20 @@ subnet 10.20.202.0 netmask 255.255.255.0 {
         }
 }
 ```
+
+The options `default-lease-time` and `max-lease-time` set the default and
+maximum lease times to 86400 seconds for all subnets. The two `subnet` blocks
+configure the two subnets. The first subnet contains the configuration of the
+regular network interfaces. The second subnet contains the configuration of the
+management interfaces. The subnet line specifies the IP address range with the
+IP address and netmask. The options `routers`, `domain-name-servers`,
+`ntp-servers` and `domain-name` set the routers, DNS servers, NTP servers and
+domain names used in the subnet. The two `host` blocks contain the
+configuration of the nodes `node2` and `node3` in the subnet. The settings
+`hardware ethernet` and `fixed-address` specify the MAC address of the node and
+the fixed IP address allocated to the node.
+
+TODO: mention IPs, domain names, MACs? Move this under each config file?
 
 ## Ansible
 
