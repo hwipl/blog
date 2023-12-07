@@ -146,7 +146,32 @@ subnet 10.20.201.0 netmask 255.255.255.0 {
 }
 ```
 
-The next listing shows the file for Site 2:
+The options `default-lease-time` and `max-lease-time` set the default and
+maximum lease times to 86400 seconds for all subnets. The two `subnet` blocks
+configure the two subnets. The `subnet` line specifies the IP address range
+with the IP address and netmask.
+
+The first subnet with IP `10.20.1.0` and netmask `255.255.255.0` contains the
+configuration of the regular network interfaces. The second subnet with IP
+`10.20.201.0` and netmask `255.255.255.0` contains the configuration of the
+management interfaces.
+
+The options `routers`, `domain-name-servers` and `ntp-servers` set the routers,
+DNS servers, and NTP servers for each subnet. In the regular subnet they are
+all set to IP `10.20.1.1`, in the management subnet to `10.20.201.1`. The
+option `domain-name` specifies the domain names used in the subnets. In the
+regular subnet it is set to `s1.network.lan`, in the management subnet to
+`s1-mgmt.network.lan`.
+
+The two `host` blocks contain the configuration of the nodes `node2` and
+`node3` in the subnets. The settings `hardware ethernet` and `fixed-address`
+specify the MAC address of the node and the fixed IP address allocated to the
+node: for the regular interface of Node 2 they are set to IP `10.20.1.2` and
+MAC `ca:fe:ca:fe:12:01`, for the management interface to IP `10.20.201.2` and
+MAC `ca:fe:ca:fe:12:0a`; for Node 3 they are set to IP `10.20.1.3` and MAC
+`ca:fe:ca:fe:13:01` as well as IP `10.20.201.3` and MAC `ca:fe:ca:fe:13:0a`.
+
+The next listing shows the file `/etc/dhcp/dhcpd.conf` for Site 2:
 
 ```
 default-lease-time 86400;
@@ -184,19 +209,13 @@ subnet 10.20.202.0 netmask 255.255.255.0 {
 }
 ```
 
-The options `default-lease-time` and `max-lease-time` set the default and
-maximum lease times to 86400 seconds for all subnets. The two `subnet` blocks
-configure the two subnets. The first subnet contains the configuration of the
-regular network interfaces. The second subnet contains the configuration of the
-management interfaces. The subnet line specifies the IP address range with the
-IP address and netmask. The options `routers`, `domain-name-servers`,
-`ntp-servers` and `domain-name` set the routers, DNS servers, NTP servers and
-domain names used in the subnet. The two `host` blocks contain the
-configuration of the nodes `node2` and `node3` in the subnet. The settings
-`hardware ethernet` and `fixed-address` specify the MAC address of the node and
-the fixed IP address allocated to the node.
-
-TODO: mention IPs, domain names, MACs? Move this under each config file?
+This file differs from the previous one in the IP and MAC addresses. The
+subnets use IPs `10.20.2.0` and `10.20.202.0`. Routers, DNS servers and NTP
+servers are set to `10.20.2.1` and `10.20.202.1`. The domain names are
+`s2.network.lan` and `s2-mgmt.network.lan`. The addresses of Node 2 are IP
+`10.20.2.2` and MAC `ca:fe:ca:fe:22:01` as well as IP `10.20.202.2` and MAC
+`ca:fe:ca:fe:22:0a`. For Node 3, they are IP `10.20.2.3` and MAC
+`ca:fe:ca:fe:23:01` as well as IP `10.20.202.3` and MAC `ca:fe:ca:fe:23:0a`.
 
 ## Ansible
 
