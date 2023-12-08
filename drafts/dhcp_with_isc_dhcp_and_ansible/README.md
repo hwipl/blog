@@ -219,6 +219,25 @@ servers are set to `10.20.2.1` and `10.20.202.1`. The domain names are
 
 ## Ansible
 
+Ansible allows for automatic installation and configuration of the DHCP
+servers. Ansible uses [roles][roles] and [playbooks][playbooks]. Roles consist
+of tasks, templates and handlers. Tasks are the individual installation and
+configuration steps. They use the [templates][templates] to generate
+configuration files and trigger events that are handled by the
+[handlers][handlers].
+
+A role and a playbook are used to deploy the DHCP servers. The playbook assigns
+the role to all nodes of a group defined in the Ansible [inventory][inventory].
+The configuration of each DHCP server is derived from host and group variables
+in the inventory. Each site uses a different inventory to allow for
+site-specific configurations. The deployment is finally performed with the
+[ansible-playbook][ansible-playbook] command. The role, playbook, configuration
+and deployment are shown in the following subsections. Additionally, you can
+find links to the code and configuration examples in the appendix at the end of
+this document.
+
+TODO: add appendix
+
 ### Role
 
 ```
@@ -445,3 +464,10 @@ $ ansible-playbook -i site2/hosts dhcpd.yml
 ```
 
 ## Conclusion
+
+[roles]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
+[playbooks]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
+[templates]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html
+[handlers]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html
+[inventory]: https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
+[ansible-playbook]: https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html
