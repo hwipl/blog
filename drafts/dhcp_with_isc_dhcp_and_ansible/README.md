@@ -240,6 +240,9 @@ TODO: add appendix
 
 ### Role
 
+The Ansible role is called `dhcpd` and structured as shown in the listing
+below:
+
 ```
 roles/dhcpd/
 ├── handlers
@@ -250,6 +253,12 @@ roles/dhcpd/
     ├── dhcp.conf.j2
     └── isc-dhcp-server.j2
 ```
+
+The role consists of one `main.yml` file for handlers, one `main.yml` file for
+tasks and two files for templates. The tasks use the template `dhcp.conf.j2` to
+create the main configuration file including the subnets. The template
+`isc-dhcp-server.j2` is used for the configuration of the network interfaces of
+the DHCP servers.
 
 #### Handlers
 
