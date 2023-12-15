@@ -262,7 +262,7 @@ the DHCP servers.
 
 #### Handlers
 
-handlers/main.yml:
+A handler is defined as follows in the file `roles/dhcpd/handlers/main.yml`:
 
 ```yaml
 ---
@@ -274,6 +274,12 @@ handlers/main.yml:
     name: isc-dhcp-server
     state: restarted
 ```
+
+The handler is called `Restart dhcpd` and restarts the DHCP server with the
+[service module][service] when it is triggered. It requires root privileges to
+manipulate the state of the system services, so [become][become] is set to
+`true` for [privilege escalation][privilege]. To restart the DHCP server, it
+sets the system service `isc-dhcp-server` to state `restarted`.
 
 #### Tasks
 
@@ -480,3 +486,6 @@ $ ansible-playbook -i site2/hosts dhcpd.yml
 [handlers]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html
 [inventory]: https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
 [ansible-playbook]: https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html
+[service]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
+[become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
+[privilege]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
