@@ -283,7 +283,7 @@ sets the system service `isc-dhcp-server` to state `restarted`.
 
 #### Tasks
 
-tasks/main.yml:
+The tasks are defined as follows in the file `roles/dhcpd/tasks/main.yml`:
 
 ```yaml
 ---
@@ -321,6 +321,28 @@ tasks/main.yml:
   notify:
     - Restart dhcpd
 ```
+
+These tasks install the ISC DHCP server with the [apt module][apt], configure
+it with templates and the [template module][template] and trigger the restart
+event with [notify][notify] if changes are actually made by the tasks:
+
+All tasks need root privileges to manipulate the system configuration. So,
+[become][become] is set to `true`. The file owner of all configuration files is
+set to `root`, group is set to `root` and privileges are set to `644`.
+
+1. The first task updates the `apt` cache if it is older than one hour to make
+   sure the following installation task can run with up-to-date package
+   sources.
+2. The second task installs the ISC DHCP server with `apt` if it is not already
+   installed.
+3. The third task creates or updates the main configuration of the DHCP server
+   in file `/etc/dhcp/dhcpd.conf` from the template `dhcp.conf.j2`. If the file
+   is changed, the restart event is triggered.
+4. The fourth task creates or updates the configuration of the network
+   interfaces in the file `/etc/default/isc-dhcp-server` from the template
+   `isc-dhcp-server.j2`. If a different version already exists, the task
+   creates a backup of the existing file. If the file is changed, the restart
+   event is triggered.
 
 #### Templates
 
@@ -489,3 +511,6 @@ $ ansible-playbook -i site2/hosts dhcpd.yml
 [service]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
 [become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
 [privilege]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
+[apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+[template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
+[notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
