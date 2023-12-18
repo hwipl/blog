@@ -346,7 +346,10 @@ set to `root`, group is set to `root` and privileges are set to `644`.
 
 #### Templates
 
-templates/dhcp.conf.j2:
+All templates in the role are defined as [Jinja2 templates][jinja2].
+
+The template for the file `dhcp.conf` is defined as follows in the file
+`roles/dhcpd/templates/dhcp.conf.j2`:
 
 ```jinja
 default-lease-time 86400;
@@ -369,6 +372,22 @@ subnet {{ subnet.ip }} netmask {{ subnet.netmask }} {
 }
 {% endfor %}
 ```
+
+The template reflects the DHCP server configuration shown in the DHCP
+configuration section above with parts dynamically generated based on the
+Ansible configuration:
+
+- For each subnet configured in the Ansible list `subnets`, the template
+  creates a `subnet` block. The IP address and subnet mask are taken from the
+  subnet variables `ip` and `netmask`. The options for routers, DNS servers,
+  NTP servers and domain names are taken from the subnet variables `routers`,
+  `dns_servers`, `ntp servers` and `domain_name`.
+- For each host in the Ansible list `hosts` within the subnet, a `host` block
+  is created inside the `subnet` block. The name of the host is taken from the
+  host variable `name`. The MAC and IP addresses are taken from the host
+  variables `mac` and `ip`.
+
+TODO: use variables for lease times?
 
 templates/isc-dhcp-server.j2:
 
@@ -514,3 +533,4 @@ $ ansible-playbook -i site2/hosts dhcpd.yml
 [apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
 [template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
 [notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
+[jinja2]: https://jinja.palletsprojects.com/en/latest/templates/
