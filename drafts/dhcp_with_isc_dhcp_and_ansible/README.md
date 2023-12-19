@@ -373,8 +373,8 @@ subnet {{ subnet.ip }} netmask {{ subnet.netmask }} {
 {% endfor %}
 ```
 
-The template reflects the DHCP server configuration shown in the DHCP
-configuration section above with parts dynamically generated based on the
+The template reflects the DHCP server and subnets configuration shown in the
+DHCP configuration section above with parts dynamically generated based on the
 Ansible configuration:
 
 - For each subnet configured in the Ansible list `subnets`, the template
@@ -389,12 +389,21 @@ Ansible configuration:
 
 TODO: use variables for lease times?
 
-templates/isc-dhcp-server.j2:
+The template for the file `/etc/default/isc-dhcp-server` is defined as follows
+in the file `roles/dhcpd/templates/isc-dhcp-server.j2`:
 
 ```jinja
 INTERFACESv4="{{ dhcpd_interfaces }}"
 INTERFACESv6=""
 ```
+
+The template reflects the interface configuration shown in the DHCP
+configuration section above with parts dynamically generated based on the
+Ansible configuration: The network interfaces for DHCPv4 are taken from the
+Ansible variable `dhcpd_interfaces`.
+
+TODO: add variable for DHCPv6 interfaces?
+TODO: change order of templates?
 
 ### Playbook
 
