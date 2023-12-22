@@ -407,6 +407,8 @@ TODO: change order of templates?
 
 ### Playbook
 
+The playbook is defined as follows in the file `dhcpd.yml`:
+
 ```yaml
 ---
 - name: Configure dhcp servers
@@ -415,6 +417,10 @@ TODO: change order of templates?
   roles:
     - dhcpd
 ```
+
+The playbook assigns the role `dhcpd` that is described above to all hosts in
+the group `dhcp_servers`. On execution, this playbook runs all the tasks of the
+role on all the hosts in the group to install and configure the DHCP servers.
 
 ### Configuration
 
