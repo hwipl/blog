@@ -424,20 +424,38 @@ role on all the hosts in the group to install and configure the DHCP servers.
 
 ### Configuration
 
-hosts:
+The configuration is derived from host and group files in the Ansible
+[inventory][inventory]. They contain the variables that the tasks of the role
+use. Each site uses a different inventory and, thus, different host and group
+files to allow for site-specific configurations as shown below.
+
+#### Hosts
+
+The Ansible hosts are defined as follows in the files `site1/hosts` and
+`site2/hosts`:
 
 ```ini
 [dhcp_servers]
 node1
-
 ```
 
-host_vars/node1:
+The hosts file of each site defines the group `dhcp_servers` and assigns the
+node `node1` to it. Thus, `node1` is defined as DHCP server for the playbook.
+
+The host-specific configuration of the DHCP servers is in the `host_vars` of
+`node1` in each site. The configuration for the DHCP server in Site 1 and Site
+2 is defined as follows in the files `site1/host_vars/node1` and
+`site2/host_vars/node1`:
 
 ```yaml
 # dhcp server configuration
 dhcpd_interfaces: "eth0 eth1"
 ```
+
+Both configuration files set the network interfaces as described in the DHCP
+configuration section above to `eth0` and `eth1`.
+
+#### Groups
 
 group_vars/dhcp_servers:
 
