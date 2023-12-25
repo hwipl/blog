@@ -457,7 +457,8 @@ configuration section above to `eth0` and `eth1`.
 
 #### Groups
 
-group_vars/dhcp_servers:
+The site-specific DHCP configuration of Site 1 is defined as follows in the
+file `site1/group_vars/dhcp_servers`:
 
 ```yaml
 ---
@@ -501,6 +502,9 @@ subnets:
         ip: 10.20.201.3
 ```
 
+The site-specific DHCP configuration of Site 2 is defined as follows in the
+file `site2/group_vars/dhcp_servers`:
+
 ```yaml
 ---
 # dhcp server configuration
@@ -542,6 +546,19 @@ subnets:
         mac: ca:fe:ca:fe:23:0a
         ip: 10.20.202.3
 ```
+
+Both files set the configuration for the subnets of Site 1 and Site 2 as
+described in the DHCP configuration section above. In each site, the list
+`subnets` contains both subnets. Each subnet is configured with the following
+variables:
+
+- IP and netmask are defined in the variables `ip` and `netmask`
+- Routers, DNS servers and NTP servers are defined in variables `routers`,
+  `dns_servers` and `ntp_servers`
+- Domain name is set in `domain_name`
+- Hosts are configured in the list `hosts` and each entry consists of the
+  host's settings for the name, MAC address and IP address in the variables
+  `name`, `mac` and `ip`.
 
 ### Deployment
 
