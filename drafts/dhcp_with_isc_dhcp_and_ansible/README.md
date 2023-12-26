@@ -562,12 +562,22 @@ variables:
 
 ### Deployment
 
+The DHCP servers can be installed and configured with the Ansible role,
+configuration and playbook described above. You can use the following
+[ansible-playbook][ansible-playbook] commands:
+
 ```console
 $ # site 1
 $ ansible-playbook -i site1/hosts dhcpd.yml
 $ # site 2
 $ ansible-playbook -i site2/hosts dhcpd.yml
 ```
+
+Both `ansible-playbook` commands run the playbook `dhcpd.yml` with the
+site-specific hosts files specified with the command line argument `-i`. The
+first command installs and configures all DHCP servers in Site 1 and the second
+command in Site 2. After successful execution of the commands above, the DHCP
+servers should be configured and running.
 
 ## Conclusion
 
