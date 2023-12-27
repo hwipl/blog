@@ -581,6 +581,17 @@ servers should be configured and running.
 
 ## Conclusion
 
+This document describes how you can automatically install and configure ISC
+DHCP servers on Ubuntu 22.04 LTS with Ansible. After presenting an example
+network and DHCP configuration, an Ansible Role is shown that contains the
+installation and configuration tasks as well as templates. The tasks use the
+templates together with Ansible host and group variables to create the ISC DHCP
+configuration. Finally, an Ansible Playbook is used with the `ansible-playbook`
+command to run the tasks and, thus, install and configure all servers. All
+sections contain configuration or code examples you can use as a basis for your
+own setup. Also, you can find links to the code and configuration examples in
+the appendix below.
+
 [roles]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
 [playbooks]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
 [templates]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html
