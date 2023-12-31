@@ -236,8 +236,6 @@ and deployment are shown in the following subsections. Additionally, you can
 find links to the code and configuration examples in the appendix at the end of
 this document.
 
-TODO: add appendix
-
 ### Role
 
 The Ansible role is called `dhcpd` and structured as shown in the listing
@@ -352,10 +350,10 @@ The template for the file `dhcp.conf` is defined as follows in the file
 `roles/dhcpd/templates/dhcp.conf.j2`:
 
 ```jinja
-default-lease-time 86400;
-max-lease-time 86400;
+default-lease-time {{ dhcpd_default_lease_time }};
+max-lease-time {{ dhcpd_max_lease_time }};
 
-{% for subnet in subnets %}
+{% for subnet in dhcpd_subnets %}
 subnet {{ subnet.ip }} netmask {{ subnet.netmask }} {
 
         option routers                  {{ subnet.routers }};
@@ -377,7 +375,9 @@ The template reflects the DHCP server and subnets configuration shown in the
 DHCP configuration section above with parts dynamically generated based on the
 Ansible configuration:
 
-- For each subnet configured in the Ansible list `subnets`, the template
+- The default and maximum lease times are set from the variables
+  `dhcpd_default_lease_time` and `dhcpd_max_lease_time`.
+- For each subnet configured in the Ansible list `dhcpd_subnets`, the template
   creates a `subnet` block. The IP address and subnet mask are taken from the
   subnet variables `ip` and `netmask`. The options for routers, DNS servers,
   NTP servers and domain names are taken from the subnet variables `routers`,
@@ -393,14 +393,15 @@ The template for the file `/etc/default/isc-dhcp-server` is defined as follows
 in the file `roles/dhcpd/templates/isc-dhcp-server.j2`:
 
 ```jinja
-INTERFACESv4="{{ dhcpd_interfaces }}"
-INTERFACESv6=""
+INTERFACESv4="{{ dhcpd_interfaces_v4 }}"
+INTERFACESv6="{{ dhcpd_interfaces_v6 }}"
 ```
 
 The template reflects the interface configuration shown in the DHCP
 configuration section above with parts dynamically generated based on the
 Ansible configuration: The network interfaces for DHCPv4 are taken from the
-Ansible variable `dhcpd_interfaces`.
+Ansible variable `dhcpd_interfaces_v4`. For DHCPv6, they are specified in the
+variable `dhcpd_interfaces_v6`.
 
 TODO: add variable for DHCPv6 interfaces?
 TODO: change order of templates?
