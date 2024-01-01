@@ -450,11 +450,16 @@ The host-specific configuration of the DHCP servers is in the `host_vars` of
 
 ```yaml
 # dhcp server configuration
-dhcpd_interfaces: "eth0 eth1"
+dhcpd_interfaces_v4: "eth0 eth1"
+dhcpd_interfaces_v6: ""
+dhcpd_default_lease_time: 86400
+dhcpd_max_lease_time: 86400
 ```
 
-Both configuration files set the network interfaces as described in the DHCP
-configuration section above to `eth0` and `eth1`.
+Both files contain the following configuration as described in the DHCP
+configuration section above: The network interfaces for DHCPv4 are set to
+`eth0` and `eth1`. No DHCPv6 interfaces are set. The default and max lease
+times are both set to `86400`.
 
 #### Groups
 
@@ -465,7 +470,7 @@ file `site1/group_vars/dhcp_servers`:
 ---
 # dhcp server configuration
 
-subnets:
+dhcpd_subnets:
   # site 1 network
   - ip: 10.20.1.0
     netmask: 255.255.255.0
@@ -510,7 +515,7 @@ file `site2/group_vars/dhcp_servers`:
 ---
 # dhcp server configuration
 
-subnets:
+dhcpd_subnets:
   # site 2 network
   - ip: 10.20.2.0
     netmask: 255.255.255.0
