@@ -346,6 +346,20 @@ set to `root`, group is set to `root` and privileges are set to `644`.
 
 All templates in the role are defined as [Jinja2 templates][jinja2].
 
+The template for the file `/etc/default/isc-dhcp-server` is defined as follows
+in the file `roles/dhcpd/templates/isc-dhcp-server.j2`:
+
+```jinja
+INTERFACESv4="{{ dhcpd_interfaces_v4 }}"
+INTERFACESv6="{{ dhcpd_interfaces_v6 }}"
+```
+
+The template reflects the interface configuration shown in the DHCP
+configuration section above with parts dynamically generated based on the
+Ansible configuration: The network interfaces for DHCPv4 are taken from the
+Ansible variable `dhcpd_interfaces_v4`. For DHCPv6, they are specified in the
+variable `dhcpd_interfaces_v6`.
+
 The template for the file `dhcp.conf` is defined as follows in the file
 `roles/dhcpd/templates/dhcp.conf.j2`:
 
@@ -386,25 +400,6 @@ Ansible configuration:
   is created inside the `subnet` block. The name of the host is taken from the
   host variable `name`. The MAC and IP addresses are taken from the host
   variables `mac` and `ip`.
-
-TODO: use variables for lease times?
-
-The template for the file `/etc/default/isc-dhcp-server` is defined as follows
-in the file `roles/dhcpd/templates/isc-dhcp-server.j2`:
-
-```jinja
-INTERFACESv4="{{ dhcpd_interfaces_v4 }}"
-INTERFACESv6="{{ dhcpd_interfaces_v6 }}"
-```
-
-The template reflects the interface configuration shown in the DHCP
-configuration section above with parts dynamically generated based on the
-Ansible configuration: The network interfaces for DHCPv4 are taken from the
-Ansible variable `dhcpd_interfaces_v4`. For DHCPv6, they are specified in the
-variable `dhcpd_interfaces_v6`.
-
-TODO: add variable for DHCPv6 interfaces?
-TODO: change order of templates?
 
 ### Playbook
 
