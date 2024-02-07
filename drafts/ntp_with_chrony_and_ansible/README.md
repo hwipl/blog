@@ -1,0 +1,153 @@
+# NTP with Chrony and Ansible
+
+This document describes how you can deploy chrony NTP servers with Ansible. It
+shows the NTP configuration of chrony as well as the Ansible role, playbook and
+configuration that are used to install and configure each NTP server
+automatically.
+
+## Overview
+
+## NTP Configuration
+
+## Ansible
+
+### Role
+
+```
+roles/chronyd/
+├── handlers
+│   └── main.yml
+├── tasks
+│   └── main.yml
+└── templates
+    └── chrony.conf.j2
+```
+#### Handlers
+
+roles/chronyd/handlers/main.yml:
+
+```yaml
+---
+# handlers for chronyd
+
+- name: Restart chrony
+  become: true
+  ansible.builtin.service:
+    name: chrony
+    state: restarted
+```
+
+#### Tasks
+
+roles/chronyd/tasks/main.yml:
+
+```yaml
+---
+# these tasks install and configure chrony ntp servers
+
+- name: Update apt cache if older than 3600 seconds
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+- name: Ensure chrony is installed
+  become: true
+  ansible.builtin.apt:
+    name: chrony
+    state: present
+- name: Create chrony configuration from template
+  become: true
+  ansible.builtin.template:
+    src: chrony.conf.j2
+    dest: "/etc/chrony/chrony.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Restart chrony
+```
+
+#### Templates
+
+roles/chronyd/templates/chrony.conf.j2:
+
+```jinja
+# Use servers from the NTP Pool Project. Approved by Ubuntu Technical Board
+# on 2011-02-08 (LP: #104525). See http://www.pool.ntp.org/join.html for
+# more information.
+pool 0.ubuntu.pool.ntp.org iburst
+pool 1.ubuntu.pool.ntp.org iburst
+pool 2.ubuntu.pool.ntp.org iburst
+pool 3.ubuntu.pool.ntp.org iburst
+
+# Allow access to this ntp server from the following hosts/networks
+{% for allow in allows %}
+allow {{ allow }}
+{% endfor %}
+```
+
+### Playbook
+
+chronyd.yml:
+
+```yaml
+---
+- name: Configure ntp servers
+  hosts: ntp_servers
+
+  roles:
+    - chronyd
+```
+### Configuration
+
+#### Hosts
+
+hosts:
+
+```ini
+[ntp_servers]
+node1
+```
+
+(no host-specific vars)
+
+#### Groups
+
+site1/group_vars/ntp_servers:
+
+```yaml
+---
+# ntp server configuration
+
+allows:
+  - 10.20.0.0/16
+  - 10.21.0.0/16
+  - 10.22.0.0/16
+  - 10.23.0.0/16
+```
+
+site2/group_vars/ntp_servers:
+
+```yaml
+---
+# ntp server configuration
+
+allows:
+  - 10.20.0.0/16
+  - 10.21.0.0/16
+  - 10.22.0.0/16
+  - 10.23.0.0/16
+```
+
+### Deployment
+
+```console
+$ # site 1
+$ ansible-playbook -i site1/hosts chronyd.yml
+$ # site 2
+$ ansible-playbook -i site2/hosts chronyd.yml
+```
+
+## Conclusion
+
+## Appendix: Code
