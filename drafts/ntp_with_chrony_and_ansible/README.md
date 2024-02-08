@@ -9,6 +9,20 @@ automatically.
 
 ## NTP Configuration
 
+```
+# Use servers from the NTP Pool Project. Approved by Ubuntu Technical Board
+# on 2011-02-08 (LP: #104525). See http://www.pool.ntp.org/join.html for
+# more information.
+pool 0.ubuntu.pool.ntp.org iburst
+pool 1.ubuntu.pool.ntp.org iburst
+pool 2.ubuntu.pool.ntp.org iburst
+pool 3.ubuntu.pool.ntp.org iburst
+
+# Allow access to this ntp server from the following hosts/networks
+allow 10.20.1.0/24
+allow 10.20.2.0/24
+```
+
 ## Ansible
 
 ### Role
