@@ -120,10 +120,8 @@ site1/group_vars/ntp_servers:
 # ntp server configuration
 
 allows:
-  - 10.20.0.0/16
-  - 10.21.0.0/16
-  - 10.22.0.0/16
-  - 10.23.0.0/16
+  - 10.20.1.0/24
+  - 10.20.2.0/24
 ```
 
 site2/group_vars/ntp_servers:
@@ -133,10 +131,8 @@ site2/group_vars/ntp_servers:
 # ntp server configuration
 
 allows:
-  - 10.20.0.0/16
-  - 10.21.0.0/16
-  - 10.22.0.0/16
-  - 10.23.0.0/16
+  - 10.20.1.0/24
+  - 10.20.2.0/24
 ```
 
 ### Deployment
