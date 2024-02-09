@@ -27,6 +27,9 @@ allow 10.20.2.0/24
 
 ### Role
 
+The Ansible role is called `chronyd` and structured as shown in the listing
+below:
+
 ```
 roles/chronyd/
 ├── handlers
@@ -36,9 +39,14 @@ roles/chronyd/
 └── templates
     └── chrony.conf.j2
 ```
+
+The role consists of one `main.yml` file for handlers, one `main.yml` file for
+tasks and one template file. The tasks use the template `chrony.conf.j2` to
+create the NTP configuration.
+
 #### Handlers
 
-roles/chronyd/handlers/main.yml:
+A handler is defined as follows in the file `roles/chronyd/handlers/main.yml`:
 
 ```yaml
 ---
