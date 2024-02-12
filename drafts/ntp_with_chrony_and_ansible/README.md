@@ -59,6 +59,12 @@ A handler is defined as follows in the file `roles/chronyd/handlers/main.yml`:
     state: restarted
 ```
 
+The handler is called `Restart chrony` and restarts the NTP server with the
+[service module][service] when it is triggered. It requires root privileges to
+manipulate the state of the system services, so [become][become] is set to
+`true` for [privilege escalation][privilege]. To restart the NTP server, it
+sets the system service `chrony` to state `restarted`.
+
 #### Tasks
 
 roles/chronyd/tasks/main.yml:
@@ -169,3 +175,7 @@ $ ansible-playbook -i site2/hosts chronyd.yml
 ## Conclusion
 
 ## Appendix: Code
+
+[service]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
+[become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
+[privilege]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
