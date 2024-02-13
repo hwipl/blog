@@ -67,7 +67,7 @@ sets the system service `chrony` to state `restarted`.
 
 #### Tasks
 
-roles/chronyd/tasks/main.yml:
+The tasks are defined as follows in the file `roles/chronyd/tasks/main.yml`:
 
 ```yaml
 ---
@@ -94,6 +94,23 @@ roles/chronyd/tasks/main.yml:
   notify:
     - Restart chrony
 ```
+
+These tasks install the chrony NTP server with the [apt module][apt], configure
+it with the template and the [template module][template] and trigger the
+restart event with [notify][notify] if the configuration is actually changed:
+
+All tasks need root privileges to manipulate the system configuration. So,
+[become][become] is set to `true`. The file owner of the configuration file is
+set to `root`, group is set to `root` and privileges are set to `644`.
+
+1. The first task updates the `apt` cache if it is older than one hour to make
+   sure the following installation task can run with up-to-date package
+   sources.
+2. The second task installs the chrony NTP server with `apt` if it is not
+   already installed.
+3. The third task creates or updates the configuration of the NTP server in
+   file `/etc/chrony/chrony.conf` from the template `chrony.conf.j2`. If the
+   file is changed, the restart event is triggered.
 
 #### Templates
 
@@ -179,3 +196,6 @@ $ ansible-playbook -i site2/hosts chronyd.yml
 [service]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
 [become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
 [privilege]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
+[apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+[template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
+[notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
