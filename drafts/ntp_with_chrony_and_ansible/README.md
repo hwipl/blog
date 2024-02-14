@@ -114,7 +114,9 @@ set to `root`, group is set to `root` and privileges are set to `644`.
 
 #### Templates
 
-roles/chronyd/templates/chrony.conf.j2:
+The template for the file `/etc/chrony/chrony.conf` is a [Jinja2
+template][jinja2]. It is defined as follows in the file
+`roles/chronyd/templates/chrony.conf.j2`:
 
 ```jinja
 # Use servers from the NTP Pool Project. Approved by Ubuntu Technical Board
@@ -130,6 +132,11 @@ pool 3.ubuntu.pool.ntp.org iburst
 allow {{ allow }}
 {% endfor %}
 ```
+
+The template reflects the chrony configuration shown in the NTP configuration
+section above with parts dynamically generated based on the Ansible
+configuration: The allowed IP address ranges are taken from the Ansible list
+variable `allows`.
 
 ### Playbook
 
@@ -199,3 +206,4 @@ $ ansible-playbook -i site2/hosts chronyd.yml
 [apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
 [template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
 [notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
+[jinja2]: https://jinja.palletsprojects.com/en/latest/templates/
