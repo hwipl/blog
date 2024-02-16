@@ -157,7 +157,7 @@ variable `allows`.
 
 ### Playbook
 
-chronyd.yml:
+The playbook is defined as follows in the file `chronyd.yml`:
 
 ```yaml
 ---
@@ -167,6 +167,11 @@ chronyd.yml:
   roles:
     - chronyd
 ```
+
+The playbook assigns the role `chronyd` that is described above to all hosts in
+the group `ntp_servers`. On execution, this playbook runs all the tasks of the
+role on all the hosts in the group to install and configure the NTP servers.
+
 ### Configuration
 
 #### Hosts
