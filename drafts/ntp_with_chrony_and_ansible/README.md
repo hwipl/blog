@@ -174,20 +174,30 @@ role on all the hosts in the group to install and configure the NTP servers.
 
 ### Configuration
 
+The configuration is derived from host and group files in the Ansible
+[inventory][inventory]. They contain the variables that the tasks of the role
+use. Each site uses a different inventory and, thus, different host and group
+files to allow for site-specific configurations as shown below.
+
 #### Hosts
 
-hosts:
+The Ansible hosts are defined as follows in the files `site1/hosts` and
+`site2/hosts`:
 
 ```ini
 [ntp_servers]
 node1
 ```
 
-(no host-specific vars)
+The hosts file of each site defines the group `ntp_servers` and assigns the
+node `node1` to it. Thus, `node1` is defined as NTP server for the playbook.
+There is no other host-specific configuration of the NTP servers in the
+`host_vars` of `node1` in each site.
 
 #### Groups
 
-site1/group_vars/ntp_servers:
+The site-specific NTP configuration of Site 1 and Site 2 is defined as follows
+in the files `site1/group_vars/ntp_servers` and `site2/group_vars/ntp_servers`:
 
 ```yaml
 ---
@@ -198,16 +208,9 @@ allows:
   - 10.20.2.0/24
 ```
 
-site2/group_vars/ntp_servers:
-
-```yaml
----
-# ntp server configuration
-
-allows:
-  - 10.20.1.0/24
-  - 10.20.2.0/24
-```
+Both files set the configuration of the allowed IP address ranges in Site 1 and
+Site 2 as described in the NTP configuration section above. The allowed address
+ranges are configured in the Ansible list variable `allows`.
 
 ### Deployment
 
