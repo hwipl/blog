@@ -9,6 +9,10 @@ automatically.
 
 ## NTP Configuration
 
+The configuration of the chrony NTP servers is described in this section. The
+servers are configured with the following directives in the file
+`/etc/chrony/chrony.conf`:
+
 ```
 # Use servers from the NTP Pool Project. Approved by Ubuntu Technical Board
 # on 2011-02-08 (LP: #104525). See http://www.pool.ntp.org/join.html for
@@ -22,6 +26,12 @@ pool 3.ubuntu.pool.ntp.org iburst
 allow 10.20.1.0/24
 allow 10.20.2.0/24
 ```
+
+The [pool][pool] directives configure the ubuntu NTP server pools
+`0.ubuntu.pool.ntp.org`, `1.ubuntu.pool.ntp.org`, `2.ubuntu.pool.ntp.org` and
+`3.ubuntu.pool.ntp.org` as time sources for the NTP servers. The [allow][allow]
+directives set the IP subnets from which NTP clients are allowed to access the
+NTP servers to `10.20.1.0/24` and `10.20.2.0/24`.
 
 ## Ansible
 
@@ -235,6 +245,8 @@ servers should be configured and running.
 
 ## Appendix: Code
 
+[pool]: https://chrony-project.org/doc/4.2/chrony.conf.html#pool
+[allow]: https://chrony-project.org/doc/4.2/chrony.conf.html#allow
 [roles]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
 [playbooks]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
 [templates]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html
