@@ -7,6 +7,50 @@ automatically.
 
 ## Overview
 
+The NTP servers in this document run the chrony NTP Server on Ubuntu 22.04 LTS.
+Chrony is installed and configured automatically with Ansible. The NTP
+configuration assumes the network in the following figure:
+
+```
+                        +-----------------------+
+                        |    NTP Server Pools   |
+                        +-----------------------+
+                        | 0.ubuntu.pool.ntp.org |
+                        | 1.ubuntu.pool.ntp.org |
+                        | 2.ubuntu.pool.ntp.org |
+                        | 3.ubuntu.pool.ntp.org |
+                        +-----------------------+
+                   _________________|_________________
+                  |                                   |
+..................|...................................|..................
+: Site 1          |                 :                 |          Site 2 :
+: 10.20.1.0/24    |                 :                 |    10.20.2.0/24 :
+:                 |                 :                 |                 :
+:          +-------------+          :          +-------------+          :
+:          | Node 1      |          :          | Node 1      |          :
+:          | NTP Server  |          :          | NTP Server  |          :
+:          | 10.20.1.1   |          :          | 10.20.2.1   |          :
+:          +-------------+          :          +-------------+          :
+:          _______|_______          :          _______|_______          :
+:         |               |         :         |               |         :
+:  +-------------+ +-------------+  :  +-------------+ +-------------+  :
+:  | Node 2      | | Node 3      |  :  | Node 2      | | Node 3      |  :
+:  | NTP Client  | | NTP Client  |  :  | NTP Client  | | NTP Client  |  :
+:  | 10.20.1.2   | | 10.20.1.3   |  :  | 10.20.2.2   | | 10.20.2.3   |  :
+:  +-------------+ +-------------+  :  +-------------+ +-------------+  :
+:...................................:...................................:
+                        Network: 10.20.0.0/16
+```
+
+The example network consists of the two sites `Site 1` and `Site 2`. Each site
+contains three nodes. `Node 1` runs the NTP server. `Node 2` and `Node 3` are
+NTP clients. The NTP clients in a site use the NTP server in the same site.
+But in case of a server failure, clients could also use the server in the other
+site as fallback. So, both servers must allow access from clients in both
+sites. The NTP servers use the Ubuntu default NTP server pools
+`0.ubuntu.pool.ntp.org`, `1.ubuntu.pool.ntp.org`, `2.ubuntu.pool.ntp.org` and
+`3.ubuntu.pool.ntp.org` as external time sources.
+
 ## NTP Configuration
 
 The configuration of the chrony NTP servers is described in this section. The
