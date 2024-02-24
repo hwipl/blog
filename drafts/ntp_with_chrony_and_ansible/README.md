@@ -300,6 +300,14 @@ the appendix below.
 
 ## Appendix: Code
 
+You can find the Ansible role and playbook as well as the configuration of both
+sites as shown in this document at the following links:
+
+- [Ansible Role](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/chronyd/roles/chronyd)
+- [Ansible Playbook](https://github.com/hwipl/ansible-playbooks/blob/main/ubuntu/chronyd/chronyd.yml)
+- [Site 1 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/chronyd/examples/site1)
+- [Site 2 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/chronyd/examples/site2)
+
 [pool]: https://chrony-project.org/doc/4.2/chrony.conf.html#pool
 [allow]: https://chrony-project.org/doc/4.2/chrony.conf.html#allow
 [roles]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
