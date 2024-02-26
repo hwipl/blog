@@ -199,7 +199,7 @@ pool 2.ubuntu.pool.ntp.org iburst
 pool 3.ubuntu.pool.ntp.org iburst
 
 # Allow access to this ntp server from the following hosts/networks
-{% for allow in allows %}
+{% for allow in chronyd_allows %}
 allow {{ allow }}
 {% endfor %}
 ```
@@ -207,7 +207,7 @@ allow {{ allow }}
 The template reflects the chrony configuration shown in the NTP configuration
 section above with parts dynamically generated based on the Ansible
 configuration: The allowed IP address ranges are taken from the Ansible list
-variable `allows`.
+variable `chronyd_allows`.
 
 ### Playbook
 
@@ -257,14 +257,14 @@ in the files `site1/group_vars/ntp_servers` and `site2/group_vars/ntp_servers`:
 ---
 # ntp server configuration
 
-allows:
+chronyd_allows:
   - 10.20.1.0/24
   - 10.20.2.0/24
 ```
 
 Both files set the configuration of the allowed IP address ranges in Site 1 and
 Site 2 as described in the NTP configuration section above. The allowed address
-ranges are configured in the Ansible list variable `allows`.
+ranges are configured in the Ansible list variable `chronyd_allows`.
 
 ### Deployment
 
