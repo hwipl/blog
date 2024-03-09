@@ -1,0 +1,149 @@
+# Reverse Proxy with HAProxy and Ansible
+
+This document describes how you can deploy HAProxy reverse proxy servers with
+Ansible. It shows the reverse proxy configuration as well as the Ansible role,
+playbook and configuration that are used to install and configure each HAProxy
+server automatically.
+
+## Overview
+
+## Reverse Proxy Configuration
+
+## Ansible
+
+### Role
+
+```
+roles/haproxy/
+├── handlers
+│   └── main.yml
+├── tasks
+│   └── main.yml
+└── templates
+    └── haproxy.cfg.j2
+```
+
+#### Handlers
+
+---
+# handlers for haproxy
+
+```yaml
+- name: Restart haproxy
+  become: true
+  ansible.builtin.service:
+    name: haproxy
+    state: restarted
+```
+
+#### Tasks
+
+```yaml
+---
+# these tasks setup haproxy
+
+- name: Update apt cache if older than 3600 seconds
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+- name: Ensure haproxy is installed
+  become: true
+  ansible.builtin.apt:
+    name: haproxy
+    state: present
+- name: Copy certificates
+  become: true
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: '0600'
+  loop: "{{ haproxy_certificates }}"
+- name: Create haproxy configuration from template
+  become: true
+  ansible.builtin.template:
+    src: haproxy.cfg.j2
+    dest: "/etc/haproxy/haproxy.cfg"
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Restart haproxy
+```
+
+#### Templates
+
+```
+global
+	log /dev/log	local0
+	log /dev/log	local1 notice
+	chroot /var/lib/haproxy
+	stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+	stats timeout 30s
+	user haproxy
+	group haproxy
+	daemon
+
+	# Default SSL material locations
+	ca-base /etc/ssl/certs
+	crt-base /etc/ssl/private
+
+	# See: https://ssl-config.mozilla.org/#server=haproxy&server-version=2.0.3&config=intermediate
+        ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+        ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
+        ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
+
+defaults
+	log	global
+	mode	http
+	option	httplog
+	option	dontlognull
+        timeout connect 5000
+        timeout client  50000
+        timeout server  50000
+	errorfile 400 /etc/haproxy/errors/400.http
+	errorfile 403 /etc/haproxy/errors/403.http
+	errorfile 408 /etc/haproxy/errors/408.http
+	errorfile 500 /etc/haproxy/errors/500.http
+	errorfile 502 /etc/haproxy/errors/502.http
+	errorfile 503 /etc/haproxy/errors/503.http
+	errorfile 504 /etc/haproxy/errors/504.http
+
+# frontends
+{% for frontend in haproxy_frontends %}
+frontend {{ frontend.name }}
+{% for entry in frontend.config %}
+	{{ entry }}
+{% endfor %}
+{% endfor %}
+
+# backends
+{% for backend in haproxy_backends %}
+backend {{ backend.name }}
+{% for entry in backend.config %}
+	{{ entry }}
+{% endfor %}
+{% endfor %}
+```
+
+### Playbook
+
+```yaml
+---
+- name: Configure haproxy
+  hosts: haproxy_servers
+
+  roles:
+    - haproxy
+```
+
+### Configuration
+#### Hosts
+#### Groups
+### Deployment
+
+## Conclusion
+
+## Appendix: Code
