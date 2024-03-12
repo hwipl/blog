@@ -30,6 +30,9 @@ this document.
 
 ### Role
 
+The Ansible role is called `haproxy` and structured as shown in the listing
+below:
+
 ```
 roles/haproxy/
 ├── handlers
@@ -40,12 +43,16 @@ roles/haproxy/
     └── haproxy.cfg.j2
 ```
 
+The role consists of one `main.yml` file for handlers, one `main.yml` file for
+tasks and one template file. The tasks use the template `haproxy.cfg.j2` to
+create the configuration file of the reverse proxy servers.
+
 #### Handlers
 
+```yaml
 ---
 # handlers for haproxy
 
-```yaml
 - name: Restart haproxy
   become: true
   ansible.builtin.service:
