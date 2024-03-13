@@ -49,6 +49,8 @@ create the configuration file of the reverse proxy servers.
 
 #### Handlers
 
+A handler is defined as follows in the file `roles/haproxy/handlers/main.yml`:
+
 ```yaml
 ---
 # handlers for haproxy
@@ -59,6 +61,12 @@ create the configuration file of the reverse proxy servers.
     name: haproxy
     state: restarted
 ```
+
+The handler is called `Restart haproxy` and restarts the HAProxy server with
+the [service module][service] when it is triggered. It requires root privileges
+to manipulate the state of the system services, so [become][become] is set to
+`true` for [privilege escalation][privilege]. To restart the HAProxy server, it
+sets the system service `haproxy` to state `restarted`.
 
 #### Tasks
 
@@ -178,3 +186,6 @@ backend {{ backend.name }}
 [handlers]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html
 [inventory]: https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
 [ansible-playbook]: https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html
+[service]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
+[become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
+[privilege]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
