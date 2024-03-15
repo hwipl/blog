@@ -129,7 +129,11 @@ to `root`.
 
 #### Templates
 
-```
+The template for the configuration file `/etc/haproxy/haproxy.cfg` is defined
+as [Jinja2 template][jinja2] as follows in the file
+`roles/haproxy/templates/proxy.cfg.j2`:
+
+```jinja
 global
 	log /dev/log	local0
 	log /dev/log	local1 notice
@@ -182,6 +186,18 @@ backend {{ backend.name }}
 {% endfor %}
 ```
 
+The template reflects the HAProxy configuration shown in the Reverse Proxy
+Configuration section above with parts dynamically generated based on the
+Ansible configuration:
+
+- For each frontend in the Ansible list `frontends`, the template creates a
+  `frontend` block. The name of a block is taken from the frontend variable
+  `name`. All entries of a frontend configuration are taken from the frontend
+  list variable `config`.
+- Like for the frontends, the template creates a `backend` block for each
+  backend in the Ansible list `backends`. The name and configuration entries of
+  a block are taken from the backend variables `name` and `config`.
+
 ### Playbook
 
 ```yaml
@@ -214,3 +230,4 @@ backend {{ backend.name }}
 [apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
 [template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
 [notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
+[jinja2]: https://jinja.palletsprojects.com/en/latest/templates/
