@@ -200,6 +200,8 @@ Ansible configuration:
 
 ### Playbook
 
+The playbook is defined as follows in the file `haproxy.yml`:
+
 ```yaml
 ---
 - name: Configure haproxy
@@ -208,6 +210,11 @@ Ansible configuration:
   roles:
     - haproxy
 ```
+
+The playbook assigns the role `haproxy` that is described above to all hosts in
+the group `haproxy_servers`. On execution, this playbook runs all the tasks of
+the role on all the hosts in the group to install and configure the HAProxy
+servers.
 
 ### Configuration
 #### Hosts
