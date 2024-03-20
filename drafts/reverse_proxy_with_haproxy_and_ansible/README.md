@@ -217,7 +217,27 @@ the role on all the hosts in the group to install and configure the HAProxy
 servers.
 
 ### Configuration
+
+The configuration is derived from host and group files in the Ansible
+[inventory][inventory]. They contain the variables that the tasks of the role
+use. Each site uses a different inventory and, thus, different host and group
+files to allow for site-specific configurations as shown below.
+
 #### Hosts
+
+The Ansible hosts are defined as follows in the files `site1/hosts` and
+`site2/hosts`:
+
+```ini
+[haproxy_servers]
+node1
+```
+
+The hosts file of each site defines the group `haproxy_servers` and assigns the
+node `node1` to it. Thus, `node1` is defined as HAProxy server for the
+playbook. There is no other host-specific configuration of the HAProxy servers
+in the `host_vars` of `node1` in each site.
+
 #### Groups
 ### Deployment
 
