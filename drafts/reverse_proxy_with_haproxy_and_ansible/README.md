@@ -239,6 +239,119 @@ playbook. There is no other host-specific configuration of the HAProxy servers
 in the `host_vars` of `node1` in each site.
 
 #### Groups
+
+The site-specific HAProxy configuration of Site 1 is defined as follows in the
+file `site1/group_vars/haproxy_servers`:
+
+```yaml
+---
+# haproxy server configuration
+
+# a haproxy certificate is a pem file that contains both the certificate and
+# private key, e.g., created with:
+# cat cert_file key_file | tee haproxy_cert.pem
+haproxy_certificates:
+- src: "{{ inventory_dir }}/certs/site1-haproxy.pem"
+  dest: /etc/haproxy/site1-haproxy.pem
+
+# haproxy frontend configurations
+haproxy_frontends:
+- name: A
+  config:
+  - bind *:8443
+  - option tcplog
+  - mode tcp
+  - default_backend A-servers
+- name: B
+  config:
+  - bind *:32196 ssl crt /etc/haproxy/site1-haproxy.pem
+  - option tcplog
+  - mode tcp
+  - default_backend B-servers
+- name: C
+  config:
+  - bind *:3000 ssl crt /etc/haproxy/site1-haproxy.pem
+  - option tcplog
+  - mode tcp
+  - default_backend C-servers
+
+# haproxy backend configurations
+haproxy_backends:
+- name: A-servers
+  config:
+  - mode tcp
+  - balance roundrobin
+  - option ssl-hello-chk
+  - server a1.s1.network.lan 10.20.1.13:8443 check
+- name: B-servers
+  config:
+  - mode tcp
+  - balance roundrobin
+  - server b1.s1.network.lan 10.20.1.11:32196 check
+  - server b2.s1.network.lan 10.20.1.21:32196 check
+- name: C-servers
+  config:
+  - mode tcp
+  - balance roundrobin
+  - server c1.s1.network.lan 10.20.1.14:3000 check
+```
+
+The site-specific HAProxy configuration of Site 2 is defined as follows in the
+file `site2/group_vars/haproxy_servers`:
+
+```yaml
+---
+# haproxy server configuration
+
+# a haproxy certificate is a pem file that contains both the certificate and
+# private key, e.g., created with:
+# cat cert_file key_file | tee haproxy_cert.pem
+haproxy_certificates:
+- src: "{{ inventory_dir }}/certs/site2-haproxy.pem"
+  dest: /etc/haproxy/site2-haproxy.pem
+
+# haproxy frontend configurations
+haproxy_frontends:
+- name: A
+  config:
+  - bind *:8443
+  - option tcplog
+  - mode tcp
+  - default_backend A-servers
+- name: B
+  config:
+  - bind *:32196 ssl crt /etc/haproxy/site2-haproxy.pem
+  - option tcplog
+  - mode tcp
+  - default_backend B-servers
+- name: C
+  config:
+  - bind *:3000 ssl crt /etc/haproxy/site2-haproxy.pem
+  - option tcplog
+  - mode tcp
+  - default_backend C-servers
+
+# haproxy backend configurations
+haproxy_backends:
+- name: A-servers
+  config:
+  - mode tcp
+  - balance roundrobin
+  - option ssl-hello-chk
+  - server a1.s2.network.lan 10.20.2.13:8443 check
+- name: B-servers
+  config:
+  - mode tcp
+  - balance roundrobin
+  - server b1.s2.network.lan 10.20.2.11:32196 check
+  - server b2.s2.network.lan 10.20.2.21:32196 check
+- name: C-servers
+  config:
+  - mode tcp
+  - balance roundrobin
+  - server c1.s2.network.lan 10.20.2.14:3000 check
+```
+
 ### Deployment
 
 The reverse proxy servers can be installed and configured with the Ansible
