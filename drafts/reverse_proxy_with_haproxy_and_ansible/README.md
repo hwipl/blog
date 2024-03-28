@@ -352,6 +352,13 @@ haproxy_backends:
   - server c1.s2.network.lan 10.20.2.14:3000 check
 ```
 
+Both files set the configuration of HAProxy in Site 1 and Site 2 as described
+in the Reverse Proxy Configuration section above. The frontends are configured
+in the Ansible list variable `haproxy_frontends`. The corresponding backends
+are configured in the Ansible list variable `haproxy_backends`. Each entry is
+identified by its name in the variable `name` and contains its configuration in
+the list variable `config`.
+
 ### Deployment
 
 The reverse proxy servers can be installed and configured with the Ansible
