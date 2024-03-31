@@ -9,6 +9,152 @@ server automatically.
 
 ## Reverse Proxy Configuration
 
+HAProxy in Site 1 is configured as follows in the file
+`/etc/haproxy/haproxy.cfg`:
+
+```
+global
+	log /dev/log	local0
+	log /dev/log	local1 notice
+	chroot /var/lib/haproxy
+	stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+	stats timeout 30s
+	user haproxy
+	group haproxy
+	daemon
+
+	# Default SSL material locations
+	ca-base /etc/ssl/certs
+	crt-base /etc/ssl/private
+
+	# See: https://ssl-config.mozilla.org/#server=haproxy&server-version=2.0.3&config=intermediate
+        ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+        ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
+        ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
+
+defaults
+	log	global
+	mode	http
+	option	httplog
+	option	dontlognull
+        timeout connect 5000
+        timeout client  50000
+        timeout server  50000
+	errorfile 400 /etc/haproxy/errors/400.http
+	errorfile 403 /etc/haproxy/errors/403.http
+	errorfile 408 /etc/haproxy/errors/408.http
+	errorfile 500 /etc/haproxy/errors/500.http
+	errorfile 502 /etc/haproxy/errors/502.http
+	errorfile 503 /etc/haproxy/errors/503.http
+	errorfile 504 /etc/haproxy/errors/504.http
+
+# frontends
+frontend A
+	bind *:8443
+	option tcplog
+	mode tcp
+	default_backend A-servers
+frontend B
+	bind *:32196 ssl crt /etc/haproxy/site1-haproxy.pem
+	option tcplog
+	mode tcp
+	default_backend B-servers
+frontend C
+	bind *:3000 ssl crt /etc/haproxy/site1-haproxy.pem
+	option tcplog
+	mode tcp
+	default_backend C-servers
+
+# backends
+backend A-servers
+	mode tcp
+	balance roundrobin
+	option ssl-hello-chk
+	server a1.s1.network.lan 10.20.1.13:8443 check
+backend B-servers
+	mode tcp
+	balance roundrobin
+	server b1.s1.network.lan 10.20.1.11:32196 check
+	server b2.s1.network.lan 10.20.1.21:32196 check
+backend C-servers
+	mode tcp
+	balance roundrobin
+	server c1.s1.network.lan 10.20.1.14:3000 check
+```
+
+HAProxy in Site 2 is configured as follows in the file
+`/etc/haproxy/haproxy.cfg`:
+
+```
+global
+	log /dev/log	local0
+	log /dev/log	local1 notice
+	chroot /var/lib/haproxy
+	stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+	stats timeout 30s
+	user haproxy
+	group haproxy
+	daemon
+
+	# Default SSL material locations
+	ca-base /etc/ssl/certs
+	crt-base /etc/ssl/private
+
+	# See: https://ssl-config.mozilla.org/#server=haproxy&server-version=2.0.3&config=intermediate
+        ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+        ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
+        ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
+
+defaults
+	log	global
+	mode	http
+	option	httplog
+	option	dontlognull
+        timeout connect 5000
+        timeout client  50000
+        timeout server  50000
+	errorfile 400 /etc/haproxy/errors/400.http
+	errorfile 403 /etc/haproxy/errors/403.http
+	errorfile 408 /etc/haproxy/errors/408.http
+	errorfile 500 /etc/haproxy/errors/500.http
+	errorfile 502 /etc/haproxy/errors/502.http
+	errorfile 503 /etc/haproxy/errors/503.http
+	errorfile 504 /etc/haproxy/errors/504.http
+
+# frontends
+frontend A
+	bind *:8443
+	option tcplog
+	mode tcp
+	default_backend A-servers
+frontend B
+	bind *:32196 ssl crt /etc/haproxy/site2-haproxy.pem
+	option tcplog
+	mode tcp
+	default_backend B-servers
+frontend C
+	bind *:3000 ssl crt /etc/haproxy/site2-haproxy.pem
+	option tcplog
+	mode tcp
+	default_backend C-servers
+
+# backends
+backend A-servers
+	mode tcp
+	balance roundrobin
+	option ssl-hello-chk
+	server a1.s2.network.lan 10.20.2.13:8443 check
+backend B-servers
+	mode tcp
+	balance roundrobin
+	server b1.s2.network.lan 10.20.2.11:32196 check
+	server b2.s2.network.lan 10.20.2.21:32196 check
+backend C-servers
+	mode tcp
+	balance roundrobin
+	server c1.s2.network.lan 10.20.2.14:3000 check
+```
+
 ## Ansible
 
 Ansible allows for automatic installation and configuration of the revers proxy
