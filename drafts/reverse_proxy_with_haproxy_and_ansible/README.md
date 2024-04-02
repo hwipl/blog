@@ -43,6 +43,13 @@ server automatically.
                     Network: 10.20.0.0/16
 ```
 
+| Service | Port   | Type         | Server           |
+|---------|--------|--------------|------------------|
+| A       | :8443  | Passthrough  | 10.20.1.13:8443  |
+| B       | :32196 | Termination  | 10.20.1.11:32196 |
+|         |        |              | 10.20.1.21:32196 |
+| C       | :3000  | Termination  | 10.20.1.14:3000  |
+
 ## Reverse Proxy Configuration
 
 HAProxy in Site 1 is configured as follows in the file
