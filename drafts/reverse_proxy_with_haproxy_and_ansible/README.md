@@ -7,11 +7,18 @@ server automatically.
 
 ## Overview
 
+The reverse proxy servers in this document run HAProxy on Ubuntu 22.04 LTS.
+HAProxy is installed and configured automatically with Ansible. The HAPorxy
+configuration in this document assumes the network in the following figure:
+
 ```
-.............................................................
-: Site 1                      :                      Site 2 :
-: 10.20.1.0/24                :                10.20.2.0/24 :
-:                             :                             :
+                        Other Networks
+                     _________|_________
+                    |                   |
+....................|...................|....................
+: Site 1            |         :         |            Site 2 :
+: 10.20.1.0/24      |         :         |      10.20.2.0/24 :
+:                   |         :         |                   :
 :             +-----------+   :   +-----------+             :
 :             | Node 1    |   :   | Node 1    |             :
 :             | HAProxy   |   :   | HAProxy   |             :
@@ -42,6 +49,14 @@ server automatically.
 :.............................:.............................:
                     Network: 10.20.0.0/16
 ```
+
+The example network consists of the two sites `Site 1` and `Site 2`. Each site
+contains five nodes. `Node 1` runs the HAProxy server and is connected to the
+other nodes in the site as well as other networks. `Node 11`, `Node 13`, `Node
+14` and `Node 21` run services `A`, `B` and `C`. Service `A` and `C` are each
+only provided a single node (`Node 13` and `Node 14`). Service `B` is provided
+by the two nodes `Node 11` and `Node 21`. In each site, the HAProxy server
+enables access from other networks to these services.
 
 | Service | Port   | Type         | Server           |
 |---------|--------|--------------|------------------|
