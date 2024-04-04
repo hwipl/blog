@@ -58,12 +58,41 @@ only provided a single node (`Node 13` and `Node 14`). Service `B` is provided
 by the two nodes `Node 11` and `Node 21`. In each site, the HAProxy server
 enables access from other networks to these services.
 
-| Service | Port   | Type         | Server           |
-|---------|--------|--------------|------------------|
-| A       | :8443  | Passthrough  | 10.20.1.13:8443  |
-| B       | :32196 | Termination  | 10.20.1.11:32196 |
-|         |        |              | 10.20.1.21:32196 |
-| C       | :3000  | Termination  | 10.20.1.14:3000  |
+The HAProxy configuration for the three services is shown in the following
+two tables. The first table shows Site 1:
+
+| Service | Listen    | Type              | Server(s)          |
+|---------|-----------|-------------------|--------------------|
+| A       | `*:8443`  | SSL Pass-through  | `10.20.1.13:8443`  |
+| B       | `*:32196` | SSL Termination   | `10.20.1.11:32196` |
+|         |           |                   | `10.20.1.21:32196` |
+| C       | `*:3000`  | SSL Termination   | `10.20.1.14:3000`  |
+
+The second table shows Site 2:
+
+| Service | Listen    | Type              | Server             |
+|---------|-----------|-------------------|--------------------|
+| A       | `*:8443`  | SSL Pass-through  | `10.20.2.13:8443`  |
+| B       | `*:32196` | SSL Termination   | `10.20.2.11:32196` |
+|         |           |                   | `10.20.2.21:32196` |
+| C       | `*:3000`  | SSL Termination   | `10.20.2.14:3000`  |
+
+The HAProxy accepts SSL connections to service `A` on all IP addresses and port
+`8443`. It forwards them to the IP address of Node 13 and the same port
+(`10.20.1.13:8443` in Site 1, `10.20.2.13:8443` in Site 2). The SSL connection
+is passed through to the server and is not terminated by the HAProxy.
+
+For service `B`, the HAProxy accepts SSL connections on all IP addresses and
+port `32196`. It forwards them to the IP addresses of Node 11 and Node 21 and
+the same port (`10.20.1.11:32196` and `10.20.1.21:32196` in Site 1,
+`10.20.2.11:32196` and `10.20.2.21:32196` in Site 2). Servers are selected via
+round-robin. The HAProxy terminates the SSL connection and forwards unencrypted
+traffic to the servers.
+
+For service `C`, the HAProxy accepts SSL connections on all IP addresses and
+port `3000`. It forwards them to the IP address of Node 14 and the same port
+(`10.20.1.14:3000` in Site 1, `10.20.2.14:3000` in Site 2). The HAProxy
+terminates the SSL connection and forwards unencrypted traffic to the server.
 
 ## Reverse Proxy Configuration
 
