@@ -96,8 +96,9 @@ terminates the SSL connection and forwards unencrypted traffic to the server.
 
 ## Reverse Proxy Configuration
 
-HAProxy in Site 1 is configured as follows in the file
-`/etc/haproxy/haproxy.cfg`:
+The configuration of the HAProxy servers is described in this section. The
+servers in the two sites are configured as follows in the file
+`/etc/haproxy/haproxy.cfg`. The following listing shows the file in Site 1:
 
 ```
 global
@@ -169,8 +170,7 @@ backend C-servers
 	server c1.s1.network.lan 10.20.1.14:3000 check
 ```
 
-HAProxy in Site 2 is configured as follows in the file
-`/etc/haproxy/haproxy.cfg`:
+The next listing shows the file `/etc/haproxy/haproxy.cfg` in Site 2:
 
 ```
 global
@@ -241,6 +241,12 @@ backend C-servers
 	balance roundrobin
 	server c1.s2.network.lan 10.20.2.14:3000 check
 ```
+
+TODO: add source of config (example/default config in ubuntu?)?
+
+TODO: explain frontend with bind, option, mode, default_backend. Add links to haproxy docs?
+
+TODO: explain backend with mode, balance, option, server. Add links to haproxy docs?
 
 ## Ansible
 
