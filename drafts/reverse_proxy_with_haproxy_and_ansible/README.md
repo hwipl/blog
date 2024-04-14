@@ -26,72 +26,72 @@ configuration in this document assumes the network in the following figure:
 :             +-----------+   :   +-----------+             :
 :                   |         :         |                   :
 :                   |         :         |                   :
-:  +------------+   |         :         |   +------------+  :
-:  | Node 11    |   |         :         |   | Node 11    |  :
-:  | Service B  |___|         :         |___| Service B  |  :
-:  | 10.20.1.11 |   |         :         |   | 10.20.2.11 |  :
-:  +------------+   |         :         |   +------------+  :
-:  +------------+   |         :         |   +------------+  :
-:  | Node 13    |   |         :         |   | Node 13    |  :
-:  | Service A  |___|         :         |___| Service A  |  :
-:  | 10.20.1.13 |   |         :         |   | 10.20.2.13 |  :
-:  +------------+   |         :         |   +------------+  :
-:  +------------+   |         :         |   +------------+  :
-:  | Node 14    |   |         :         |   | Node 14    |  :
-:  | Service C  |___|         :         |___| Service C  |  :
-:  | 10.20.1.14 |   |         :         |   | 10.20.2.14 |  :
-:  +------------+   |         :         |   +------------+  :
-:  +------------+   |         :         |   +------------+  :
-:  | Node 21    |   |         :         |   | Node 21    |  :
-:  | Service B  |___|         :         |___| Service B  |  :
-:  | 10.20.1.21 |             :             | 10.20.2.21 |  :
-:  +------------+             :             +------------+  :
+:   +-----------+   |         :         |   +-----------+   :
+:   | Node 2    |   |         :         |   | Node 2    |   :
+:   | Service A |___|         :         |___| Service A |   :
+:   | 10.20.1.2 |   |         :         |   | 10.20.2.2 |   :
+:   +-----------+   |         :         |   +-----------+   :
+:   +-----------+   |         :         |   +-----------+   :
+:   | Node 3    |   |         :         |   | Node 3    |   :
+:   | Service B |___|         :         |___| Service B |   :
+:   | 10.20.1.3 |   |         :         |   | 10.20.2.3 |   :
+:   +-----------+   |         :         |   +-----------+   :
+:   +-----------+   |         :         |   +-----------+   :
+:   | Node 4    |   |         :         |   | Node 4    |   :
+:   | Service B |___|         :         |___| Service B |   :
+:   | 10.20.1.4 |   |         :         |   | 10.20.2.4 |   :
+:   +-----------+   |         :         |   +-----------+   :
+:   +-----------+   |         :         |   +-----------+   :
+:   | Node 5    |   |         :         |   | Node 5    |   :
+:   | Service C |___|         :         |___| Service C |   :
+:   | 10.20.1.5 |             :             | 10.20.2.5 |   :
+:   +-----------+             :             +-----------+   :
 :.............................:.............................:
                     Network: 10.20.0.0/16
 ```
 
 The example network consists of the two sites `Site 1` and `Site 2`. Each site
 contains five nodes. `Node 1` runs the HAProxy server and is connected to the
-other nodes in the site as well as other networks. `Node 11`, `Node 13`, `Node
-14` and `Node 21` run services `A`, `B` and `C`. Service `A` and `C` are each
-only provided a single node (`Node 13` and `Node 14`). Service `B` is provided
-by the two nodes `Node 11` and `Node 21`. In each site, the HAProxy server
-enables access from other networks to these services.
+other nodes in the site as well as other networks. `Node 2`, `Node 3`, `Node 4`
+and `Node 5` run services `A`, `B` and `C`. Service `A` and `C` are each only
+provided a single node (`Node 2` and `Node 5`). Service `B` is provided by the
+two nodes `Node 3` and `Node 4`. In each site, the HAProxy server enables
+access from other networks to these services.
 
 The HAProxy configuration for the three services is shown in the following
 two tables. The first table shows Site 1:
 
-| Service | Listen    | Type              | Server(s)          |
-|---------|-----------|-------------------|--------------------|
-| A       | `*:8443`  | SSL Pass-through  | `10.20.1.13:8443`  |
-| B       | `*:32196` | SSL Termination   | `10.20.1.11:32196` |
-|         |           |                   | `10.20.1.21:32196` |
-| C       | `*:3000`  | SSL Termination   | `10.20.1.14:3000`  |
+| Service | Listen    | Type              | Server(s)         |
+|---------|-----------|-------------------|-------------------|
+| A       | `*:8443`  | SSL Pass-through  | `10.20.1.2:8443`  |
+| B       | `*:32196` | SSL Termination   | `10.20.1.3:32196` |
+|         |           |                   | `10.20.1.4:32196` |
+| C       | `*:3000`  | SSL Termination   | `10.20.1.5:3000`  |
 
 The second table shows Site 2:
 
-| Service | Listen    | Type              | Server             |
-|---------|-----------|-------------------|--------------------|
-| A       | `*:8443`  | SSL Pass-through  | `10.20.2.13:8443`  |
-| B       | `*:32196` | SSL Termination   | `10.20.2.11:32196` |
-|         |           |                   | `10.20.2.21:32196` |
-| C       | `*:3000`  | SSL Termination   | `10.20.2.14:3000`  |
+| Service | Listen    | Type              | Server            |
+|---------|-----------|-------------------|-------------------|
+| A       | `*:8443`  | SSL Pass-through  | `10.20.2.2:8443`  |
+| B       | `*:32196` | SSL Termination   | `10.20.2.3:32196` |
+|         |           |                   | `10.20.2.4:32196` |
+| C       | `*:3000`  | SSL Termination   | `10.20.2.5:3000`  |
 
 The HAProxy accepts SSL connections to service `A` on all IP addresses and port
-`8443`. It forwards them to the IP address of Node 13 and the same port
-(`10.20.1.13:8443` in Site 1, `10.20.2.13:8443` in Site 2). The SSL connection
+`8443`. It forwards them to the IP address of Node 2 and the same port
+(`10.20.1.2:8443` in Site 1, `10.20.2.2:8443` in Site 2). The SSL connection
 is passed through to the server and is not terminated by the HAProxy.
 
 For service `B`, the HAProxy accepts SSL connections on all IP addresses and
-port `32196`. It forwards them to the IP addresses of Node 11 and Node 21 and
-the same port (`10.20.1.11:32196` and `10.20.1.21:32196` in Site 1,
-`10.20.2.11:32196` and `10.20.2.21:32196` in Site 2). Servers are selected via
-round-robin. The HAProxy terminates the SSL connection and forwards unencrypted
-traffic to the servers.
+port `32196`. It forwards them to the IP addresses of Node 3 and Node 4 and the
+same port (`10.20.1.3:32196` and `10.20.1.4:32196` in Site 1, `10.20.2.3:32196`
+and `10.20.2.4:32196` in Site 2). Servers are selected via round-robin. The
+HAProxy terminates the SSL connection and forwards unencrypted traffic to the
+servers.
 
 For service `C`, the HAProxy accepts SSL connections on all IP addresses and
-port `3000`. It forwards them to the IP address of Node 14 and the same port
-(`10.20.1.14:3000` in Site 1, `10.20.2.14:3000` in Site 2). The HAProxy
+port `3000`. It forwards them to the IP address of Node 5 and the same port
+(`10.20.1.5:3000` in Site 1, `10.20.2.5:3000` in Site 2). The HAProxy
 terminates the SSL connection and forwards unencrypted traffic to the server.
 
 ## Reverse Proxy Configuration
@@ -158,16 +158,16 @@ backend A-servers
 	mode tcp
 	balance roundrobin
 	option ssl-hello-chk
-	server a1.s1.network.lan 10.20.1.13:8443 check
+	server a1.s1.network.lan 10.20.1.2:8443 check
 backend B-servers
 	mode tcp
 	balance roundrobin
-	server b1.s1.network.lan 10.20.1.11:32196 check
-	server b2.s1.network.lan 10.20.1.21:32196 check
+	server b1.s1.network.lan 10.20.1.3:32196 check
+	server b2.s1.network.lan 10.20.1.4:32196 check
 backend C-servers
 	mode tcp
 	balance roundrobin
-	server c1.s1.network.lan 10.20.1.14:3000 check
+	server c1.s1.network.lan 10.20.1.5:3000 check
 ```
 
 The next listing shows the file `/etc/haproxy/haproxy.cfg` in Site 2:
@@ -230,16 +230,16 @@ backend A-servers
 	mode tcp
 	balance roundrobin
 	option ssl-hello-chk
-	server a1.s2.network.lan 10.20.2.13:8443 check
+	server a1.s2.network.lan 10.20.2.2:8443 check
 backend B-servers
 	mode tcp
 	balance roundrobin
-	server b1.s2.network.lan 10.20.2.11:32196 check
-	server b2.s2.network.lan 10.20.2.21:32196 check
+	server b1.s2.network.lan 10.20.2.3:32196 check
+	server b2.s2.network.lan 10.20.2.4:32196 check
 backend C-servers
 	mode tcp
 	balance roundrobin
-	server c1.s2.network.lan 10.20.2.14:3000 check
+	server c1.s2.network.lan 10.20.2.5:3000 check
 ```
 
 TODO: add source of config (example/default config in ubuntu?)?
@@ -521,18 +521,18 @@ haproxy_backends:
   - mode tcp
   - balance roundrobin
   - option ssl-hello-chk
-  - server a1.s1.network.lan 10.20.1.13:8443 check
+  - server a1.s1.network.lan 10.20.1.2:8443 check
 - name: B-servers
   config:
   - mode tcp
   - balance roundrobin
-  - server b1.s1.network.lan 10.20.1.11:32196 check
-  - server b2.s1.network.lan 10.20.1.21:32196 check
+  - server b1.s1.network.lan 10.20.1.3:32196 check
+  - server b2.s1.network.lan 10.20.1.4:32196 check
 - name: C-servers
   config:
   - mode tcp
   - balance roundrobin
-  - server c1.s1.network.lan 10.20.1.14:3000 check
+  - server c1.s1.network.lan 10.20.1.5:3000 check
 ```
 
 The site-specific HAProxy configuration of Site 2 is defined as follows in the
@@ -577,18 +577,18 @@ haproxy_backends:
   - mode tcp
   - balance roundrobin
   - option ssl-hello-chk
-  - server a1.s2.network.lan 10.20.2.13:8443 check
+  - server a1.s2.network.lan 10.20.2.2:8443 check
 - name: B-servers
   config:
   - mode tcp
   - balance roundrobin
-  - server b1.s2.network.lan 10.20.2.11:32196 check
-  - server b2.s2.network.lan 10.20.2.21:32196 check
+  - server b1.s2.network.lan 10.20.2.3:32196 check
+  - server b2.s2.network.lan 10.20.2.4:32196 check
 - name: C-servers
   config:
   - mode tcp
   - balance roundrobin
-  - server c1.s2.network.lan 10.20.2.14:3000 check
+  - server c1.s2.network.lan 10.20.2.5:3000 check
 ```
 
 Both files set the configuration of HAProxy in Site 1 and Site 2 as described
