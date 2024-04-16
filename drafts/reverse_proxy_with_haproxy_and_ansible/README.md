@@ -242,11 +242,26 @@ backend C-servers
 	server c1.s2.network.lan 10.20.2.5:3000 check
 ```
 
-TODO: add source of config (example/default config in ubuntu?)?
+Both files are based on the default HAProxy configuration in Ubuntu installed
+to `/etc/haproxy/haproxy.cfg`. The `global` and `defaults` sections are not
+modified. The `frontend` and `backend` sections contain the configuration for
+the services in the example network. Information on these section can be found
+in, e.g., [proxies][proxies].
 
 TODO: explain frontend with bind, option, mode, default_backend. Add links to haproxy docs?
+[bind][bind], [option tcplog][option tcplog], [mode][mode], [default_backend][default_backend]
 
 TODO: explain backend with mode, balance, option, server. Add links to haproxy docs?
+[mode][mode], [balance][balance], [option ssl-hello-chk][option ssl-hello-chk], [server][server]
+
+[proxies]: https://docs.haproxy.org/2.4/configuration.html#4
+[bind]: https://docs.haproxy.org/2.4/configuration.html#bind%20(Alphabetically%20sorted%20keywords%20reference)
+[option tcplog]: https://docs.haproxy.org/2.4/configuration.html#option%20tcplog%20(Alphabetically%20sorted%20keywords%20reference)
+[mode]: https://docs.haproxy.org/2.4/configuration.html#mode%20(Alphabetically%20sorted%20keywords%20reference)
+[default_backend]: https://docs.haproxy.org/2.4/configuration.html#default_backend%20(Alphabetically%20sorted%20keywords%20reference)
+[balance]: https://docs.haproxy.org/2.4/configuration.html#balance%20(Alphabetically%20sorted%20keywords%20reference)
+[option ssl-hello-chk]: https://docs.haproxy.org/2.4/configuration.html#option%20ssl-hello-chk%20(Alphabetically%20sorted%20keywords%20reference)
+[server]: https://docs.haproxy.org/2.4/configuration.html#server%20(Alphabetically%20sorted%20keywords%20reference)
 
 ## Ansible
 
