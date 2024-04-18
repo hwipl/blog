@@ -248,6 +248,13 @@ modified. The `frontend` and `backend` sections contain the configuration for
 the services in the example network. Information on these section can be found
 in, e.g., [proxies][proxies].
 
+Both configuration files contain a `frontend` section for each service. Each
+`frontend` consists of [bind][bind], [option tcplog][option tcplog],
+[mode][mode] and [default_backend][default_backend] statements. `bind`
+specifies the listen address and port. `option tcplog` enables advanced TCP
+logging. `mode tcp` sets pure TCP mode. `default_backend` specifies the
+`backend` to use.
+
 TODO: explain frontend with bind, option, mode, default_backend. Add links to haproxy docs?
 [bind][bind], [option tcplog][option tcplog], [mode][mode], [default_backend][default_backend]
 
