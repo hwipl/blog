@@ -255,6 +255,13 @@ specifies the listen address and port. `option tcplog` enables advanced TCP
 logging. `mode tcp` sets pure TCP mode. `default_backend` specifies the
 `backend` to use.
 
+Accordingly, both files contain a `backend` section for each `frontend`. Each
+`backend` consists of [mode][mode], [balance][balance], [option
+ssl-hello-chk][option ssl-hello-chk] and [server][server] statements. `mode
+tcp` also sets pure TCP mode here. `balance roundrobin` sets the load balancing
+algorithm to round-robin. `option ssl-hello-chk` configures SSL client hello
+messages for server health checks. `server` specifies a server.
+
 TODO: explain frontend with bind, option, mode, default_backend. Add links to haproxy docs?
 [bind][bind], [option tcplog][option tcplog], [mode][mode], [default_backend][default_backend]
 
