@@ -262,6 +262,20 @@ tcp` also sets pure TCP mode here. `balance roundrobin` sets the load balancing
 algorithm to round-robin. `option ssl-hello-chk` configures SSL client hello
 messages for server health checks. `server` specifies a server.
 
+Frontend `A` listens on all IP addresses and port `8443`, passes SSL
+connections through, and uses backend `A-servers`. The backend relies on SSL
+client hello health checks and uses a server on Node 2 and port `8443`.
+
+Frontend `B` listens on all IP addresses and port `32196`, terminates SSL
+connections (configured with `ssl`) with a site-specific certificate (specified
+with `crt`) and uses backend `B-servers`. The backend relies on standard TCP
+health checks and uses servers on Node 3 and 4 on port `32196`.
+
+Frontend `C` listens on all IP addresses and port `3000`, terminates SSL
+connections (configured with `ssl`) with a site-specific certificate (specified
+with `crt`) and uses backend `C-servers`. The backend relies on standard TCP
+health checks and uses a server on Node 5 and port `3000`.
+
 TODO: explain frontend with bind, option, mode, default_backend. Add links to haproxy docs?
 [bind][bind], [option tcplog][option tcplog], [mode][mode], [default_backend][default_backend]
 
