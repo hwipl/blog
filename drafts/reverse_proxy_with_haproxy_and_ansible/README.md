@@ -276,21 +276,6 @@ connections (configured with `ssl`) with a site-specific certificate (specified
 with `crt`) and uses backend `C-servers`. The backend relies on standard TCP
 health checks and uses a server on Node 5 and port `3000`.
 
-TODO: explain frontend with bind, option, mode, default_backend. Add links to haproxy docs?
-[bind][bind], [option tcplog][option tcplog], [mode][mode], [default_backend][default_backend]
-
-TODO: explain backend with mode, balance, option, server. Add links to haproxy docs?
-[mode][mode], [balance][balance], [option ssl-hello-chk][option ssl-hello-chk], [server][server]
-
-[proxies]: https://docs.haproxy.org/2.4/configuration.html#4
-[bind]: https://docs.haproxy.org/2.4/configuration.html#bind%20(Alphabetically%20sorted%20keywords%20reference)
-[option tcplog]: https://docs.haproxy.org/2.4/configuration.html#option%20tcplog%20(Alphabetically%20sorted%20keywords%20reference)
-[mode]: https://docs.haproxy.org/2.4/configuration.html#mode%20(Alphabetically%20sorted%20keywords%20reference)
-[default_backend]: https://docs.haproxy.org/2.4/configuration.html#default_backend%20(Alphabetically%20sorted%20keywords%20reference)
-[balance]: https://docs.haproxy.org/2.4/configuration.html#balance%20(Alphabetically%20sorted%20keywords%20reference)
-[option ssl-hello-chk]: https://docs.haproxy.org/2.4/configuration.html#option%20ssl-hello-chk%20(Alphabetically%20sorted%20keywords%20reference)
-[server]: https://docs.haproxy.org/2.4/configuration.html#server%20(Alphabetically%20sorted%20keywords%20reference)
-
 ## Ansible
 
 Ansible allows for automatic installation and configuration of the revers proxy
@@ -683,6 +668,14 @@ sites as shown in this document at the following links:
 - [Site 1 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/haproxy/examples/site1)
 - [Site 2 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/haproxy/examples/site2)
 
+[proxies]: https://docs.haproxy.org/2.4/configuration.html#4
+[bind]: https://docs.haproxy.org/2.4/configuration.html#bind%20(Alphabetically%20sorted%20keywords%20reference)
+[option tcplog]: https://docs.haproxy.org/2.4/configuration.html#option%20tcplog%20(Alphabetically%20sorted%20keywords%20reference)
+[mode]: https://docs.haproxy.org/2.4/configuration.html#mode%20(Alphabetically%20sorted%20keywords%20reference)
+[default_backend]: https://docs.haproxy.org/2.4/configuration.html#default_backend%20(Alphabetically%20sorted%20keywords%20reference)
+[balance]: https://docs.haproxy.org/2.4/configuration.html#balance%20(Alphabetically%20sorted%20keywords%20reference)
+[option ssl-hello-chk]: https://docs.haproxy.org/2.4/configuration.html#option%20ssl-hello-chk%20(Alphabetically%20sorted%20keywords%20reference)
+[server]: https://docs.haproxy.org/2.4/configuration.html#server%20(Alphabetically%20sorted%20keywords%20reference)
 [roles]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
 [playbooks]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
 [templates]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html
