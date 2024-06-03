@@ -64,18 +64,18 @@ two tables. The first table shows Site 1:
 | Service | Listen    | Type              | Server(s)         |
 |---------|-----------|-------------------|-------------------|
 | A       | `*:8443`  | SSL Pass-through  | `10.20.1.2:8443`  |
-| B       | `*:32196` | SSL Termination   | `10.20.1.3:32196` |
-|         |           |                   | `10.20.1.4:32196` |
-| C       | `*:3000`  | SSL Termination   | `10.20.1.5:3000`  |
+| B       | `*:32000` | SSL Termination   | `10.20.1.3:32000` |
+|         |           |                   | `10.20.1.4:32000` |
+| C       | `*:33000` | SSL Termination   | `10.20.1.5:3000`  |
 
 The second table shows Site 2:
 
 | Service | Listen    | Type              | Server            |
 |---------|-----------|-------------------|-------------------|
 | A       | `*:8443`  | SSL Pass-through  | `10.20.2.2:8443`  |
-| B       | `*:32196` | SSL Termination   | `10.20.2.3:32196` |
-|         |           |                   | `10.20.2.4:32196` |
-| C       | `*:3000`  | SSL Termination   | `10.20.2.5:3000`  |
+| B       | `*:32000` | SSL Termination   | `10.20.2.3:32000` |
+|         |           |                   | `10.20.2.4:32000` |
+| C       | `*:33000` | SSL Termination   | `10.20.2.5:3000`  |
 
 The HAProxy accepts SSL connections to service `A` on all IP addresses and port
 `8443`. It forwards them to the IP address of Node 2 and the same port
@@ -83,14 +83,14 @@ The HAProxy accepts SSL connections to service `A` on all IP addresses and port
 is passed through to the server and is not terminated by the HAProxy.
 
 For service `B`, the HAProxy accepts SSL connections on all IP addresses and
-port `32196`. It forwards them to the IP addresses of Node 3 and Node 4 and the
-same port (`10.20.1.3:32196` and `10.20.1.4:32196` in Site 1, `10.20.2.3:32196`
-and `10.20.2.4:32196` in Site 2). Servers are selected via round-robin. The
+port `32000`. It forwards them to the IP addresses of Node 3 and Node 4 and the
+same port (`10.20.1.3:32000` and `10.20.1.4:32000` in Site 1, `10.20.2.3:32000`
+and `10.20.2.4:32000` in Site 2). Servers are selected via round-robin. The
 HAProxy terminates the SSL connection and forwards unencrypted traffic to the
 servers.
 
 For service `C`, the HAProxy accepts SSL connections on all IP addresses and
-port `3000`. It forwards them to the IP address of Node 5 and the same port
+port `33000`. It forwards them to the IP address of Node 5 and port `3000`
 (`10.20.1.5:3000` in Site 1, `10.20.2.5:3000` in Site 2). The HAProxy
 terminates the SSL connection and forwards unencrypted traffic to the server.
 
@@ -143,12 +143,12 @@ frontend A
 	mode tcp
 	default_backend A-servers
 frontend B
-	bind *:32196 ssl crt /etc/haproxy/site1-haproxy.pem
+	bind *:32000 ssl crt /etc/haproxy/site1-haproxy.pem
 	option tcplog
 	mode tcp
 	default_backend B-servers
 frontend C
-	bind *:3000 ssl crt /etc/haproxy/site1-haproxy.pem
+	bind *:33000 ssl crt /etc/haproxy/site1-haproxy.pem
 	option tcplog
 	mode tcp
 	default_backend C-servers
@@ -162,8 +162,8 @@ backend A-servers
 backend B-servers
 	mode tcp
 	balance roundrobin
-	server b1.s1.network.lan 10.20.1.3:32196 check
-	server b2.s1.network.lan 10.20.1.4:32196 check
+	server b1.s1.network.lan 10.20.1.3:32000 check
+	server b2.s1.network.lan 10.20.1.4:32000 check
 backend C-servers
 	mode tcp
 	balance roundrobin
@@ -215,12 +215,12 @@ frontend A
 	mode tcp
 	default_backend A-servers
 frontend B
-	bind *:32196 ssl crt /etc/haproxy/site2-haproxy.pem
+	bind *:32000 ssl crt /etc/haproxy/site2-haproxy.pem
 	option tcplog
 	mode tcp
 	default_backend B-servers
 frontend C
-	bind *:3000 ssl crt /etc/haproxy/site2-haproxy.pem
+	bind *:33000 ssl crt /etc/haproxy/site2-haproxy.pem
 	option tcplog
 	mode tcp
 	default_backend C-servers
@@ -234,8 +234,8 @@ backend A-servers
 backend B-servers
 	mode tcp
 	balance roundrobin
-	server b1.s2.network.lan 10.20.2.3:32196 check
-	server b2.s2.network.lan 10.20.2.4:32196 check
+	server b1.s2.network.lan 10.20.2.3:32000 check
+	server b2.s2.network.lan 10.20.2.4:32000 check
 backend C-servers
 	mode tcp
 	balance roundrobin
@@ -266,12 +266,12 @@ Frontend `A` listens on all IP addresses and port `8443`, passes SSL
 connections through, and uses backend `A-servers`. The backend relies on SSL
 client hello health checks and uses a server on Node 2 and port `8443`.
 
-Frontend `B` listens on all IP addresses and port `32196`, terminates SSL
+Frontend `B` listens on all IP addresses and port `32000`, terminates SSL
 connections (configured with `ssl`) with a site-specific certificate (specified
 with `crt`) and uses backend `B-servers`. The backend relies on standard TCP
-health checks and uses servers on Node 3 and 4 on port `32196`.
+health checks and uses servers on Node 3 and 4 on port `32000`.
 
-Frontend `C` listens on all IP addresses and port `3000`, terminates SSL
+Frontend `C` listens on all IP addresses and port `33000`, terminates SSL
 connections (configured with `ssl`) with a site-specific certificate (specified
 with `crt`) and uses backend `C-servers`. The backend relies on standard TCP
 health checks and uses a server on Node 5 and port `3000`.
@@ -531,13 +531,13 @@ haproxy_frontends:
   - default_backend A-servers
 - name: B
   config:
-  - bind *:32196 ssl crt /etc/haproxy/site1-haproxy.pem
+  - bind *:32000 ssl crt /etc/haproxy/site1-haproxy.pem
   - option tcplog
   - mode tcp
   - default_backend B-servers
 - name: C
   config:
-  - bind *:3000 ssl crt /etc/haproxy/site1-haproxy.pem
+  - bind *:33000 ssl crt /etc/haproxy/site1-haproxy.pem
   - option tcplog
   - mode tcp
   - default_backend C-servers
@@ -554,8 +554,8 @@ haproxy_backends:
   config:
   - mode tcp
   - balance roundrobin
-  - server b1.s1.network.lan 10.20.1.3:32196 check
-  - server b2.s1.network.lan 10.20.1.4:32196 check
+  - server b1.s1.network.lan 10.20.1.3:32000 check
+  - server b2.s1.network.lan 10.20.1.4:32000 check
 - name: C-servers
   config:
   - mode tcp
@@ -587,13 +587,13 @@ haproxy_frontends:
   - default_backend A-servers
 - name: B
   config:
-  - bind *:32196 ssl crt /etc/haproxy/site2-haproxy.pem
+  - bind *:32000 ssl crt /etc/haproxy/site2-haproxy.pem
   - option tcplog
   - mode tcp
   - default_backend B-servers
 - name: C
   config:
-  - bind *:3000 ssl crt /etc/haproxy/site2-haproxy.pem
+  - bind *:33000 ssl crt /etc/haproxy/site2-haproxy.pem
   - option tcplog
   - mode tcp
   - default_backend C-servers
@@ -610,8 +610,8 @@ haproxy_backends:
   config:
   - mode tcp
   - balance roundrobin
-  - server b1.s2.network.lan 10.20.2.3:32196 check
-  - server b2.s2.network.lan 10.20.2.4:32196 check
+  - server b1.s2.network.lan 10.20.2.3:32000 check
+  - server b2.s2.network.lan 10.20.2.4:32000 check
 - name: C-servers
   config:
   - mode tcp
