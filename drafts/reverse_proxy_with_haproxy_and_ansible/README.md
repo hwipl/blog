@@ -8,7 +8,7 @@ server automatically.
 ## Overview
 
 The reverse proxy servers in this document run HAProxy on Ubuntu 22.04 LTS.
-HAProxy is installed and configured automatically with Ansible. The HAPorxy
+HAProxy is installed and configured automatically with Ansible. The HAProxy
 configuration in this document assumes the network in the following figure:
 
 ```
@@ -54,8 +54,8 @@ The example network consists of the two sites `Site 1` and `Site 2`. Each site
 contains five nodes. `Node 1` runs the HAProxy server and is connected to the
 other nodes in the site as well as other networks. `Node 2`, `Node 3`, `Node 4`
 and `Node 5` run services `A`, `B` and `C`. Service `A` and `C` are each only
-provided a single node (`Node 2` and `Node 5`). Service `B` is provided by the
-two nodes `Node 3` and `Node 4`. In each site, the HAProxy server enables
+provided by a single node (`Node 2` and `Node 5`). Service `B` is provided by
+the two nodes `Node 3` and `Node 4`. In each site, the HAProxy server enables
 access from other networks to these services.
 
 The HAProxy configuration for the three services is shown in the following
@@ -376,7 +376,7 @@ The tasks are defined as follows in the file `roles/haproxy/tasks/main.yml`:
 
 These tasks install the reverse proxy server with the [apt module][apt],
 configure it with the template and the [template module][template] and trigger
-the restart event with [notify][notify] if the config file is changed:
+the restart event with [notify][notify] if the configuration file is changed:
 
 All tasks need root privileges to manipulate the system configuration. So,
 [become][become] is set to `true`. The file owner and group of all files is set
