@@ -147,6 +147,77 @@ wireguard.yml:
 
 ### Configuration
 
+`site1/hosts` and `site2/hosts`:
+
+```ini
+[wireguard_servers]
+head
+```
+
+`site1/host_vars/node1`:
+
+```yaml
+# wireguard configuration
+# Server IP 10.20.21.1
+wireguard_interface: "wg0"
+wireguard_listen_port: 51000
+wireguard_address: 10.20.21.1/24
+wireguard_private_key_file: "~/cluster/wireguard/server/server-private.key"
+wireguard_public_key_file: "~/cluster/wireguard/server/server-public.key"
+wireguard_peers:
+  # Client IP 10.20.21.2:
+  - name: peer1  # staff, admin key
+    # server side
+    public_key: INSERT_PEER1_REAL_KEY_HERE
+    allowed_ips: 10.20.21.2
+    # client side
+    client_address: 10.20.21.2/24
+    client_endpoint: site1.cluster.company.lan:51000
+    client_allowed_ips: "10.20.0.0/16, 10.21.0.0/16, 10.22.0.0/16, 10.23.0.0/16"
+  # Client IP 10.20.21.3:
+  - name: peer2  # staff, other user key
+    # server side
+    public_key: INSERT_PEER2_REAL_KEY_HERE
+    allowed_ips: 10.20.21.3
+    # client side
+    client_address: 10.20.21.3/24
+    client_endpoint: site1.cluster.company.lan:51000
+    client_allowed_ips: "10.20.0.0/16, 10.21.0.0/16, 10.22.0.0/16, 10.23.0.0/16"
+```
+
+`site2/host_vars/node1`:
+
+```yaml
+# wireguard configuration
+# Server IP 10.20.22.1
+wireguard_interface: "wg0"
+wireguard_listen_port: 51000
+wireguard_address: 10.20.22.1/24
+wireguard_private_key_file: "~/cluster/wireguard/server/server-private.key"
+wireguard_public_key_file: "~/cluster/wireguard/server/server-public.key"
+wireguard_peers:
+  # Client IP 10.20.22.2:
+  - name: peer1  # staff, admin key
+    # server side
+    public_key: INSERT_PEER1_REAL_KEY_HERE
+    allowed_ips: 10.20.22.2
+    # client side
+    client_address: 10.20.22.2/24
+    client_endpoint: site2.cluster.company.lan:51000
+    client_allowed_ips: "10.20.0.0/16, 10.21.0.0/16, 10.22.0.0/16, 10.23.0.0/16"
+  # Client IP 10.20.22.3:
+  - name: peer2  # staff, other user key
+    # server side
+    public_key: INSERT_PEER2_REAL_KEY_HERE
+    allowed_ips: 10.20.22.3
+    # client side
+    client_address: 10.20.22.3/24
+    client_endpoint: site2.cluster.company.lan:51000
+    client_allowed_ips: "10.20.0.0/16, 10.21.0.0/16, 10.22.0.0/16, 10.23.0.0/16"
+```
+
+No group_vars.
+
 ### Deployment
 
 ## Conclusion
