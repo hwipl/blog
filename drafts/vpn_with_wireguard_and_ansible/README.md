@@ -220,6 +220,13 @@ No group_vars.
 
 ### Deployment
 
+```console
+$ # site 1
+$ ansible-playbook -i site1/hosts wireguard.yml
+$ # site 2
+$ ansible-playbook -i site2/hosts wireguard.yml
+```
+
 ## Conclusion
 
 ## Appendix: Code
