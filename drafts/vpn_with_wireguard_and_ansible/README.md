@@ -195,23 +195,32 @@ wireguard_private_key_file: "~/cluster/wireguard/server/server-private.key"
 wireguard_public_key_file: "~/cluster/wireguard/server/server-public.key"
 wireguard_peers:
   # Client IP 10.20.21.2:
-  - name: peer1  # staff, admin key
+  - name: client1
     # server side
-    public_key: INSERT_PEER1_REAL_KEY_HERE
+    public_key: INSERT_CLIENT1_PUBLIC_KEY_HERE
     allowed_ips: 10.20.21.2
     # client side
     client_address: 10.20.21.2/24
-    client_endpoint: site1.cluster.company.lan:51000
-    client_allowed_ips: "10.20.0.0/16, 10.21.0.0/16, 10.22.0.0/16, 10.23.0.0/16"
+    client_endpoint: vpn.s1.lan:51000
+    client_allowed_ips: "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
   # Client IP 10.20.21.3:
-  - name: peer2  # staff, other user key
+  - name: client2
     # server side
-    public_key: INSERT_PEER2_REAL_KEY_HERE
+    public_key: INSERT_CLIENT2_PUBLIC_KEY_HERE
     allowed_ips: 10.20.21.3
     # client side
     client_address: 10.20.21.3/24
-    client_endpoint: site1.cluster.company.lan:51000
-    client_allowed_ips: "10.20.0.0/16, 10.21.0.0/16, 10.22.0.0/16, 10.23.0.0/16"
+    client_endpoint: vpn.s1.lan:51000
+    client_allowed_ips: "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
+  # Client IP 10.20.21.4:
+  - name: client3
+    # server side
+    public_key: INSERT_CLIENT3_PUBLIC_KEY_HERE
+    allowed_ips: 10.20.21.4
+    # client side
+    client_address: 10.20.21.4/24
+    client_endpoint: vpn.s1.lan:51000
+    client_allowed_ips: "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
 ```
 
 `site2/host_vars/node1`:
@@ -226,23 +235,32 @@ wireguard_private_key_file: "~/cluster/wireguard/server/server-private.key"
 wireguard_public_key_file: "~/cluster/wireguard/server/server-public.key"
 wireguard_peers:
   # Client IP 10.20.22.2:
-  - name: peer1  # staff, admin key
+  - name: client1
     # server side
-    public_key: INSERT_PEER1_REAL_KEY_HERE
+    public_key: INSERT_CLIENT1_PUBLIC_KEY_HERE
     allowed_ips: 10.20.22.2
     # client side
     client_address: 10.20.22.2/24
-    client_endpoint: site2.cluster.company.lan:51000
-    client_allowed_ips: "10.20.0.0/16, 10.21.0.0/16, 10.22.0.0/16, 10.23.0.0/16"
+    client_endpoint: vpn.s2.lan:51000
+    client_allowed_ips: "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
   # Client IP 10.20.22.3:
-  - name: peer2  # staff, other user key
+  - name: client2
     # server side
-    public_key: INSERT_PEER2_REAL_KEY_HERE
+    public_key: INSERT_CLIENT2_PUBLIC_KEY_HERE
     allowed_ips: 10.20.22.3
     # client side
     client_address: 10.20.22.3/24
-    client_endpoint: site2.cluster.company.lan:51000
-    client_allowed_ips: "10.20.0.0/16, 10.21.0.0/16, 10.22.0.0/16, 10.23.0.0/16"
+    client_endpoint: vpn.s2.lan:51000
+    client_allowed_ips: "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
+  # Client IP 10.20.22.4:
+  - name: client3
+    # server side
+    public_key: INSERT_CLIENT3_PUBLIC_KEY_HERE
+    allowed_ips: 10.20.22.4
+    # client side
+    client_address: 10.20.22.4/24
+    client_endpoint: vpn.s2.lan:51000
+    client_allowed_ips: "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
 ```
 
 No group_vars.
