@@ -88,13 +88,17 @@ AllowedIPs = 10.20.22.4
 
 ### Clients
 
-Site 1 Client 1 `/etc/wireguard/wg0.conf`:
+Site 1 Client config in `/etc/wireguard/wg0.conf`:
+
+TODO: use PostUp = wg set %i private-key /etc/wireguard/wg0.key in clients?
 
 ```jinja
 [Interface]
-PrivateKey = INSERT_YOUR_PRIVATE_KEY_HERE
+PrivateKey = CLIENT_PRIVATE_KEY
 ListenPort = 51000
-Address = 10.20.21.2/24
+Address = 10.20.21.2/24     # Client 1
+# Address = 10.20.21.3/24   # Client 2
+# Address = 10.20.21.4/24   # Client 3
 
 [Peer]
 PublicKey = SERVER_PUBLIC_KEY
@@ -102,47 +106,19 @@ Endpoint = vpn.s1.lan:51000
 AllowedIPs = "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
 ```
 
-Site 2 Client 1 `/etc/wireguard/wg0.conf`:
+Site 2 Client config in `/etc/wireguard/wg0.conf`:
 
 ```jinja
 [Interface]
-PrivateKey = INSERT_YOUR_PRIVATE_KEY_HERE
+PrivateKey = CLIENT_PRIVATE_KEY
 ListenPort = 51000
-Address = 10.20.22.2/24
+Address = 10.20.22.2/24     # Client 1
+# Address = 10.20.22.2/24   # Client 2
+# Address = 10.20.22.2/24   # Client 3
 
 [Peer]
 PublicKey = SERVER_PUBLIC_KEY
 Endpoint = vpn.s2.lan:51000
-AllowedIPs = "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
-```
-
-TODO: add more site 2 configs? or remove other configs? or move them into appendix?
-
-Site 1 Client 2 `/etc/wireguard/wg0.conf`:
-
-```jinja
-[Interface]
-PrivateKey = INSERT_YOUR_PRIVATE_KEY_HERE
-ListenPort = 51000
-Address = 10.20.21.3/24
-
-[Peer]
-PublicKey = SERVER_PUBLIC_KEY
-Endpoint = vpn.s1.lan:51000
-AllowedIPs = "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
-```
-
-Site 1 Client 3 `/etc/wireguard/wg0.conf`:
-
-```jinja
-[Interface]
-PrivateKey = INSERT_YOUR_PRIVATE_KEY_HERE
-ListenPort = 51000
-Address = 10.20.21.4/24
-
-[Peer]
-PublicKey = SERVER_PUBLIC_KEY
-Endpoint = vpn.s1.lan:51000
 AllowedIPs = "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
 ```
 
