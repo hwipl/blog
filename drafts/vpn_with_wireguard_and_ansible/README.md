@@ -42,6 +42,13 @@ TODO: add key generation somewhere?
 
 TODO: use "real" keys instead of placeholders?
 
+Key generation on client and server:
+
+```console
+$ umask 077
+$ wg genkey | tee privatekey | wg pubkey > publickey
+```
+
 ### Server
 
 Site 1 VPN Server `/etc/wireguard/wg0.conf`:
