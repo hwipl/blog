@@ -97,15 +97,13 @@ AllowedIPs = 10.20.22.4
 
 Site 1 Client config in `/etc/wireguard/wg0.conf`:
 
-TODO: use PostUp = wg set %i private-key /etc/wireguard/wg0.key in clients?
-
 ```jinja
 [Interface]
-PrivateKey = CLIENT_PRIVATE_KEY
 ListenPort = 51000
 Address = 10.20.21.2/24     # Client 1
 # Address = 10.20.21.3/24   # Client 2
 # Address = 10.20.21.4/24   # Client 3
+PostUp = wg set %i private-key /etc/wireguard/wg0.key
 
 [Peer]
 PublicKey = SERVER_PUBLIC_KEY
@@ -117,11 +115,11 @@ Site 2 Client config in `/etc/wireguard/wg0.conf`:
 
 ```jinja
 [Interface]
-PrivateKey = CLIENT_PRIVATE_KEY
 ListenPort = 51000
 Address = 10.20.22.2/24     # Client 1
 # Address = 10.20.22.2/24   # Client 2
 # Address = 10.20.22.2/24   # Client 3
+PostUp = wg set %i private-key /etc/wireguard/wg0.key
 
 [Peer]
 PublicKey = SERVER_PUBLIC_KEY
