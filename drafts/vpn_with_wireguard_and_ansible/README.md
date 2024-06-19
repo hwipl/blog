@@ -60,15 +60,18 @@ Address = 10.20.21.1/24
 PostUp = wg set %i private-key /etc/wireguard/wg0.key
 
 [Peer]
-PublicKey = CLIENT1_PUBLIC_KEY
+# public key of client 1
+PublicKey = 55BbgL/uvNBfaXko8UodGy93DnaQfiWDWaDCuPhh1z4=
 AllowedIPs = 10.20.21.2
 
 [Peer]
-PublicKey = CLIENT2_PUBLIC_KEY
+# public key of client 2
+PublicKey = OinFs2iWV0/X3jDmsjnhAJLZP/127E8Ly13URQQB7BM=
 AllowedIPs = 10.20.21.3
 
 [Peer]
-PublicKey = CLIENT3_PUBLIC_KEY
+# public key of client 3
+PublicKey = KqvsNv2Nppt37z3BGIFOZIwfA3QcnNsEqRfTCcNiERY=
 AllowedIPs = 10.20.21.4
 ```
 
@@ -81,15 +84,18 @@ Address = 10.20.22.1/24
 PostUp = wg set %i private-key /etc/wireguard/wg0.key
 
 [Peer]
-PublicKey = CLIENT1_PUBLIC_KEY
+# public key of client 1
+PublicKey = xImnlRiMQnY1vuOiVFx5W+8YDXYYbPMy3ROMr2HorBw=
 AllowedIPs = 10.20.22.2
 
 [Peer]
-PublicKey = CLIENT2_PUBLIC_KEY
+# public key of client 2
+PublicKey = vPOB/d3CDETUuBI0OY/WbK5cjOnTGxYoY8yppwnpR3I=
 AllowedIPs = 10.20.22.3
 
 [Peer]
-PublicKey = CLIENT3_PUBLIC_KEY
+# public key of client 3
+PublicKey = UY7GDMxHelkkMojD56kvuUJE+lL2dR38f4V8uCGfGg8=
 AllowedIPs = 10.20.22.4
 ```
 
@@ -106,7 +112,8 @@ Address = 10.20.21.2/24     # Client 1
 PostUp = wg set %i private-key /etc/wireguard/wg0.key
 
 [Peer]
-PublicKey = SERVER_PUBLIC_KEY
+# public key of server
+PublicKey =dRYtwEYc/3MUdvWEeTNYtOzxAnbhTRv6yllFL3F9fQ8=
 Endpoint = vpn.s1.lan:51000
 AllowedIPs = "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
 ```
@@ -122,7 +129,8 @@ Address = 10.20.22.2/24     # Client 1
 PostUp = wg set %i private-key /etc/wireguard/wg0.key
 
 [Peer]
-PublicKey = SERVER_PUBLIC_KEY
+# public key of server
+PublicKey = /nkmz7U8ryzGqnrNll9sVtzEg04N3ZhXzS2na+uc4Q4=
 Endpoint = vpn.s2.lan:51000
 AllowedIPs = "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
 ```
