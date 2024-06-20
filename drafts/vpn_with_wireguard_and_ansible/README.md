@@ -294,7 +294,7 @@ wireguard_peers:
   # Client IP 10.20.21.2:
   - name: client1
     # server side
-    public_key: INSERT_CLIENT1_PUBLIC_KEY_HERE
+    public_key: 55BbgL/uvNBfaXko8UodGy93DnaQfiWDWaDCuPhh1z4=
     allowed_ips: 10.20.21.2
     # client side
     client_address: 10.20.21.2/24
@@ -303,7 +303,7 @@ wireguard_peers:
   # Client IP 10.20.21.3:
   - name: client2
     # server side
-    public_key: INSERT_CLIENT2_PUBLIC_KEY_HERE
+    public_key: OinFs2iWV0/X3jDmsjnhAJLZP/127E8Ly13URQQB7BM=
     allowed_ips: 10.20.21.3
     # client side
     client_address: 10.20.21.3/24
@@ -312,7 +312,7 @@ wireguard_peers:
   # Client IP 10.20.21.4:
   - name: client3
     # server side
-    public_key: INSERT_CLIENT3_PUBLIC_KEY_HERE
+    public_key: KqvsNv2Nppt37z3BGIFOZIwfA3QcnNsEqRfTCcNiERY=
     allowed_ips: 10.20.21.4
     # client side
     client_address: 10.20.21.4/24
@@ -334,7 +334,7 @@ wireguard_peers:
   # Client IP 10.20.22.2:
   - name: client1
     # server side
-    public_key: INSERT_CLIENT1_PUBLIC_KEY_HERE
+    public_key: xImnlRiMQnY1vuOiVFx5W+8YDXYYbPMy3ROMr2HorBw=
     allowed_ips: 10.20.22.2
     # client side
     client_address: 10.20.22.2/24
@@ -343,7 +343,7 @@ wireguard_peers:
   # Client IP 10.20.22.3:
   - name: client2
     # server side
-    public_key: INSERT_CLIENT2_PUBLIC_KEY_HERE
+    public_key: vPOB/d3CDETUuBI0OY/WbK5cjOnTGxYoY8yppwnpR3I=
     allowed_ips: 10.20.22.3
     # client side
     client_address: 10.20.22.3/24
@@ -352,7 +352,7 @@ wireguard_peers:
   # Client IP 10.20.22.4:
   - name: client3
     # server side
-    public_key: INSERT_CLIENT3_PUBLIC_KEY_HERE
+    public_key: UY7GDMxHelkkMojD56kvuUJE+lL2dR38f4V8uCGfGg8=
     allowed_ips: 10.20.22.4
     # client side
     client_address: 10.20.22.4/24
