@@ -176,16 +176,28 @@ clients.
 
 #### Handlers
 
+A handler is defined as follows in the file
+`roles/wireguard/handlers/main.yml`:
+
 ```yaml
 ---
 # handlers for wireguard
 
-- name: Restart wireguard connection
+- name: Restart wireguard
   become: true
   ansible.builtin.service:
     name: "wg-quick@{{ wireguard_interface }}"
     state: restarted
 ```
+
+The handler is called `Restart wireguard` and restarts the VPN server on the
+VPN network interface with the [service module][service] when it is triggered.
+It requires root privileges to manipulate the state of the system services, so
+[become][become] is set to `true` for [privilege escalation][privilege]. To
+restart the VPN server, it sets the system service
+`wg-quick@{{wireguard_interface }}` to state `restarted`. The variable part
+`{{wireguard_interface }}` is replaced with the name of the VPN network
+interface, e.g., `wg0`.
 
 #### Tasks
 
@@ -404,3 +416,6 @@ $ ansible-playbook -i site2/hosts wireguard.yml
 [handlers]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html
 [inventory]: https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
 [ansible-playbook]: https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html
+[service]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
+[become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
+[privilege]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
