@@ -201,6 +201,8 @@ interface, e.g., `wg0`.
 
 #### Tasks
 
+The tasks are defined as follows in the file `roles/wireguard/tasks/main.yml`:
+
 ```yaml
 ---
 # these tasks install and configure wireguard servers
@@ -223,7 +225,7 @@ interface, e.g., `wg0`.
     owner: root
     group: root
     mode: '0600'
-  notify: Restart wireguard connection
+  notify: Restart wireguard
 - name: Create wireguard server config file
   become: true
   ansible.builtin.template:
@@ -232,13 +234,13 @@ interface, e.g., `wg0`.
     owner: root
     group: root
     mode: '0600'
-  notify: Restart wireguard connection
+  notify: Restart wireguard
 - name: Enable wireguard connection
   become: true
   ansible.builtin.service:
     name: "wg-quick@{{ wireguard_interface }}"
     enabled: true
-  notify: Restart wireguard connection
+  notify: Restart wireguard
 - name: Create local directory for wireguard client configs
   ansible.builtin.file:
     path: "{{ inventory_dir }}/wireguard-clients"
@@ -261,6 +263,40 @@ interface, e.g., `wg0`.
   become: false
   run_once: true
 ```
+
+These tasks install the VPN server with the [apt module][apt], configure it
+with the template and the [template module][template] and trigger the restart
+event with [notify][notify] if the configuration file is changed. Additionally,
+the last two tasks create configuration files that can be used by the VPN
+clients:
+
+The installation and configuration tasks need root privileges to manipulate the
+system configuration. So, [become][become] is set to `true`. The file owner and
+group of all files are set to `root` and permissions are set to `600`. If the
+configuration changed, the tasks trigger the restart event.
+
+1. The first task updates the `apt` cache if it is older than one hour to make
+   sure the following installation task can run with up-to-date package
+   sources.
+2. The second task installs wireguard with `apt` if it is not already installed.
+3. The third task copies the private key of the wireguard server from the
+   source file defined in the Ansible variable `wireguard_private_key_file` to
+   its destination. The destination file name is the name of the wireguard
+   network interface with the suffix `.key` in the wireguard configuration
+   directory `/etc/wireguard`.
+4. The fourth task creates or updates the wireguard configuration from the
+   template `wg.conf.j2`. The name of the configuration file is the name of
+   the wireguard network interface with the suffix `.conf` in the wireguard
+   configuration directory `/etc/wireguard`.
+5. The fifth task enables the wireguard VPN server for the network interface.
+   It sets the corresponding systemd service to `enabled`.
+
+The last two tasks create the configuration files for the clients. They run
+only on the host that executes the Ansible playbook and not on the wireguard
+servers. The first task creates the directory `wireguard-clients` in the
+directory of the Ansible inventory. The second task creates a configuration
+file in this directory for each client from the template `wg-client.conf.j2`.
+The file name is the name of the wireguard peer with the suffix `.conf`.
 
 #### Templates
 
@@ -419,3 +455,6 @@ $ ansible-playbook -i site2/hosts wireguard.yml
 [service]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
 [become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
 [privilege]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
+[apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+[template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
+[notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
