@@ -300,21 +300,11 @@ The file name is the name of the wireguard peer with the suffix `.conf`.
 
 #### Templates
 
-wg-client.conf.j2:
+The template for the configuration files are defined as [Jinja2
+template][jinja2].
 
-```jinja
-[Interface]
-PrivateKey = INSERT_YOUR_PRIVATE_KEY_HERE
-ListenPort = {{ wireguard_listen_port }}
-Address = {{ item.client_address }}
-
-[Peer]
-PublicKey = {{ wireguard_public_key }}
-Endpoint = {{ item.client_endpoint }}
-AllowedIPs = {{ item.client_allowed_ips }}
-```
-
-wg.conf.j2
+The template for the server configuration is defined as follows in the file
+`roles/wireguard/templates/wg.conf.j2`:
 
 ```jinja
 [Interface]
@@ -328,6 +318,47 @@ PublicKey = {{ peer.public_key }}
 AllowedIPs = {{ peer.allowed_ips }}
 {% endfor %}
 ```
+
+The template reflects the server configuration shown in the VPN Configuration
+section above with parts dynamically generated based on the Ansible
+configuration:
+
+- The server's listen port is read from the variable `wireguard_listen_port`
+- The server's VPN address is read from the variable `wireguard_address`
+- The wireguard network interface is read from the variable
+  `wireguard_interface`
+- For each peer in the Ansible list `wireguard_peers`, a peer section is
+  created. The public key and allowed IPs are read from the variables
+  `public_key` and `allowed_ips` of the peer.
+
+The template for the client configuration is defined as follows in the file
+`roles/wireguard/templates/wg-client.conf.j2`:
+
+```jinja
+[Interface]
+ListenPort = {{ wireguard_listen_port }}
+Address = {{ item.client_address }}
+# PrivateKey = INSERT_YOUR_PRIVATE_KEY_HERE
+PostUp = wg set %i private-key /etc/wireguard/{{ wireguard_interface }}.key
+
+[Peer]
+PublicKey = {{ wireguard_public_key }}
+Endpoint = {{ item.client_endpoint }}
+AllowedIPs = {{ item.client_allowed_ips }}
+```
+
+The template reflects the client configuration shown in the VPN Configuration
+section above with parts dynamically generated based on the Ansible
+configuration:
+
+- The client's listen port is read from the variable `wireguard_listen_port`
+- The client's VPN address is read from the variable `wireguard_address`
+- The wireguard network interface is read from the variable
+  `wireguard_interface`
+- The server's public key is read from the variable `wireguard_public_key`
+- The server's endpoint address is read from the client variable
+  `client_endpoint`
+- The allowed IPs are read from the client variable `client_allowed_ips`
 
 ### Playbook
 
@@ -458,3 +489,4 @@ $ ansible-playbook -i site2/hosts wireguard.yml
 [apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
 [template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
 [notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
+[jinja2]: https://jinja.palletsprojects.com/en/latest/templates/
