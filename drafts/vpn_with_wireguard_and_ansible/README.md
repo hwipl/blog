@@ -362,7 +362,7 @@ configuration:
 
 ### Playbook
 
-wireguard.yml:
+The playbook is defined as follows in the file `wireguard.yml`:
 
 ```yaml
 ---
@@ -372,6 +372,11 @@ wireguard.yml:
   roles:
     - wireguard
 ```
+
+The playbook assigns the role `wireguard` that is described above to all hosts
+in the group `wireguard_servers`. On execution, this playbook runs all the
+tasks of the role on all the hosts in the group to install and configure the
+VPN servers.
 
 ### Configuration
 
