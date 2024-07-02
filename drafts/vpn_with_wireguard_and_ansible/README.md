@@ -380,14 +380,28 @@ VPN servers.
 
 ### Configuration
 
-`site1/hosts` and `site2/hosts`:
+The configuration is derived from host files in the Ansible
+[inventory][inventory]. They contain the variables that the tasks of the role
+use. Each site uses a different inventory and, thus, different host files to
+allow for site-specific configurations as shown below. There is no other
+group-specific configuration of the VPN servers in the `group_vars` of `node1`
+in each site.
+
+The Ansible hosts are defined as follows in the files `site1/hosts` and
+`site2/hosts`:
 
 ```ini
 [wireguard_servers]
-head
+node1
 ```
 
-`site1/host_vars/node1`:
+The hosts file of each site defines the group `wireguard_servers` and assigns
+the node `node1` to it. Thus, `node1` is defined as wireguard server for the
+playbook.
+
+The host-specific configuration of the VPN servers is in the `host_vars` of
+`node1` in each site. The configuration for the VPN server in Site 1 is defined
+as follows in the files `site1/host_vars/node1`:
 
 ```yaml
 # wireguard configuration
@@ -427,7 +441,8 @@ wireguard_peers:
     client_allowed_ips: "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
 ```
 
-`site2/host_vars/node1`:
+The configuration for the VPN server in Site 2 is defined as follows in the
+files `site2/host_vars/node1`:
 
 ```yaml
 # wireguard configuration
@@ -467,7 +482,21 @@ wireguard_peers:
     client_allowed_ips: "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
 ```
 
-No group_vars.
+Both files set the configuration of wireguard in Site 1 and Site 2 as described
+in the VPN Configuration section above.
+
+The server's network interface, listen port, IP address in the VPN, private key
+and public key file are configured in the variables `wireguard_interface`,
+`wireguard_listen_port`, `wireguard_address`, `wireguard_private_key_file`,
+`wireguard_public_key_file`.
+
+The clients are configured in the Ansible list variable `wireguard_peers`. Each
+entry is identified by its name in the variable `name` and contains its
+configuration in the following variables. On the server side, the client's
+public key and the allowed IP addresses are configured in the variables
+`public_key` and `allowed_ips`. On the client side, the client's IP address,
+the VPN endpoint and the allowed IP addresses are configured in the variables
+`client_address`, `client_endpoint` and `client_allowed_ips`.
 
 ### Deployment
 
