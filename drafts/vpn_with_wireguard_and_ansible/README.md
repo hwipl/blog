@@ -500,12 +500,22 @@ the VPN endpoint and the allowed IP addresses are configured in the variables
 
 ### Deployment
 
+The VPN servers can be installed and configured with the Ansible role,
+configuration and playbook described above. You can use the following
+[ansible-playbook][ansible-playbook] commands:
+
 ```console
 $ # site 1
 $ ansible-playbook -i site1/hosts wireguard.yml
 $ # site 2
 $ ansible-playbook -i site2/hosts wireguard.yml
 ```
+
+Both `ansible-playbook` commands run the playbook `wireguard.yml` with the
+site-specific hosts files specified with the command line argument `-i`. The
+first command installs and configures all wireguard servers in Site 1 and the
+second command in Site 2. After successful execution of the commands above, the
+VPN servers should be configured and running.
 
 ## Conclusion
 
