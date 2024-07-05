@@ -38,9 +38,14 @@ automatically.
 
 ## VPN Configuration
 
-TODO: add key generation somewhere?
+The configuration of the VPN servers and clients is described in this section.
+Servers and clients need private and public key pairs. For a VPN connection to
+work, a server needs the public key of each client and the clients need the
+public key of the server. These keys must be exchanged via a secure channel.
+The next subsection shows how to create the keys. Then, the configuration of
+the servers and the clients is shown.
 
-TODO: use "real" keys instead of placeholders?
+### Key Generation
 
 Key generation on client and server:
 
@@ -51,7 +56,8 @@ $ wg genkey | tee privatekey | wg pubkey > publickey
 
 ### Server
 
-Site 1 VPN Server `/etc/wireguard/wg0.conf`:
+The servers in the two sites are configured as follows in the file
+`/etc/wireguard/wg0.conf`. The following listing shows the file in Site 1:
 
 ```jinja
 [Interface]
@@ -75,7 +81,7 @@ PublicKey = KqvsNv2Nppt37z3BGIFOZIwfA3QcnNsEqRfTCcNiERY=
 AllowedIPs = 10.20.21.4
 ```
 
-Site 2 VPN Server `/etc/wireguard/wg0.conf`:
+The next listing shows the file `/etc/wireguard/wg0.conf` in Site 2:
 
 ```jinja
 [Interface]
