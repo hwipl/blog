@@ -47,12 +47,24 @@ the servers and the clients is shown.
 
 ### Key Generation
 
-Key generation on client and server:
+The wireguard keys can be generated on the clients and servers with the
+following commands:
 
 ```console
 $ umask 077
 $ wg genkey | tee privatekey | wg pubkey > publickey
 ```
+
+The `umask` command makes sure that the new keys cannot be accessed by other
+users. The `wg` commands create the private key, write it into the file
+`privatekey`, and then create the public key and write it into the file
+`publickey`.
+
+The commands should be run on each server and each client. On each server or
+client, its private key should be copied to the file `/etc/wireguard/wg0.key`
+for the configuration shown below. The private keys should never be shared with
+other users or copied to other hosts. As mentioned before, the public keys must
+be exchanged between a server and a client to enable a VPN connection.
 
 ### Server
 
