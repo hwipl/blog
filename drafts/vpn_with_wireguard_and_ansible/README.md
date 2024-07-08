@@ -117,6 +117,24 @@ PublicKey = UY7GDMxHelkkMojD56kvuUJE+lL2dR38f4V8uCGfGg8=
 AllowedIPs = 10.20.22.4
 ```
 
+The file name of the configuration file determines the name of the wireguard
+network interface. The name is `wg0.conf`, so the name of the network interface
+is `wg0`.
+
+The `[Interface]` section in the configuration file specifies the settings of
+the wireguard server. `ListenPort` is the UDP port number on which the server
+accepts client connections and is set to `51000`. `Address` is the IP address
+including the prefix length of the server inside the VPN. In Site 1 it is
+`10.20.21.1/24` and in Site 2 `10.20.22.1/24`. The `PostUp` line allows setting
+the private key of the server from the file `/etc/wireguard/wg0.key`, so you do
+not have to write it into the configuration file.
+
+The `[Peer]` sections in the configuration file specify the settings of the
+clients. `PublicKey` is the public key of a client. `AllowedIPs` specifies the
+allowed source IP addresses in packets received from a client. This is set to
+the IP address of each client: `10.20.21.2`, `10.20.21.3`, `10.20.21.4` in Site
+1 and `10.20.22.2`, `10.20.22.3`, `10.20.22.4` in Site 2.
+
 ### Clients
 
 Site 1 Client config in `/etc/wireguard/wg0.conf`:
