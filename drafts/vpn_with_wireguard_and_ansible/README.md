@@ -137,7 +137,9 @@ the IP address of each client: `10.20.21.2`, `10.20.21.3`, `10.20.21.4` in Site
 
 ### Clients
 
-Site 1 Client config in `/etc/wireguard/wg0.conf`:
+The clients in both sites are also configured in the file
+`/etc/wireguard/wg0.conf`. The configuration is similar to the server side.
+The following listing shows the file in Site 1:
 
 ```jinja
 [Interface]
@@ -154,14 +156,14 @@ Endpoint = vpn.s1.lan:51000
 AllowedIPs = "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
 ```
 
-Site 2 Client config in `/etc/wireguard/wg0.conf`:
+The next listing shows the file `/etc/wireguard/wg0.conf` in Site 2:
 
 ```jinja
 [Interface]
 ListenPort = 51000
 Address = 10.20.22.2/24     # Client 1
-# Address = 10.20.22.2/24   # Client 2
-# Address = 10.20.22.2/24   # Client 3
+# Address = 10.20.22.3/24   # Client 2
+# Address = 10.20.22.4/24   # Client 3
 PostUp = wg set %i private-key /etc/wireguard/wg0.key
 
 [Peer]
@@ -170,6 +172,28 @@ PublicKey = /nkmz7U8ryzGqnrNll9sVtzEg04N3ZhXzS2na+uc4Q4=
 Endpoint = vpn.s2.lan:51000
 AllowedIPs = "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
 ```
+
+Again, the file name of the configuration file determines the name of the
+wireguard network interface. The name is `wg0.conf`, so the name of the network
+interface is `wg0`.
+
+The `[Interface]` section in the configuration file specifies the settings of
+the wireguard client. `ListenPort` specifies the UDP port number of the client
+and is set to `51000`. `Address` is the IP address including the prefix length
+of the client inside the VPN. In Site 1, it is `10.20.21.2/24` for Client 1,
+`10.20.21.3/24` for Client 2 and `10.20.21.4/24` for Client 3. In Site 2, it is
+`10.20.22.2/24` for Client 1, `10.20.22.3/24` for Client 2 and `10.20.22.4/24`
+for Client 3. The `PostUp` line allows setting the private key of the client
+from the file `/etc/wireguard/wg0.key`, so you do not have to write it into the
+configuration file.
+
+The `[Peer]` section in the configuration file specifies the settings of the
+server. `PublicKey` is the public key of the server. `Endpoint` is the address
+of the server for the VPN connection. For the Site 1 VPN, it is
+`vpn.s1.lan:51000`. For the Site 2 VPN, it is `vpn.s2.lan:51000`. `AllowedIPs`
+specifies the allowed source IP addresses in packets received from the server.
+This is set to all IP address ranges used in both sites: `10.20.1.0/24`,
+`10.20.21.0/24`, `10.20.2.0/24` and `10.20.22.0/24`.
 
 ## Ansible
 
