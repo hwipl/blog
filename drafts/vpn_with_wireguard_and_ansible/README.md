@@ -7,6 +7,10 @@ automatically.
 
 ## Overview
 
+The VPN servers in this document run wireguard on Ubuntu 22.04 LTS.  Wireguard
+is installed and configured automatically with Ansible. The wireguard
+configuration in this document assumes the network in the following figure:
+
 ```
            +--------------+ +--------------+ +--------------+
            | VPN Client 1 | | VPN Client 2 | | VPN Client 3 |
@@ -35,6 +39,16 @@ automatically.
 :...................................:...................................:
                         Network: 10.20.0.0/16
 ```
+
+The example network consists of the two sites `Site 1` and `Site 2`. Each site
+contains three nodes. `Node 1` runs the wireguard server and is connected to
+the other nodes in the site as well as other networks. `Node 2` and `Node 3`
+are the other nodes. Three VPN clients exist outside of the network: `VPN
+Client 1`, `VPN Client 2` and `VPN Client 3`. They connect to a site via the
+VPN server in the respective site. When they are connected to a site, they can
+reach the server and the other nodes in the site as well as the nodes in the
+other site via the VPN server. The clients only connect to one of the VPN
+servers at the same time.
 
 ## VPN Configuration
 
