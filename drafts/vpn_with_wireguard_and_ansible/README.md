@@ -50,6 +50,22 @@ reach the server and the other nodes in the site as well as the nodes in the
 other site via the VPN server. The clients only connect to one of the VPN
 servers at the same time.
 
+A VPN server and its clients use a separate subnetwork inside the VPN:
+`10.20.21.0/24` in Site 1 and `10.20.22.0/24` in Site 2. The VPN server is
+responsible for the routing. The IP addresses are shown in the following table.
+
+| Node         | Site 1 VPN Address | Site 2 VPN Address |
+|--------------|--------------------|--------------------|
+| Node 1       | 10.20.21.1/24      | 10.20.22.1/24      |
+| VPN Client 1 | 10.20.21.2/24      | 10.20.22.2/24      |
+| VPN Client 2 | 10.20.21.3/24      | 10.20.22.3/24      |
+| VPN Client 3 | 10.20.21.4/24      | 10.20.22.4/24      |
+
+The VPN server's IP in Site 1 is `10.20.21.1`. In Site 2, it is `10.20.22.1`.
+The IPs of VPN Client 1, 2 and 3 are `10.20.21.2`, `10.20.21.3` and
+`10.20.21.4` in Site 1. In Site 2, they are `10.20.22.2`, `10.20.22.3` and
+`10.20.22.4`.
+
 ## VPN Configuration
 
 The configuration of the VPN servers and clients is described in this section.
