@@ -66,6 +66,12 @@ The IPs of VPN Client 1, 2 and 3 are `10.20.21.2`, `10.20.21.3` and
 `10.20.21.4` in Site 1. In Site 2, they are `10.20.22.2`, `10.20.22.3` and
 `10.20.22.4`.
 
+The VPN clients connect to a server via the server's external DNS name that
+resolves to an IP address that is reachable by the clients from outside the
+network. In Site 1, the DNS name is `vpn.s1.lan`. In Site 2, it is
+`vpn.s2.lan`. The external IP addresses of the servers and of the clients are
+unknown and not needed for the VPN configuration in this document.
+
 ## VPN Configuration
 
 The configuration of the VPN servers and clients is described in this section.
