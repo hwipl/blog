@@ -596,6 +596,8 @@ the VPN endpoint and the allowed IP addresses are configured in the variables
 
 ### Deployment
 
+#### Server Setup
+
 The VPN servers can be installed and configured with the Ansible role,
 configuration and playbook described above. You can use the following
 [ansible-playbook][ansible-playbook] commands:
@@ -612,6 +614,46 @@ site-specific hosts files specified with the command line argument `-i`. The
 first command installs and configures all wireguard servers in Site 1 and the
 second command in Site 2. After successful execution of the commands above, the
 VPN servers should be configured and running.
+
+#### Client Setup
+
+The client configuration files will be on the host that ran the playbooks in
+the subdirectory `wireguard-clients` in the Ansible inventory:
+`site1/wireguard-clients/` in Site 1, `site2/wireguard-clients/` in Site 2.
+These configuration files can be shared with the respective clients over a
+secure channel.
+
+A client copies this configuration file to `/etc/wireguard/wg0.conf` and copies
+its private key to `/etc/wireguard/wg0.key`. Then, the client can use the tool
+`wg-quick` to connect to the VPN and disconnect with the following commands:
+
+```console
+$ # connect to the VPN
+$ wg-quick up wg0
+$ # disconnect from the VPN
+$ wg-quick down wg0
+```
+
+The first command connects the client with the VPN, the second command
+disconnects the client from the VPN.
+
+Also, the client can use the following systemd service to run `wq-quick`:
+
+```console
+$ # start VPN connection automatically on startup
+$ sudo systemctl enable wg-quick@wg0.service
+$ # start VPN connection now
+$ sudo systemctl start wg-quick@wg0.service
+$ # stop VPN connection now
+$ sudo systemctl stop wg-quick@wg0.service
+$ # do not start VPN connection automatically on startup
+$ sudo systemctl disable wg-quick@wg0.service
+```
+
+The first command automatically connects the client to the VPN on client
+startup. The second command connects the client to the VPN now. The third
+command disconnects the client from the VPN. The last command stops starting
+the VPN connection on client startup.
 
 ## Conclusion
 
