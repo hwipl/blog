@@ -596,8 +596,6 @@ the VPN endpoint and the allowed IP addresses are configured in the variables
 
 ### Deployment
 
-#### Server Setup
-
 The VPN servers can be installed and configured with the Ansible role,
 configuration and playbook described above. You can use the following
 [ansible-playbook][ansible-playbook] commands:
@@ -615,17 +613,18 @@ first command installs and configures all wireguard servers in Site 1 and the
 second command in Site 2. After successful execution of the commands above, the
 VPN servers should be configured and running.
 
-#### Client Setup
-
 The client configuration files will be on the host that ran the playbooks in
 the subdirectory `wireguard-clients` in the Ansible inventory:
 `site1/wireguard-clients/` in Site 1, `site2/wireguard-clients/` in Site 2.
 These configuration files can be shared with the respective clients over a
 secure channel.
 
-A client copies this configuration file to `/etc/wireguard/wg0.conf` and copies
-its private key to `/etc/wireguard/wg0.key`. Then, the client can use the tool
-`wg-quick` to connect to the VPN and disconnect with the following commands:
+## Client Setup
+
+A client copies the configuration file created on the Ansible host (see
+Deployment above) to `/etc/wireguard/wg0.conf` and copies its private key to
+`/etc/wireguard/wg0.key`. Then, the client can use the tool `wg-quick` to
+connect to the VPN and disconnect with the following commands:
 
 ```console
 $ # connect to the VPN
