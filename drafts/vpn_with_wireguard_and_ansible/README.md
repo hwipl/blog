@@ -672,6 +672,14 @@ the code and configuration examples in the appendix below.
 
 ## Appendix: Code
 
+You can find the Ansible role and playbook as well as the configuration of both
+sites as shown in this document at the following links:
+
+- [Ansible Role](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/wireguard/roles/wireguard)
+- [Ansible Playbook](https://github.com/hwipl/ansible-playbooks/blob/main/ubuntu/wireguard/wireguard.yml)
+- [Site 1 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/wireguard/examples/site1)
+- [Site 2 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/wireguard/examples/site2)
+
 [roles]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
 [playbooks]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
 [templates]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html
