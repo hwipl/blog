@@ -507,8 +507,8 @@ as follows in the files `site1/host_vars/node1`:
 wireguard_interface: "wg0"
 wireguard_listen_port: 51000
 wireguard_address: 10.20.21.1/24
-wireguard_private_key_file: "~/cluster/wireguard/server/server-private.key"
-wireguard_public_key_file: "~/cluster/wireguard/server/server-public.key"
+wireguard_private_key_file: "~/wireguard/site1/server-private.key"
+wireguard_public_key_file: "~/wireguard/site1/server-public.key"
 wireguard_peers:
   # Client IP 10.20.21.2:
   - name: client1
@@ -548,8 +548,8 @@ files `site2/host_vars/node1`:
 wireguard_interface: "wg0"
 wireguard_listen_port: 51000
 wireguard_address: 10.20.22.1/24
-wireguard_private_key_file: "~/cluster/wireguard/server/server-private.key"
-wireguard_public_key_file: "~/cluster/wireguard/server/server-public.key"
+wireguard_private_key_file: "~/wireguard/site2/server-private.key"
+wireguard_public_key_file: "~/wireguard/site2/server-public.key"
 wireguard_peers:
   # Client IP 10.20.22.2:
   - name: client1
