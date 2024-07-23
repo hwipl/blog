@@ -9,8 +9,8 @@ clients to connect to the VPN servers.
 
 ## Overview
 
-The VPN servers in this document run wireguard on Ubuntu 22.04 LTS.  Wireguard
-is installed and configured automatically with Ansible. The wireguard
+The VPN servers in this document run WireGuard on Ubuntu 22.04 LTS. WireGuard
+is installed and configured automatically with Ansible. The WireGuard
 configuration in this document assumes the network in the following figure:
 
 ```
@@ -43,7 +43,7 @@ configuration in this document assumes the network in the following figure:
 ```
 
 The example network consists of the two sites `Site 1` and `Site 2`. Each site
-contains three nodes. `Node 1` runs the wireguard server and is connected to
+contains three nodes. `Node 1` runs the WireGuard server and is connected to
 the other nodes in the site as well as other networks. `Node 2` and `Node 3`
 are the other nodes. Three VPN clients exist outside of the network: `VPN
 Client 1`, `VPN Client 2` and `VPN Client 3`. They connect to a site via the
@@ -85,7 +85,7 @@ the servers and the clients is shown.
 
 ### Key Generation
 
-The wireguard keys can be generated on the clients and servers with the
+The WireGuard keys can be generated on the clients and servers with the
 following commands:
 
 ```console
@@ -155,12 +155,12 @@ PublicKey = UY7GDMxHelkkMojD56kvuUJE+lL2dR38f4V8uCGfGg8=
 AllowedIPs = 10.20.22.4
 ```
 
-The file name of the configuration file determines the name of the wireguard
+The file name of the configuration file determines the name of the WireGuard
 network interface. The name is `wg0.conf`, so the name of the network interface
 is `wg0`.
 
 The `[Interface]` section in the configuration file specifies the settings of
-the wireguard server. `ListenPort` is the UDP port number on which the server
+the WireGuard server. `ListenPort` is the UDP port number on which the server
 accepts client connections and is set to `51000`. `Address` is the IP address
 including the prefix length of the server inside the VPN. In Site 1 it is
 `10.20.21.1/24` and in Site 2 `10.20.22.1/24`. The `PostUp` line allows setting
@@ -212,11 +212,11 @@ AllowedIPs = "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
 ```
 
 Again, the file name of the configuration file determines the name of the
-wireguard network interface. The name is `wg0.conf`, so the name of the network
+WireGuard network interface. The name is `wg0.conf`, so the name of the network
 interface is `wg0`.
 
 The `[Interface]` section in the configuration file specifies the settings of
-the wireguard client. `ListenPort` specifies the UDP port number of the client
+the WireGuard client. `ListenPort` specifies the UDP port number of the client
 and is set to `51000`. `Address` is the IP address including the prefix length
 of the client inside the VPN. In Site 1, it is `10.20.21.2/24` for Client 1,
 `10.20.21.3/24` for Client 2 and `10.20.21.4/24` for Client 3. In Site 2, it is
@@ -376,25 +376,25 @@ configuration changed, the tasks trigger the restart event.
 1. The first task updates the `apt` cache if it is older than one hour to make
    sure the following installation task can run with up-to-date package
    sources.
-2. The second task installs wireguard with `apt` if it is not already installed.
-3. The third task copies the private key of the wireguard server from the
+2. The second task installs WireGuard with `apt` if it is not already installed.
+3. The third task copies the private key of the WireGuard server from the
    source file defined in the Ansible variable `wireguard_private_key_file` to
-   its destination. The destination file name is the name of the wireguard
-   network interface with the suffix `.key` in the wireguard configuration
+   its destination. The destination file name is the name of the WireGuard
+   network interface with the suffix `.key` in the WireGuard configuration
    directory `/etc/wireguard`.
-4. The fourth task creates or updates the wireguard configuration from the
+4. The fourth task creates or updates the WireGuard configuration from the
    template `wg.conf.j2`. The name of the configuration file is the name of
-   the wireguard network interface with the suffix `.conf` in the wireguard
+   the WireGuard network interface with the suffix `.conf` in the WireGuard
    configuration directory `/etc/wireguard`.
-5. The fifth task enables the wireguard VPN server for the network interface.
+5. The fifth task enables the WireGuard VPN server for the network interface.
    It sets the corresponding systemd service to `enabled`.
 
 The last two tasks create the configuration files for the clients. They run
-only on the host that executes the Ansible playbook and not on the wireguard
+only on the host that executes the Ansible playbook and not on the WireGuard
 servers. The first task creates the directory `wireguard-clients` in the
 directory of the Ansible inventory. The second task creates a configuration
 file in this directory for each client from the template `wg-client.conf.j2`.
-The file name is the name of the wireguard peer with the suffix `.conf`.
+The file name is the name of the WireGuard peer with the suffix `.conf`.
 
 #### Templates
 
@@ -423,7 +423,7 @@ configuration:
 
 - The server's listen port is read from the variable `wireguard_listen_port`
 - The server's VPN address is read from the variable `wireguard_address`
-- The wireguard network interface is read from the variable
+- The WireGuard network interface is read from the variable
   `wireguard_interface`
 - For each peer in the Ansible list `wireguard_peers`, a peer section is
   created. The public key and allowed IPs are read from the variables
@@ -451,7 +451,7 @@ configuration:
 
 - The client's listen port is read from the variable `wireguard_listen_port`
 - The client's VPN address is read from the variable `wireguard_address`
-- The wireguard network interface is read from the variable
+- The WireGuard network interface is read from the variable
   `wireguard_interface`
 - The server's public key is read from the variable `wireguard_public_key`
 - The server's endpoint address is read from the client variable
@@ -482,8 +482,8 @@ The configuration is derived from host files in the Ansible
 [inventory][inventory]. They contain the variables that the tasks of the role
 use. Each site uses a different inventory and, thus, different host files to
 allow for site-specific configurations as shown below. There is no other
-group-specific configuration of the VPN servers in the `group_vars` of `node1`
-in each site.
+group-specific configuration of the VPN servers in the `group_vars` in each
+site.
 
 The Ansible hosts are defined as follows in the files `site1/hosts` and
 `site2/hosts`:
@@ -494,7 +494,7 @@ node1
 ```
 
 The hosts file of each site defines the group `wireguard_servers` and assigns
-the node `node1` to it. Thus, `node1` is defined as wireguard server for the
+the node `node1` to it. Thus, `node1` is defined as WireGuard server for the
 playbook.
 
 The host-specific configuration of the VPN servers is in the `host_vars` of
@@ -580,7 +580,7 @@ wireguard_peers:
     client_allowed_ips: "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
 ```
 
-Both files set the configuration of wireguard in Site 1 and Site 2 as described
+Both files set the configuration of WireGuard in Site 1 and Site 2 as described
 in the VPN Configuration section above.
 
 The server's network interface, listen port, IP address in the VPN, private key
@@ -611,7 +611,7 @@ $ ansible-playbook -i site2/hosts wireguard.yml
 
 Both `ansible-playbook` commands run the playbook `wireguard.yml` with the
 site-specific hosts files specified with the command line argument `-i`. The
-first command installs and configures all wireguard servers in Site 1 and the
+first command installs and configures all WireGuard servers in Site 1 and the
 second command in Site 2. After successful execution of the commands above, the
 VPN servers should be configured and running.
 
