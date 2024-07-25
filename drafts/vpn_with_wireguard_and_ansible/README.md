@@ -623,10 +623,16 @@ secure channel.
 
 ## Client Setup
 
-A client copies the configuration file created on the Ansible host (see
-Deployment above) to `/etc/wireguard/wg0.conf` and copies its private key to
-`/etc/wireguard/wg0.key`. Then, the client can use the tool `wg-quick` to
-connect to the VPN and disconnect with the following commands:
+The client configuration files created on the Ansible host (see Deployment
+above) can be used by the client to connect to the VPN servers. This section
+shows how a client can use such a configuration file for connecting and
+disconnecting as well as how to create a systemd service for automatically
+connecting at client startup.
+
+First, the client copies the configuration file to `/etc/wireguard/wg0.conf`
+and copies its private key to `/etc/wireguard/wg0.key`. Then, the client can
+use the tool `wg-quick` to connect to the VPN and disconnect with the following
+commands:
 
 ```console
 $ # connect to the VPN
@@ -651,10 +657,11 @@ $ # do not start VPN connection automatically on startup
 $ sudo systemctl disable wg-quick@wg0.service
 ```
 
-The first command automatically connects the client to the VPN on client
-startup. The second command connects the client to the VPN now. The third
-command disconnects the client from the VPN. The last command stops starting
-the VPN connection on client startup.
+The first command enables the systemd service that automatically connects the
+client to the VPN on client startup. The second command connects the client to
+the VPN now. The third command disconnects the client from the VPN. The last
+command disables the systemd service and, thus, stops starting the VPN
+connection on client startup.
 
 ## Conclusion
 
