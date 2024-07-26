@@ -624,10 +624,10 @@ secure channel.
 ## Client Setup
 
 The client configuration files created on the Ansible host (see Deployment
-above) can be used by the client to connect to the VPN servers. This section
-shows how a client can use such a configuration file for connecting and
-disconnecting as well as how to create a systemd service for automatically
-connecting at client startup.
+above) can be used by clients to connect to the VPN servers. This section shows
+how a client can use such a configuration file for connecting and disconnecting
+as well as how to create a systemd service for automatically connecting at
+client startup.
 
 First, the client copies the configuration file to `/etc/wireguard/wg0.conf`
 and copies its private key to `/etc/wireguard/wg0.key`. Then, the client can
