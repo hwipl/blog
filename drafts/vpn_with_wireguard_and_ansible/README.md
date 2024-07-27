@@ -5,7 +5,8 @@ It shows the WireGuard configuration as well as the Ansible role, playbook and
 configuration that are used to install and configure each VPN server
 automatically. Also, WireGuard configuration files are created automatically
 for each client during deployment that can be shared with and used by the
-clients to connect to the VPN servers.
+clients to connect to the VPN servers. So, the client setup using these
+configuration files is also shown.
 
 ## Overview
 
