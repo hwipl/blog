@@ -674,7 +674,8 @@ the templates together with Ansible variables to create the WireGuard
 configuration. Finally, an Ansible Playbook is used with the `ansible-playbook`
 command to run the tasks and, thus, install and configure all VPN servers.
 Additionally, configuration files are created that can be used by the clients
-to connect to the VPN servers. All sections contain configuration or code
+to connect to the VPN servers. So, the setup on the client side is also shown
+using these configuration files. All sections contain configuration or code
 examples you can use as a basis for your own setup. Also, you can find links to
 the code and configuration examples in the appendix below.
 
