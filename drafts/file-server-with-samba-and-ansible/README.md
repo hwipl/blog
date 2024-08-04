@@ -117,6 +117,21 @@ roles/samba/
 
 #### Hosts
 
+`hosts`:
+
+```ini
+[smb_servers]
+node1
+```
+
+`host_vars/node1`:
+
+```yaml
+# smb server configuration
+samba_path: "/srv/samba/guest"
+samba_share: "guest"
+```
+
 #### Groups
 
 ### Deployment
