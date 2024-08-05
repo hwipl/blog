@@ -9,6 +9,24 @@ automatically.
 
 ## File Server Configuration
 
+`/etc/samba/smb.conf`:
+
+```ini
+[global]
+        map to guest = Bad User
+        log file = /var/log/samba/log.%m
+        log level = 1
+        server role = standalone server
+
+[guest]
+        # This share allows anonymous (guest) access
+        # without authentication!
+        path = /srv/samba/guest
+        read only = yes
+        guest ok = yes
+        guest only = yes
+```
+
 ## Ansible
 
 ### Role
