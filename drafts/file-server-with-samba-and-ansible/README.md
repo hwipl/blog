@@ -49,6 +49,9 @@ TODO: remove sites?
 
 ### Role
 
+The Ansible role is called `samba` and structured as shown in the listing
+below:
+
 ```
 roles/samba/
 ├── handlers
@@ -58,6 +61,10 @@ roles/samba/
 └── templates
     └── smb.conf.j2
 ```
+
+The role consists of one `main.yml` file for handlers, one `main.yml` file for
+tasks and one template file. The tasks use the template `smb.conf.j2` to create
+the configuration file for the file servers.
 
 #### Handlers
 
