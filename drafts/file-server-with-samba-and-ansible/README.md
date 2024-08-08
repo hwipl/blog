@@ -68,7 +68,7 @@ the configuration file for the file servers.
 
 #### Handlers
 
-`roles/samba/handlers/main.yml`:
+A handler is defined as follows in the file `roles/samba/handlers/main.yml`:
 
 ```yaml
 ---
@@ -83,6 +83,12 @@ the configuration file for the file servers.
     - smbd
     - nmbd
 ```
+
+The handler is called `Restart samba` and restarts the file server with the
+[service module][service] when it is triggered. It requires root privileges to
+manipulate the state of the system services, so [become][become] is set to
+`true` for [privilege escalation][privilege]. To restart file server, it sets
+the system services `smbd` and `nmbd` to state `restarted`.
 
 #### Tasks
 
