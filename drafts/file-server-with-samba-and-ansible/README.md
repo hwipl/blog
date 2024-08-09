@@ -92,7 +92,7 @@ the system services `smbd` and `nmbd` to state `restarted`.
 
 #### Tasks
 
-`roles/samba/tasks/main.yml`:
+The tasks are defined as follows in the file `roles/samba/tasks/main.yml`:
 
 ```yaml
 ---
@@ -128,6 +128,25 @@ the system services `smbd` and `nmbd` to state `restarted`.
   notify:
     - Restart samba
 ```
+
+These tasks install the file server with the [apt module][apt], configure it
+with the template and the [template module][template] and trigger the restart
+event with [notify][notify] if the configuration file is changed. All tasks
+need root privileges to manipulate the system configuration. So,
+[become][become] is set to `true`. The file owner and group of all files are
+set to `root`.
+
+1. The first task updates the `apt` cache if it is older than one hour to make
+   sure the following installation task can run with up-to-date package
+   sources.
+2. The second task installs Samba with `apt` if it is not already installed.
+3. The third task creates the directory for the file share if it does not
+   exist. The path name is taken from the Ansible variable `samba_path`. File
+   permissions are set to `775`.
+4. The fourth task creates or updates the Samba configuration in
+   `/etc/samba/smb.conf` from the template `smb.conf.j2`. File permissions are
+   set to `644`. An existing configuration file is backed up in the process. If
+   the configuration changed, the task triggers the restart event.
 
 #### Templates
 
@@ -198,3 +217,6 @@ samba_share: "guest"
 [service]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
 [become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
 [privilege]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
+[apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+[template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
+[notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
