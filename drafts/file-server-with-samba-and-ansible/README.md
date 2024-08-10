@@ -150,6 +150,8 @@ set to `root`.
 
 #### Templates
 
+The template for the Samba configuration file is defined as [Jinja2
+template][jinja2]. It is defined as follows in the file
 `roles/samba/templates/smb.conf.j2`:
 
 ```jinja
@@ -167,6 +169,13 @@ set to `root`.
         guest ok = yes
         guest only = yes
 ```
+
+The template reflects the server configuration shown in the File Server
+Configuration section above with parts dynamically generated based on the
+Ansible configuration:
+
+- The name of the file share is read from the variable `samba_share`
+- The path of the file share is read from the variable `samba_path`
 
 ### Playbook
 
@@ -220,3 +229,4 @@ samba_share: "guest"
 [apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
 [template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
 [notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
+[jinja2]: https://jinja.palletsprojects.com/en/latest/templates/
