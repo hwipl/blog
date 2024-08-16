@@ -179,7 +179,7 @@ Ansible configuration:
 
 ### Playbook
 
-`samba.yml`:
+The playbook is defined as follows in the file `samba.yml`:
 
 ```yaml
 ---
@@ -189,6 +189,10 @@ Ansible configuration:
   roles:
     - samba
 ```
+
+The playbook assigns the role `samba` that is described above to all hosts in
+the group `smb_servers`. On execution, this playbook runs all the tasks of the
+role on all the hosts in the group to install and configure the file servers.
 
 ### Configuration
 
