@@ -196,16 +196,29 @@ role on all the hosts in the group to install and configure the file servers.
 
 ### Configuration
 
-#### Hosts
+The configuration is derived from host files in the Ansible
+[inventory][inventory]. They contain the variables that the tasks of the role
+use. Each site uses a different inventory and, thus, different host files to
+allow for site-specific configurations as shown below. There is no other
+group-specific configuration of the Samba servers in the `group_vars` in each
+site.
 
-`hosts`:
+The Ansible hosts are defined as follows in the files `site1/hosts` and
+`site2/hosts`:
 
 ```ini
 [smb_servers]
 node1
 ```
 
-`host_vars/node1`:
+The hosts file of each site defines the group `smb_servers` and assigns
+the node `node1` to it. Thus, `node1` is defined as Samba server for the
+playbook.
+
+The host-specific configuration of the Samba servers is in the `host_vars` of
+`node1` in each site. The configuration for the file server in Site 1 and Site
+2 is defined as follows in the files `site1/host_vars/node1` and
+`site2/host_vars/node1`:
 
 ```yaml
 # smb server configuration
@@ -213,7 +226,14 @@ samba_path: "/srv/samba/guest"
 samba_share: "guest"
 ```
 
-#### Groups
+Both files set the configuration of Samba in Site 1 and Site 2 as described
+in the File Server Configuration section above.
+
+The path of the Samba file share is set to `/srv/samba/guest` in the
+`samba_path` variable. The name of the Samba share is set to `guest` in the
+variable `samba_share`.
+
+TODO: remove sites?
 
 ### Deployment
 
