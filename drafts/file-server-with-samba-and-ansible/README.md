@@ -9,6 +9,8 @@ automatically.
 
 ## File Server Configuration
 
+The configuration of the files servers is described in this section. The
+servers in the two sites are configured as follows in the file
 `/etc/samba/smb.conf`:
 
 ```ini
@@ -26,6 +28,22 @@ automatically.
         guest ok = yes
         guest only = yes
 ```
+
+The section `[global]` specifies the global settings of the Samba server. The
+option `map to guest` is set to `Bad User` and maps not existing users to the
+guest account. The option `log file` sets the log file to
+`/var/log/samba/log.%m` where `%m` is replaced with the name of client
+machines. The option `log level` sets the logging level to `1` which is the
+lowest level. The option `server role` sets the server to `standalone server`
+and requires clients to log on with a valid username and password.
+
+The section `[guest]` specifies the settings of a share called `guest`.  The
+option `path` sets the path of the share in the server's file system to
+`/srv/samba/guest`. The option `read only` forbids write access to the share.
+The option `guest ok` allows guest connections to the share with no password.
+The option `guest only` allows only guest connections to the share.
+
+TODO: remove sites?
 
 ## Ansible
 
