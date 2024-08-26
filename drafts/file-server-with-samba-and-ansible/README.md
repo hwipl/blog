@@ -34,31 +34,10 @@ simple and assumes the network in the following figure:
 :.................................:.................................:
                       Network: 10.20.0.0/16
 ```
-```
-.........................................
-:                                       :
-:          +------------------+         :
-:          | Node 1           |         :
-:          | Samba Server     |         :
-:          +------------------+         :
-:          | R/O Guest Share: |         :
-:          | /srv/samba/guest |         :
-:          +------------------+         :
-:          _________|__________         :
-:         |                    |        :
-:  +--------------+   +--------------+  :
-:  | Node 2       |   | Node 3       |  :
-:  | Samba Client |   | Samba Client |  :
-:  +--------------+   +--------------+  :
-:                                       :
-:.......................................:
-```
 
-The example network consists of three nodes. `Node 1` runs the Samba server.
-`Node 2` and `Node 3` are the Samba clients. The clients use the server in the
-network. For simplicity, there is only one file server in this network but
-Ansible and the configuration allow for installing multiple Samba servers in
-the network.
+The example network consists of the two sites `Site 1` and `Site 2`. Each site
+contains three nodes. `Node 1` runs the Samba (SMB) server. `Node 2` and `Node
+3` are Samba clients. The clients in a site use the server in the same site.
 
 Each server shares a folder in its file system as a public guest share that is
 read-only and does not require user authentication. Clients connect to the
