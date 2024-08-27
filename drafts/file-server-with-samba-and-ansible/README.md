@@ -8,8 +8,8 @@ automatically.
 ## Overview
 
 The file servers in this document run Samba on Ubuntu 22.04 LTS. Samba is
-installed and configured automatically with Ansible. The Samba configuration is
-simple and assumes the network in the following figure:
+installed and configured automatically with Ansible. The Samba configuration
+assumes the network in the following figure:
 
 ```
 .....................................................................
@@ -39,9 +39,10 @@ The example network consists of the two sites `Site 1` and `Site 2`. Each site
 contains three nodes. `Node 1` runs the Samba (SMB) server. `Node 2` and `Node
 3` are Samba clients. The clients in a site use the server in the same site.
 
-Each server shares a folder in its file system as a public guest share that is
-read-only and does not require user authentication. Clients connect to the
-server and mount the share to read files from it.
+The Samba configuration is simple. Each server shares a folder in its file
+system as a public guest share that is read-only and does not require user
+authentication. Clients connect to the server and mount the share to read files
+from it.
 
 ## File Server Configuration
 
