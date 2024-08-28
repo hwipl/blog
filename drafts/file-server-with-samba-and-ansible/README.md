@@ -80,8 +80,6 @@ option `path` sets the path of the share in the server's file system to
 The option `guest ok` allows guest connections to the share with no password.
 The option `guest only` allows only guest connections to the share.
 
-TODO: remove sites?
-
 ## Ansible
 
 Ansible allows for automatic installation and configuration of the VPN servers.
@@ -99,8 +97,6 @@ configurations. The deployment is finally performed with the
 and deployment are shown in the following subsections. Additionally, you can
 find links to the code and configuration examples in the appendix at the end of
 this document.
-
-TODO: remove sites?
 
 ### Role
 
@@ -288,8 +284,6 @@ The path of the Samba file share is set to `/srv/samba/guest` in the
 `samba_path` variable. The name of the Samba share is set to `guest` in the
 variable `samba_share`.
 
-TODO: remove sites?
-
 ### Deployment
 
 The file servers can be installed and configured with the Ansible role,
@@ -309,8 +303,6 @@ first command installs and configures all Samba servers in Site 1 and the
 second command in Site 2. After successful execution of the commands above, the
 file servers should be configured and running.
 
-TODO: remove sites?
-
 ## Conclusion
 
 This document describes how you can automatically install and configure Samba
@@ -324,8 +316,6 @@ All sections contain configuration or code examples you can use as a basis for
 your own setup. Also, you can find links to the code and configuration examples
 in the appendix below.
 
-TODO: remove/change example network part?
-
 ## Appendix: Code
 
 You can find the Ansible role and playbook as well as the configuration of both
@@ -335,8 +325,6 @@ sites as shown in this document at the following links:
 - [Ansible Playbook](https://github.com/hwipl/ansible-playbooks/blob/main/ubuntu/samba/samba.yml)
 - [Site 1 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/samba/examples/site1)
 - [Site 2 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/samba/examples/site2)
-
-TODO: remove sites?
 
 [roles]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
 [playbooks]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
