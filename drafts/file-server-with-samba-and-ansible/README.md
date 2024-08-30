@@ -303,6 +303,39 @@ first command installs and configures all Samba servers in Site 1 and the
 second command in Site 2. After successful execution of the commands above, the
 file servers should be configured and running.
 
+## Client Setup
+
+Make sure package `cifs-utils` is installed and the mount folder
+`/mnt/site1-share-guest` or `/mnt/site2-share-guest` exists:
+
+```console
+$ sudo apt install cifs-utils
+$ # site 1
+$ sudo m̀kdir /mnt/site1-share-guest
+$ # site 2
+$ sudo m̀kdir /mnt/site2-share-guest
+```
+
+Mount shares:
+
+```console
+$ # site 1
+$ sudo mount -t cifs -o guest //10.20.1.1/guest /mnt/site1-share-guest
+$ # site 2
+$ sudo mount -t cifs -o guest //10.20.2.1/guest /mnt/site2-share-guest
+```
+
+Mount share permanently with fstab entry:
+
+```
+# site 1
+//10.20.1.1/guest /mnt/site1-share-guest cifs guest,uid=1000 0 0
+# site 2
+//10.20.2.1/guest /mnt/site2-share-guest cifs guest,uid=1000 0 0
+```
+
+Replace the user ID `1000` in the option `uid` with the user ID of your user.
+
 ## Conclusion
 
 This document describes how you can automatically install and configure Samba
