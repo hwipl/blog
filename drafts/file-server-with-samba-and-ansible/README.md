@@ -305,8 +305,10 @@ file servers should be configured and running.
 
 ## Client Setup
 
-Make sure package `cifs-utils` is installed and the mount folder
-`/mnt/site1-share-guest` or `/mnt/site2-share-guest` exists:
+This section shows how clients can access the public Samba share provided by
+the servers. First, the package `cifs-utils` should be installed and the mount
+folder `/mnt/site1-share-guest` or `/mnt/site2-share-guest` should exist. You
+can run the following commands on the clients to prepare them:
 
 ```console
 $ sudo apt install cifs-utils
@@ -316,7 +318,7 @@ $ # site 2
 $ sudo m̀kdir /mnt/site2-share-guest
 ```
 
-Mount shares:
+Then, the clients can mount the share with the following commands:
 
 ```console
 $ # site 1
@@ -325,7 +327,8 @@ $ # site 2
 $ sudo mount -t cifs -o guest //10.20.2.1/guest /mnt/site2-share-guest
 ```
 
-Mount share permanently with fstab entry:
+You can automatically mount the share on every start of a client by adding the
+following entry to the client's fstab file in `/etc/fstab`:
 
 ```
 # site 1
@@ -334,7 +337,10 @@ Mount share permanently with fstab entry:
 //10.20.2.1/guest /mnt/site2-share-guest cifs guest,uid=1000 0 0
 ```
 
-Replace the user ID `1000` in the option `uid` with the user ID of your user.
+The mount option `uid` specifies the ID of the user that owns all files and
+subdirectories of the mounted share (here `1000`). Replace the user ID `1000`
+in this option with the user ID of the local user on the client that should be
+able to access the mounted share.
 
 ## Conclusion
 
