@@ -313,9 +313,9 @@ can run the following commands on the clients to prepare them:
 ```console
 $ sudo apt install cifs-utils
 $ # site 1
-$ sudo m̀kdir /mnt/site1-share-guest
+$ sudo mkdir /mnt/site1-share-guest
 $ # site 2
-$ sudo m̀kdir /mnt/site2-share-guest
+$ sudo mkdir /mnt/site2-share-guest
 ```
 
 Then, the clients can mount the share with the following commands:
