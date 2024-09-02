@@ -327,6 +327,13 @@ $ # site 2
 $ sudo mount -t cifs -o guest //10.20.2.1/guest /mnt/site2-share-guest
 ```
 
+The commands mount the share as CIFS or SMB3 file system with the type
+parameter `cifs`. Prompting for a password is disabled with the option `guest`.
+The share is identified by `//` followed by the IP address of Node 1
+(`10.20.1.1` or `10.20.2.1`), the separator `/` and the name of the share
+(`guest`). The mount point `/mnt/site1-share-guest` or `/mnt/site2-share-guest`
+is the local directory on the client.
+
 You can automatically mount the share on every start of a client by adding the
 following entry to the client's fstab file in `/etc/fstab`:
 
@@ -337,10 +344,13 @@ following entry to the client's fstab file in `/etc/fstab`:
 //10.20.2.1/guest /mnt/site2-share-guest cifs guest,uid=1000 0 0
 ```
 
-The mount option `uid` specifies the ID of the user that owns all files and
-subdirectories of the mounted share (here `1000`). Replace the user ID `1000`
-in this option with the user ID of the local user on the client that should be
-able to access the mounted share.
+Similar to the mount commands above, the share name, local mount point, type
+`cifs` and option `guest` are specified. Additionally, the mount option `uid`
+specifies the ID of the user that owns all files and subdirectories of the
+mounted share (here `1000`). Replace the user ID `1000` in this option with the
+user ID of the local user on the client that should be able to access the
+mounted share. The last two zero values disable file system dumping and
+checking for the mounted share.
 
 ## Conclusion
 
