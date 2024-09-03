@@ -361,9 +361,10 @@ the installation and configuration tasks as well as templates. The tasks use
 the templates together with Ansible variables to create the Samba
 configuration. Finally, an Ansible Playbook is used with the `ansible-playbook`
 command to run the tasks and, thus, install and configure all file servers.
-All sections contain configuration or code examples you can use as a basis for
-your own setup. Also, you can find links to the code and configuration examples
-in the appendix below.
+Additionally, the document shows how clients can access the file servers. All
+sections contain configuration or code examples you can use as a basis for your
+own setup. Also, you can find links to the code and configuration examples in
+the appendix below.
 
 ## Appendix: Code
 
