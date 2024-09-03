@@ -3,7 +3,7 @@
 This document describes how you can deploy Samba file servers with Ansible. It
 shows the file server configuration as well as the Ansible role, playbook and
 configuration that are used to install and configure each Samba server
-automatically.
+automatically. Additionally, it shows how clients can access the file servers.
 
 ## Overview
 
