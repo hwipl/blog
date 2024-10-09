@@ -500,7 +500,7 @@ playbook.
 
 The host-specific configuration of the VPN servers is in the `host_vars` of
 `node1` in each site. The configuration for the VPN server in Site 1 is defined
-as follows in the files `site1/host_vars/node1`:
+as follows in the file `site1/host_vars/node1`:
 
 ```yaml
 # wireguard configuration
