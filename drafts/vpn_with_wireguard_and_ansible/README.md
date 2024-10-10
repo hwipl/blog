@@ -132,7 +132,7 @@ PublicKey = KqvsNv2Nppt37z3BGIFOZIwfA3QcnNsEqRfTCcNiERY=
 AllowedIPs = 10.20.21.4
 ```
 
-The next listing shows the file `/etc/wireguard/wg0.conf` in Site 2:
+The next listing shows the file `/etc/wireguard/wg0.conf` for Site 2:
 
 ```jinja
 [Interface]
@@ -176,9 +176,9 @@ the IP address of each client: `10.20.21.2`, `10.20.21.3`, `10.20.21.4` in Site
 
 ### Clients
 
-The clients in both sites are also configured in the file
-`/etc/wireguard/wg0.conf`. The configuration is similar to the server side.
-The following listing shows the file in Site 1:
+The clients are configured in site-specific files. The configuration is similar
+to the server side. The following listing shows the file
+`/etc/wireguard/site1-wg0.conf` for Site 1:
 
 ```jinja
 [Interface]
@@ -195,7 +195,7 @@ Endpoint = vpn.s1.lan:51000
 AllowedIPs = "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
 ```
 
-The next listing shows the file `/etc/wireguard/wg0.conf` in Site 2:
+The next listing shows the file `/etc/wireguard/site2-wg0.conf` for Site 2:
 
 ```jinja
 [Interface]
@@ -213,8 +213,9 @@ AllowedIPs = "10.20.1.0/24, 10.20.21.0/24, 10.20.2.0/24, 10.20.22.0/24"
 ```
 
 Again, the file name of the configuration file determines the name of the
-WireGuard network interface. The name is `wg0.conf`, so the name of the network
-interface is `wg0`.
+WireGuard network interface. The name is `site1-wg0.conf` or `site2-wg0.conf`.
+So, the name of the network interface is `site1-wg0` for Site 1 and `site2-wg0`
+for Site 2.
 
 The `[Interface]` section in the configuration file specifies the settings of
 the WireGuard client. `ListenPort` specifies the UDP port number of the client
@@ -630,39 +631,63 @@ how a client can use such a configuration file for connecting and disconnecting
 as well as how to create a systemd service for automatically connecting at
 client startup.
 
-First, the client copies the configuration file to `/etc/wireguard/wg0.conf`
-and copies its private key to `/etc/wireguard/wg0.key`. Then, the client can
-use the tool `wg-quick` to connect to the VPN and disconnect with the following
-commands:
+First, the client copies the configuration files to
+`/etc/wireguard/site1-wg0.conf` and `/etc/wireguard/site2-wg0.conf` and copies
+its private key to `/etc/wireguard/wg0.key`. Then, the client can use the tool
+`wg-quick` to connect to the VPN and disconnect with the following commands for
+Site 1:
 
 ```console
-$ # connect to the VPN
-$ wg-quick up wg0
-$ # disconnect from the VPN
-$ wg-quick down wg0
+$ # connect to the VPN in Site 1
+$ wg-quick up site1-wg0
+$ # disconnect from the VPN in Site 1
+$ wg-quick down site1-wg0
 ```
 
-The first command connects the client with the VPN, the second command
-disconnects the client from the VPN.
-
-Also, the client can use the following systemd service to run `wq-quick`:
+The following commands are for Site 2:
 
 ```console
-$ # start VPN connection automatically on startup
-$ sudo systemctl enable wg-quick@wg0.service
-$ # start VPN connection now
-$ sudo systemctl start wg-quick@wg0.service
-$ # stop VPN connection now
-$ sudo systemctl stop wg-quick@wg0.service
-$ # do not start VPN connection automatically on startup
-$ sudo systemctl disable wg-quick@wg0.service
+$ # connect to the VPN in Site 2
+$ wg-quick up site2-wg0
+$ # disconnect from the VPN in Site 2
+$ wg-quick down site2-wg0
 ```
 
-The first command enables the systemd service that automatically connects the
-client to the VPN on client startup. The second command connects the client to
-the VPN now. The third command disconnects the client from the VPN. The last
-command disables the systemd service and, thus, stops starting the VPN
-connection on client startup.
+For both sites, the first command connects the client with the VPN, the second
+command disconnects the client from the VPN.
+
+Also, the client can use the following systemd service to run `wq-quick` for
+Site 1:
+
+```console
+$ # start VPN connection to Site 1 automatically on startup
+$ sudo systemctl enable wg-quick@site1-wg0.service
+$ # start VPN connection to Site 1 now
+$ sudo systemctl start wg-quick@site1-wg0.service
+$ # stop VPN connection to Site 1 now
+$ sudo systemctl stop wg-quick@site1-wg0.service
+$ # do not start VPN connection to Site 1 automatically on startup
+$ sudo systemctl disable wg-quick@site1-wg0.service
+```
+
+The following service is for Site 2:
+
+```console
+$ # start VPN connection to Site 2 automatically on startup
+$ sudo systemctl enable wg-quick@site2-wg0.service
+$ # start VPN connection to Site 2 now
+$ sudo systemctl start wg-quick@site2-wg0.service
+$ # stop VPN connection to Site 2 now
+$ sudo systemctl stop wg-quick@site2-wg0.service
+$ # do not start VPN connection to Site 2 automatically on startup
+$ sudo systemctl disable wg-quick@site2-wg0.service
+```
+
+For both sites, the first command enables the systemd service that
+automatically connects the client to the VPN on client startup. The second
+command connects the client to the VPN now. The third command disconnects the
+client from the VPN. The last command disables the systemd service and, thus,
+stops starting the VPN connection on client startup.
 
 ## Conclusion
 
