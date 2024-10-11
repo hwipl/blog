@@ -107,8 +107,8 @@ be exchanged between a server and a client to enable a VPN connection.
 
 ### Server
 
-The servers in the two sites are configured as follows in the file
-`/etc/wireguard/wg0.conf`. The following listing shows the file in Site 1:
+The servers are configured as follows in site-specific files. The following
+listing shows the file `/etc/wireguard/site1-wg0.conf` for Site 1:
 
 ```jinja
 [Interface]
@@ -132,7 +132,7 @@ PublicKey = KqvsNv2Nppt37z3BGIFOZIwfA3QcnNsEqRfTCcNiERY=
 AllowedIPs = 10.20.21.4
 ```
 
-The next listing shows the file `/etc/wireguard/wg0.conf` for Site 2:
+The next listing shows the file `/etc/wireguard/site2-wg0.conf` for Site 2:
 
 ```jinja
 [Interface]
@@ -157,8 +157,9 @@ AllowedIPs = 10.20.22.4
 ```
 
 The file name of the configuration file determines the name of the WireGuard
-network interface. The name is `wg0.conf`, so the name of the network interface
-is `wg0`.
+network interface. The name is `site1-wg0.conf` or `site2-wg0.conf`. So, the
+name of the network interface is `site1-wg0` for Site 1 and `site2-wg0` for
+Site 2.
 
 The `[Interface]` section in the configuration file specifies the settings of
 the WireGuard server. `ListenPort` is the UDP port number on which the server
@@ -297,7 +298,7 @@ It requires root privileges to manipulate the state of the system services, so
 restart the VPN server, it sets the system service
 `wg-quick@{{wireguard_interface }}` to state `restarted`. The variable part
 `{{wireguard_interface }}` is replaced with the name of the VPN network
-interface, e.g., `wg0`.
+interface, e.g., `site1-wg0`.
 
 #### Tasks
 
@@ -506,7 +507,7 @@ as follows in the file `site1/host_vars/node1`:
 ```yaml
 # wireguard configuration
 # Server IP 10.20.21.1
-wireguard_interface: "wg0"
+wireguard_interface: "site1-wg0"
 wireguard_listen_port: 51000
 wireguard_address: 10.20.21.1/24
 wireguard_private_key_file: "~/wireguard/site1/server-private.key"
@@ -547,7 +548,7 @@ files `site2/host_vars/node1`:
 ```yaml
 # wireguard configuration
 # Server IP 10.20.22.1
-wireguard_interface: "wg0"
+wireguard_interface: "site2-wg0"
 wireguard_listen_port: 51000
 wireguard_address: 10.20.22.1/24
 wireguard_private_key_file: "~/wireguard/site2/server-private.key"
