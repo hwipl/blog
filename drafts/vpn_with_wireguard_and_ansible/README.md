@@ -99,11 +99,15 @@ users. The `wg` commands create the private key, write it into the file
 `privatekey`, and then create the public key and write it into the file
 `publickey`.
 
-The commands should be run on each server and each client. On each server or
-client, its private key should be copied to the file `/etc/wireguard/wg0.key`
-for the configuration shown below. The private keys should never be shared with
-other users or copied to other hosts. As mentioned before, the public keys must
-be exchanged between a server and a client to enable a VPN connection.
+The commands should be run on each server and each client. They can also be run
+for each site. This way, each server and client uses a separate key pair for
+each site, which is assumed in this document. On each server or client, the
+respective private key should be copied to the file
+`/etc/wireguard/site1-wg0.key` for Site 1 and to the file
+`/etc/wireguard/site2-wg0.key` for Site 2 for the configuration shown below.
+The private keys should never be shared with other users or copied to other
+hosts. As mentioned before, the public keys must be exchanged between a server
+and a client to enable a VPN connection.
 
 ### Server
 
@@ -114,7 +118,7 @@ listing shows the file `/etc/wireguard/site1-wg0.conf` for Site 1:
 [Interface]
 ListenPort = 51000
 Address = 10.20.21.1/24
-PostUp = wg set %i private-key /etc/wireguard/wg0.key
+PostUp = wg set %i private-key /etc/wireguard/site1-wg0.key
 
 [Peer]
 # public key of client 1
@@ -138,7 +142,7 @@ The next listing shows the file `/etc/wireguard/site2-wg0.conf` for Site 2:
 [Interface]
 ListenPort = 51000
 Address = 10.20.22.1/24
-PostUp = wg set %i private-key /etc/wireguard/wg0.key
+PostUp = wg set %i private-key /etc/wireguard/site2-wg0.key
 
 [Peer]
 # public key of client 1
@@ -166,8 +170,9 @@ the WireGuard server. `ListenPort` is the UDP port number on which the server
 accepts client connections and is set to `51000`. `Address` is the IP address
 including the prefix length of the server inside the VPN. In Site 1 it is
 `10.20.21.1/24` and in Site 2 `10.20.22.1/24`. The `PostUp` line allows setting
-the private key of the server from the file `/etc/wireguard/wg0.key`, so you do
-not have to write it into the configuration file.
+the private key of the server from the file `/etc/wireguard/site1-wg0.key` for
+Site 1 or `/etc/wireguard/site2-wg0.key` for Site 2, so you do not have to
+write it into the configuration file.
 
 The `[Peer]` sections in the configuration file specify the settings of the
 clients. `PublicKey` is the public key of a client. `AllowedIPs` specifies the
@@ -187,7 +192,7 @@ ListenPort = 51000
 Address = 10.20.21.2/24     # Client 1
 # Address = 10.20.21.3/24   # Client 2
 # Address = 10.20.21.4/24   # Client 3
-PostUp = wg set %i private-key /etc/wireguard/wg0.key
+PostUp = wg set %i private-key /etc/wireguard/site1-wg0.key
 
 [Peer]
 # public key of server
@@ -204,7 +209,7 @@ ListenPort = 51000
 Address = 10.20.22.2/24     # Client 1
 # Address = 10.20.22.3/24   # Client 2
 # Address = 10.20.22.4/24   # Client 3
-PostUp = wg set %i private-key /etc/wireguard/wg0.key
+PostUp = wg set %i private-key /etc/wireguard/site2-wg0.key
 
 [Peer]
 # public key of server
@@ -225,8 +230,9 @@ of the client inside the VPN. In Site 1, it is `10.20.21.2/24` for Client 1,
 `10.20.21.3/24` for Client 2 and `10.20.21.4/24` for Client 3. In Site 2, it is
 `10.20.22.2/24` for Client 1, `10.20.22.3/24` for Client 2 and `10.20.22.4/24`
 for Client 3. The `PostUp` line allows setting the private key of the client
-from the file `/etc/wireguard/wg0.key`, so you do not have to write it into the
-configuration file.
+from the file `/etc/wireguard/site1-wg0.key` for Site 1 and
+`/etc/wireguard/site2-wg0.key` for Site 2, so you do not have to write it into
+the configuration file.
 
 The `[Peer]` section in the configuration file specifies the settings of the
 server. `PublicKey` is the public key of the server. `Endpoint` is the address
@@ -634,9 +640,9 @@ client startup.
 
 First, the client copies the configuration files to
 `/etc/wireguard/site1-wg0.conf` and `/etc/wireguard/site2-wg0.conf` and copies
-its private key to `/etc/wireguard/wg0.key`. Then, the client can use the tool
-`wg-quick` to connect to the VPN and disconnect with the following commands for
-Site 1:
+the respective private key to `/etc/wireguard/site1-wg0.key` or
+`/etc/wireguard/site2-wg0.key`. Then, the client can use the tool `wg-quick` to
+connect to the VPN and disconnect with the following commands for Site 1:
 
 ```console
 $ # connect to the VPN in Site 1
