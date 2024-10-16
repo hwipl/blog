@@ -109,7 +109,31 @@ nftables.yml:
 
 ### Configuration
 
+```ini
+[nftables_hosts]
+head
+```
+
+```yaml
+---
+# nftables configuration
+nftables_conf: "{{ inventory_dir }}/nftables/node1-nftables.conf.j2"
+```
+
+```yaml
+---
+# # nftables configuration
+# nftables_conf: "nftables.conf.j2"
+```
+
 ### Deployment
+
+```console
+$ # site 1
+$ ansible-playbook -i site1/hosts nftables.yml
+$ # site 2
+$ ansible-playbook -i site2/hosts nftables.yml
+```
 
 ## Conclusion
 
