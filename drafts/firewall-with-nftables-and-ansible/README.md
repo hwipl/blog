@@ -111,7 +111,7 @@ nftables.yml:
 
 ```ini
 [nftables_hosts]
-head
+node1
 ```
 
 ```yaml
