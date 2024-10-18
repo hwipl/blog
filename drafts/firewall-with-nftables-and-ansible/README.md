@@ -50,6 +50,8 @@ TODO: other templates possible in inventory
 
 #### Handlers
 
+A handler is defined as follows in the file `roles/nftables/handlers/main.yml`:
+
 ```yaml
 ---
 # handlers for nftables
@@ -60,6 +62,13 @@ TODO: other templates possible in inventory
     name: nftables
     state: restarted
 ```
+
+The handler is called `Restart nftables`. It restarts the firewall with the
+[service module][service] when it is triggered. It requires root privileges to
+manipulate the state of the system services, so [become][become] is set to
+`true` for [privilege escalation][privilege]. To restart the firewall, it sets
+the system service `nftables` to state `restarted`. The nftables service then
+sets the firewall rules.
 
 #### Tasks
 
@@ -87,7 +96,7 @@ TODO: other templates possible in inventory
 
 #### Templates
 
-TODO: add better example, individual template here or in config?
+TODO: add better example, individual template here or in config? add flush ruleset
 
 ```jinja
 #!/usr/bin/nft -f
@@ -170,3 +179,6 @@ $ ansible-playbook -i site2/hosts nftables.yml
 [handlers]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html
 [inventory]: https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
 [ansible-playbook]: https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html
+[service]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
+[become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
+[privilege]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
