@@ -72,6 +72,10 @@ sets the firewall rules.
 
 #### Tasks
 
+The tasks are defined as follows in the file `roles/nftables/tasks/main.yml`:
+
+TODO: update apt cache, ensure nftables is installed?
+
 ```yaml
 ---
 # these tasks setup nftables
@@ -93,6 +97,24 @@ sets the firewall rules.
   notify:
     - Restart nftables
 ```
+
+These tasks install nftables with the [apt module][apt], enable the nftables
+service with the [service module][service], configure the firewall with a
+template and the [template module][template] and trigger the restart event with
+[notify][notify] if the configuration file is changed. All tasks need root
+privileges to manipulate the system configuration. So, [become][become] is set
+to `true`.
+
+1. The first task updates the `apt` cache if it is older than one hour to make
+   sure the following installation task can run with up-to-date package
+   sources.
+2. The second task installs nftables with `apt` if it is not already installed.
+3. The third task enables the nftables service if it is not enabled.
+4. The fourth task creates or updates the firewall configuration in
+   `/etc/nftables.conf` from the template in the ansible variable
+   `nftables_conf`. File owner and group are set to root. File permissions are
+   set to `644`. An existing configuration file is backed up in the process. If
+   the configuration changed, the task triggers the restart event.
 
 #### Templates
 
@@ -182,3 +204,6 @@ $ ansible-playbook -i site2/hosts nftables.yml
 [service]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/service_module.html
 [become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
 [privilege]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
+[apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+[template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
+[notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
