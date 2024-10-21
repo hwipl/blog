@@ -118,7 +118,18 @@ to `true`.
 
 #### Templates
 
-TODO: add better example, individual template here or in config? add flush ruleset
+The template for the firewall configuration file is defined as [Jinja2
+template][jinja2]. It is defined as follows in the file
+`roles/nftables/templates/nftables.conf.j2`:
+
+TODO: add better example, individual template here or in config? add flush
+ruleset, or maybe do not and come up with a better version that does not
+interfere with other firewall rules by, e.g., docker and libvirt. docker and
+libvirt should be started later and set the rules themselves. But restarting at
+a later point in time is a problem.
+
+TODO: add note that you need to be careful to not lock you out of the host or
+mess up other services.
 
 ```jinja
 #!/usr/bin/nft -f
@@ -149,6 +160,9 @@ table inet filter {
   }
 }
 ```
+
+The template reflects the configuration shown in the Firewall Configuration
+section above.
 
 ### Playbook
 
@@ -207,3 +221,4 @@ $ ansible-playbook -i site2/hosts nftables.yml
 [apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
 [template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
 [notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
+[jinja2]: https://jinja.palletsprojects.com/en/latest/templates/
