@@ -166,7 +166,7 @@ section above.
 
 ### Playbook
 
-nftables.yml:
+The playbook is defined as follows in the file `nftables.yml`:
 
 ```yaml
 ---
@@ -176,6 +176,10 @@ nftables.yml:
   roles:
     - nftables
 ```
+
+The playbook assigns the role `nftables` that is described above to all hosts
+in the group `nftables_hosts`. On execution, this playbook runs all the tasks
+of the role on all the hosts in the group to configure the firewalls.
 
 ### Configuration
 
