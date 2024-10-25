@@ -7,6 +7,42 @@ server automatically.
 
 ## Overview
 
+The firewalls in this document use nftables and run on Ubuntu 22.04 LTS.
+Nftables is installed and configured automatically with Ansible. The firewall
+configuration assumes the network in the following figure:
+
+```
+                             Other Networks
+                   _________________|_________________
+                  |                                   |
+..................|...................................|..................
+: Site 1          |                 :                 |          Site 2 :
+: 10.20.1.0/24    |                 :                 |    10.20.2.0/24 :
+:                 |                 :                 |                 :
+:          +-------------+          :          +-------------+          :
+:          | Node 1      |          :          | Node 1      |          :
+:          | Firewall    |          :          | Firewall    |          :
+:          | 10.20.1.1   |          :          | 10.20.2.1   |          :
+:          +-------------+          :          +-------------+          :
+:          _______|_______          :          _______|_______          :
+:         |               |         :         |               |         :
+:  +-------------+ +-------------+  :  +-------------+ +-------------+  :
+:  | Node 2      | | Node 3      |  :  | Node 2      | | Node 3      |  :
+:  | Firewall    | | Firewall    |  :  | Firewall    | | Firewall    |  :
+:  | 10.20.1.2   | | 10.20.1.3   |  :  | 10.20.2.2   | | 10.20.2.3   |  :
+:  +-------------+ +-------------+  :  +-------------+ +-------------+  :
+:...................................:...................................:
+                        Network: 10.20.0.0/16
+```
+
+The example network consists of the two sites `Site 1` and `Site 2`. Each site
+contains three nodes. `Node 1` connects the site with other networks including
+the other site. Thus, a firewall with Network Address Translation (NAT) runs on
+`Node 1` to protect the nodes in the site from unwanted traffic from other
+networks and to enable access from the nodes in the site to other networks.
+`Node 2` and `Node 3` are client nodes. Each runs a firewall that allows
+traffic that was initiated by the node and blocks other traffic.
+
 ## Firewall Configuration
 
 ## Ansible
