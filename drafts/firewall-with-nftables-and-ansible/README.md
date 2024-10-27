@@ -21,27 +21,38 @@ configuration assumes the network in the following figure:
 :                 |                 :                 |                 :
 :          +-------------+          :          +-------------+          :
 :          | Node 1      |          :          | Node 1      |          :
-:          | Firewall    |          :          | Firewall    |          :
+:          | Router      |          :          | Router      |          :
+:          | NAT         |          :          | NAT         |          :
+:          | Filtering   |          :          | Filtering   |          :
 :          | 10.20.1.1   |          :          | 10.20.2.1   |          :
 :          +-------------+          :          +-------------+          :
 :          _______|_______          :          _______|_______          :
 :         |               |         :         |               |         :
 :  +-------------+ +-------------+  :  +-------------+ +-------------+  :
 :  | Node 2      | | Node 3      |  :  | Node 2      | | Node 3      |  :
-:  | Firewall    | | Firewall    |  :  | Firewall    | | Firewall    |  :
+:  | Client      | | Client      |  :  | Client      | | Client      |  :
+:  | Filtering   | | Filtering   |  :  | Filtering   | | Filtering   |  :
 :  | 10.20.1.2   | | 10.20.1.3   |  :  | 10.20.2.2   | | 10.20.2.3   |  :
 :  +-------------+ +-------------+  :  +-------------+ +-------------+  :
 :...................................:...................................:
                         Network: 10.20.0.0/16
 ```
 
-The example network consists of the two sites `Site 1` and `Site 2`. Each site
-contains three nodes. `Node 1` connects the site with other networks including
-the other site. Thus, a firewall with Network Address Translation (NAT) runs on
-`Node 1` to protect the nodes in the site from unwanted traffic from other
-networks and to enable access from the nodes in the site to other networks.
-`Node 2` and `Node 3` are client nodes. Each runs a firewall that allows
-traffic that was initiated by the node and blocks other traffic.
+The example network consists of the two sites `Site 1` and `Site 2`. The sites
+use private IP addresses: `10.20.1.0/24` in Site 1, `10.20.2.0/24` in Site 2.
+Each site contains three nodes. `Node 1` is a router. It connects the site with
+other networks including the other site. It performs Network Address
+Translation (NAT) to enable access from the nodes in the site with their
+private IP addresses to other networks. It filters packets to protect the nodes
+in the site from unwanted traffic from other networks. The node performs NAT
+and packet filtering with a nftables firewall. `Node 2` and `Node 3` are client
+nodes. Each runs a nftables firewall that filters packets to protect the node
+from unwanted traffic from both other networks as well as other nodes inside
+the same site: it allows only traffic that was initiated by the node itself and
+blocks other traffic.
+
+TODO: add "only allows traffic initiated by nodes inside the site..." to router?
+TODO: do we need to mention network interfaces?
 
 ## Firewall Configuration
 
