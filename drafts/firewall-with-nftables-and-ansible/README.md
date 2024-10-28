@@ -56,6 +56,49 @@ TODO: do we need to mention network interfaces?
 
 ## Firewall Configuration
 
+The configuration of the firewalls is described in this section. The firewalls
+in the two sites are configured in the file `/etc/nftables.conf`.  The
+configuration on the routers (Node 1) differs from the configuration on the
+client nodes (Node 2 and Node 3).
+
+Configuration of the router nodes:
+
+```
+TODO: add config
+```
+
+Configuration of the client nodes:
+
+```
+#!/usr/bin/nft -f
+# vim:set ts=2 sw=2 et:
+
+# IPv4/IPv6 Simple & Safe firewall ruleset.
+# More examples in /usr/share/nftables/ and /usr/share/doc/nftables/examples/.
+
+table inet filter
+delete table inet filter
+table inet filter {
+  chain input {
+    type filter hook input priority filter
+    policy drop
+
+    ct state invalid drop comment "early drop of invalid connections"
+    ct state {established, related} accept comment "allow tracked connections"
+    iifname lo accept comment "allow from loopback"
+    ip protocol icmp accept comment "allow icmp"
+    meta l4proto ipv6-icmp accept comment "allow icmp v6"
+    tcp dport ssh accept comment "allow sshd"
+    pkttype host limit rate 5/second counter reject with icmpx type admin-prohibited
+    counter
+  }
+  chain forward {
+    type filter hook forward priority filter
+    policy drop
+  }
+}
+```
+
 ## Ansible
 
 Ansible allows for automatic installation and configuration of the firewalls.
