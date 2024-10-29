@@ -342,6 +342,17 @@ be configured and running.
 
 ## Conclusion
 
+This document describes how you can automatically install and configure
+nftables firewalls on Ubuntu 22.04 LTS with Ansible. After presenting an
+example network and firewall configuration, an Ansible Role is shown that
+contains the installation and configuration tasks as well as templates. The
+tasks use the templates together with Ansible variables to create the nftables
+configuration. Finally, an Ansible Playbook is used with the `ansible-playbook`
+command to run the tasks and, thus, install and configure all firewalls. All
+sections contain configuration or code examples you can use as a basis for your
+own setup. Also, you can find links to the code and configuration examples in
+the appendix below.
+
 ## Appendix: Code
 
 [roles]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
