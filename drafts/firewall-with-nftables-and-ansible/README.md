@@ -57,7 +57,7 @@ TODO: do we need to mention network interfaces?
 ## Firewall Configuration
 
 The configuration of the firewalls is described in this section. The firewalls
-in the two sites are configured in the file `/etc/nftables.conf`.  The
+in the two sites are configured in the file `/etc/nftables.conf`. The
 configuration on the routers (Node 1) differs from the configuration on the
 client nodes (Node 2 and Node 3).
 
