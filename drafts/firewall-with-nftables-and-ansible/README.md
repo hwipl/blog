@@ -164,12 +164,20 @@ sets the firewall rules.
 
 The tasks are defined as follows in the file `roles/nftables/tasks/main.yml`:
 
-TODO: update apt cache, ensure nftables is installed?
-
 ```yaml
 ---
 # these tasks setup nftables
 
+- name: Update apt cache if older than 3600 seconds
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+- name: Ensure nftables is installed
+  become: true
+  ansible.builtin.apt:
+    name: nftables
+    state: present
 - name: Ensure nftables service is enabled
   become: true
   ansible.builtin.service:
