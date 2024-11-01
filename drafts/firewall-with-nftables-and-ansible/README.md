@@ -281,11 +281,12 @@ of the role on all the hosts in the group to configure the firewalls.
 
 ### Configuration
 
-The configuration is derived from host files in the Ansible
+The configuration is derived from host and group files in the Ansible
 [inventory][inventory]. They contain the variables that the tasks of the role
-use. Each site uses a different inventory and, thus, different host files to
-allow for site-specific configurations as shown below. There is no other
-group-specific configuration of the firewalls in the `group_vars` in each site.
+use. Each site uses a different inventory and, thus, different host and group
+files to allow for site-specific configurations as shown below.
+
+#### Hosts
 
 The Ansible hosts are defined as follows in the files `site1/hosts` and
 `site2/hosts`:
@@ -293,18 +294,18 @@ The Ansible hosts are defined as follows in the files `site1/hosts` and
 ```ini
 [nftables_hosts]
 node1
+node2
+node3
 ```
 
-TODO: add more nodes?
-
-The hosts file of each site defines the group `nftables_hosts` and assigns
-the node `node1` to it. Thus, `node1` is defined as firewall host for the
-playbook.
+The hosts file of each site defines the group `nftables_hosts` and assigns the
+nodes `node1`, `node2` and `node3` to it. Thus, the three nodes are defined as
+firewall host for the playbook.
 
 TODO: terminology: use host or node or server or reword to firewall (config)?
 
-The host-specific configuration of the firewall is in the `host_vars` of
-`node1` in each site. The configuration for Site 1 and Site 2 is defined as
+The host-specific configuration of the firewall on Node 1 is in the `host_vars`
+of `node1` in each site. The configuration for Site 1 and Site 2 is defined as
 follows in the files `site1/host_vars/node1` and `site2/host_vars/node1`:
 
 ```yaml
@@ -313,21 +314,33 @@ follows in the files `site1/host_vars/node1` and `site2/host_vars/node1`:
 nftables_conf: "{{ inventory_dir }}/nftables/node1-nftables.conf.j2"
 ```
 
-Both files set the firewall configuration for Site 1 and Site 2 as described in
-the Firewall Configuration section above. The respective nftables configuration
-file is set to the node-specific template file `node1-nftables.conf.j2` in the
-subdirectory `nftables` of the Ansible inventory (`{{ inventory_dir }}`): In
-Site 1 the resulting template file is `site1/nftables/node1-nftables.conf.j2`
-and in Site 2 it is `site2/nftables/node1-nftables.conf.j2`.
+Both files set the firewall configuration of Node 1 for Site 1 and Site 2 as
+described in the Firewall Configuration section above. The respective nftables
+configuration file is set to the node-specific template file
+`node1-nftables.conf.j2` in the subdirectory `nftables` of the Ansible
+inventory (`{{ inventory_dir }}`): In Site 1 the resulting template file is
+`site1/nftables/node1-nftables.conf.j2` and in Site 2 it is
+`site2/nftables/node1-nftables.conf.j2`.
 
 TODO: add other node with "default" config? or add a group with the "default"
 config?
 
+#### Groups
+
+The site-specific configuration of the firewall on Node 2 and 3 in Site 1 and 2
+is defined as follows in the in the file `site1/group_vars/nftables_hosts` and
+`site2/group_vars/nftables_hosts`:
+
 ```yaml
 ---
-# # nftables configuration
-# nftables_conf: "nftables.conf.j2"
+# nftables configuration
+nftables_conf: "nftables.conf.j2"
 ```
+
+Both files set the firewall configuration of Node 2 and 3 in both sites to the
+configuration described in the Firewall Configuration section above. The
+nftables configuration is set to the default template file `nftables.conf.j2`
+in the Ansible role.
 
 ### Deployment
 
