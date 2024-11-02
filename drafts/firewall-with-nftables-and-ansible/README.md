@@ -64,7 +64,43 @@ client nodes (Node 2 and Node 3).
 Configuration of the router nodes:
 
 ```
-TODO: add config
+#!/usr/sbin/nft -f
+
+table inet fw_router_filter
+delete table inet fw_router_filter
+table inet fw_router_filter {
+        chain input_internal {
+                ip protocol icmp accept comment "allow icmp"
+                meta l4proto ipv6-icmp accept comment "allow icmp v6"
+                tcp dport ssh accept comment "allow sshd"
+        }
+
+        chain input {
+                type filter hook input priority 0; policy drop;
+
+                ct state invalid drop comment "early drop of invalid connections"
+                ct state {established, related} accept comment "allow tracked connections"
+                iifname lo accept comment "allow from loopback"
+                iifname "int0" jump input_internal
+        }
+        chain forward {
+                type filter hook forward priority 0; policy drop;
+
+                ct state invalid drop comment "early drop of invalid connections"
+                ct state {established, related} accept comment "allow tracked connections"
+                iifname "int0" accept comment "allow from internal interface"
+        }
+}
+
+table inet fw_router_nat
+delete table inet fw_router_nat
+table inet fw_router_nat {
+        chain postrouting {
+                type nat hook postrouting priority srcnat; policy accept;
+                # NAT outgoing traffic on external network interface
+                oifname "ext0" counter masquerade
+        }
+}
 ```
 
 Configuration of the client nodes:
