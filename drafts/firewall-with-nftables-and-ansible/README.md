@@ -69,37 +69,55 @@ Configuration of the router nodes:
 table inet fw_router_filter
 delete table inet fw_router_filter
 table inet fw_router_filter {
-        chain input_internal {
-                ip protocol icmp accept comment "allow icmp"
-                meta l4proto ipv6-icmp accept comment "allow icmp v6"
-                tcp dport ssh accept comment "allow sshd"
-        }
+    chain input_internal {
+        # filter rules for incoming traffic on internal network interface
 
-        chain input {
-                type filter hook input priority 0; policy drop;
+        # allow incoming ICMPv4 traffic
+        ip protocol icmp accept comment "allow icmp"
 
-                ct state invalid drop comment "early drop of invalid connections"
-                ct state {established, related} accept comment "allow tracked connections"
-                iifname lo accept comment "allow from loopback"
-                iifname "int0" jump input_internal
-        }
-        chain forward {
-                type filter hook forward priority 0; policy drop;
+        # allow incoming ICMPv6 traffic
+        meta l4proto ipv6-icmp accept comment "allow icmp v6"
 
-                ct state invalid drop comment "early drop of invalid connections"
-                ct state {established, related} accept comment "allow tracked connections"
-                iifname "int0" accept comment "allow from internal interface"
-        }
+        # allow incoming SSH connections
+        tcp dport ssh accept comment "allow sshd"
+    }
+
+    chain input {
+        # filter rules for incoming traffic, drop everything by default
+        type filter hook input priority 0; policy drop;
+
+        # allow incoming traffic that was initiated by this node
+        ct state {established, related} accept comment "allow tracked connections"
+
+        # allow incoming traffic on loopback interface
+        iif lo accept comment "allow from loopback"
+
+        # check incoming traffic on internal network interface
+        iifname "int0" jump input_internal
+    }
+
+    chain forward {
+        # filter rules for forwarding traffic, drop everything by default
+        type filter hook forward priority 0; policy drop;
+
+        # allow traffic that was initiated from the internal network
+        ct state {established, related} accept comment "allow tracked connections"
+
+        # allow traffic from internal network
+        iifname "int0" accept comment "allow from internal interface"
+    }
 }
 
 table inet fw_router_nat
 delete table inet fw_router_nat
 table inet fw_router_nat {
-        chain postrouting {
-                type nat hook postrouting priority srcnat; policy accept;
-                # NAT outgoing traffic on external network interface
-                oifname "ext0" counter masquerade
-        }
+    chain postrouting {
+        # NAT rules for outgoing traffic
+        type nat hook postrouting priority srcnat; policy accept;
+
+        # NAT outgoing traffic on external network interface
+        oifname "ext0" counter masquerade comment "masquerade outgoing"
+    }
 }
 ```
 
@@ -107,31 +125,29 @@ Configuration of the client nodes:
 
 ```
 #!/usr/bin/nft -f
-# vim:set ts=2 sw=2 et:
 
-# IPv4/IPv6 Simple & Safe firewall ruleset.
-# More examples in /usr/share/nftables/ and /usr/share/doc/nftables/examples/.
+table inet fw_client_filter
+delete table inet fw_client_filter
+table inet fw_client_filter {
+    chain input {
+        # filter rules for incoming traffic, drop everything by default
+        type filter hook input priority filter; policy drop;
 
-table inet filter
-delete table inet filter
-table inet filter {
-  chain input {
-    type filter hook input priority filter
-    policy drop
+        # allow incoming traffic that was initiated by this node
+        ct state {established, related} accept comment "allow tracked connections"
 
-    ct state invalid drop comment "early drop of invalid connections"
-    ct state {established, related} accept comment "allow tracked connections"
-    iifname lo accept comment "allow from loopback"
-    ip protocol icmp accept comment "allow icmp"
-    meta l4proto ipv6-icmp accept comment "allow icmp v6"
-    tcp dport ssh accept comment "allow sshd"
-    pkttype host limit rate 5/second counter reject with icmpx type admin-prohibited
-    counter
-  }
-  chain forward {
-    type filter hook forward priority filter
-    policy drop
-  }
+        # allow incoming traffic on loopback interface
+        iif lo accept comment "allow from loopback"
+
+        # allow incoming ICMPv4 traffic
+        ip protocol icmp accept comment "allow icmp"
+
+        # allow incoming ICMPv6 traffic
+        meta l4proto ipv6-icmp accept comment "allow icmp v6"
+
+        # allow incoming SSH connections
+        tcp dport ssh accept comment "allow sshd"
+    }
 }
 ```
 
