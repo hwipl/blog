@@ -61,6 +61,8 @@ in the two sites are configured in the file `/etc/nftables.conf`. The
 configuration on the routers (Node 1) differs from the configuration on the
 client nodes (Node 2 and Node 3).
 
+### Router Nodes
+
 The configuration of the router nodes is shown in the following listing:
 
 ```
@@ -121,17 +123,17 @@ table inet fw_router_nat {
 }
 ```
 
-The table `fw_router_nat` contains the rules for NAT. The chain `postrouting`
-contains the NAT rules for outgoing traffic: the chain is of type `nat` and
-attached to the hook `postrouting`. It contains a single rule that changes
-(`masquerade`) the source address of outgoing traffic on the external network
-interface (`oifname "ext0"`) to match the address of that interface.
+The table `fw_router_nat` contains the rules for NAT in one chain. The chain
+`postrouting` contains the NAT rules for outgoing traffic: the chain is of type
+`nat` and attached to the hook `postrouting`. It contains a single rule that
+changes (`masquerade`) the source address of outgoing traffic on the external
+network interface (`oifname "ext0"`) to match the address of that interface.
 
-The table `fw_router_filter` contains the rules for filtering. The chain
-`input` contains the rules for incoming traffic that is addressed to the node
-itself: the chain is of type `filter` and attached to the hook `input`. By
-default this chain drops all traffic that goes through this chain and is not
-explicitly accepted by a rule in the chain (`policy drop`).
+The table `fw_router_filter` contains the rules for filtering in three chains.
+The chain `input` contains the rules for incoming traffic that is addressed to
+the node itself: the chain is of type `filter` and attached to the hook
+`input`. By default this chain drops all traffic that goes through this chain
+and is not explicitly accepted by a rule in the chain (`policy drop`).
 
 1. The first rule allows all traffic that is already tracked by connection
    tracking (`ct`) and belongs to or is related to an existing connection (`ct
@@ -148,7 +150,18 @@ the internal network interface:
 2. The second rule allows incoming ICMPv6 traffic (`meta l4proto ipv6-icmp`)
 3. The third rule allows incoming SSH connections (`tcp dport ssh`)
 
-TODO: chain forward
+The chain `forward` contains the rules for traffic that is forwarded by this
+node: the chain is of type `filter` and attached to the hook `forward`. By
+default this chain drops all traffic that goes through it without being
+accepted by a rule (`policy drop`).
+
+1. The first rule allows all traffic that is already tracked by connection
+   tracking (`ct`) and belongs to or is related to an existing connection (`ct
+   state {established, related}`).
+2. The second rule allows all traffic coming from the internal network
+   interface (`iifname "int0") to be forwarded anywhere.
+
+### Client Nodes
 
 The configuration of the client nodes is shown in the following listing:
 
