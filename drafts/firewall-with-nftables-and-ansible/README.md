@@ -124,16 +124,17 @@ table inet fw_router_nat {
 ```
 
 The table `fw_router_nat` contains the rules for NAT in one chain. The chain
-`postrouting` contains the NAT rules for outgoing traffic: the chain is of type
-`nat` and attached to the hook `postrouting`. It contains a single rule that
+`postrouting` contains the NAT rules for outgoing traffic: its type is `nat`
+and it is attached to the hook `postrouting`. It contains a single rule that
 changes (`masquerade`) the source address of outgoing traffic on the external
 network interface (`oifname "ext0"`) to match the address of that interface.
 
 The table `fw_router_filter` contains the rules for filtering in three chains.
 The chain `input` contains the rules for incoming traffic that is addressed to
-the node itself: the chain is of type `filter` and attached to the hook
-`input`. By default this chain drops all traffic that goes through this chain
-and is not explicitly accepted by a rule in the chain (`policy drop`).
+the node itself: its type is `filter` and it is attached to the hook `input`.
+By default this chain drops all traffic that goes through this chain and is not
+explicitly accepted by a rule in the chain (`policy drop`). It contains the
+following rules:
 
 1. The first rule allows all traffic that is already tracked by connection
    tracking (`ct`) and belongs to or is related to an existing connection (`ct
@@ -151,15 +152,15 @@ the internal network interface:
 3. The third rule allows incoming SSH connections (`tcp dport ssh`)
 
 The chain `forward` contains the rules for traffic that is forwarded by this
-node: the chain is of type `filter` and attached to the hook `forward`. By
-default this chain drops all traffic that goes through it without being
-accepted by a rule (`policy drop`).
+node: its type is `filter` and it is attached to the hook `forward`. By default
+this chain drops all traffic that goes through it without being accepted by a
+rule (`policy drop`). It contains the following rules:
 
 1. The first rule allows all traffic that is already tracked by connection
    tracking (`ct`) and belongs to or is related to an existing connection (`ct
    state {established, related}`).
 2. The second rule allows all traffic coming from the internal network
-   interface (`iifname "int0") to be forwarded anywhere.
+   interface (`iifname "int0"`) to be forwarded anywhere.
 
 ### Client Nodes
 
@@ -192,6 +193,22 @@ table inet fw_client_filter {
     }
 }
 ```
+
+The table `fw_client_filter` contains the rules for filtering in one chain.
+The chain `input` contains the rules for incoming traffic that is addressed to
+the node itself: the chain is of type `filter` and attached to the hook
+`input`. By default this chain drops all traffic that goes through it and is
+not explicitly accepted by a rule (`policy drop`). It contains the following
+rules:
+
+1. The first rule allows all traffic that is already tracked by connection
+   tracking (`ct`) and belongs to or is related to an existing connection (`ct
+   state {established, related}`).
+2. The second rule allows all incoming traffic on the loopback interface (`iif
+   lo`).
+3. The third rule allows incoming ICMPv4 traffic (`ip protocol icmp`)
+4. The forth rule allows incoming ICMPv6 traffic (`meta l4proto ipv6-icmp`)
+5. The fifth rule allows incoming SSH connections (`tcp dport ssh`)
 
 ## Ansible
 
