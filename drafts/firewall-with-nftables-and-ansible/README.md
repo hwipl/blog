@@ -398,6 +398,14 @@ table inet fw_router_nat {
 }
 ```
 
+The template reflects the configuration of the router nodes shown in the
+Firewall Configuration section above with parts dynamically generated based on
+the Ansible configuration: The names of the internal network interfaces are
+taken from the Ansible variable `nftables_int_ifs`. The names of the external
+network interfaces are taken from the variable `nftables_ext_ifs`. Both
+variables can be set to the name of a single interface like `ext0` or to
+multiple interface names like `{int0, int1}`.
+
 ```jinja
 #!/usr/bin/nft -f
 
@@ -426,8 +434,9 @@ table inet fw_client_filter {
 }
 ```
 
-The template reflects the configuration shown in the Firewall Configuration
-section above.
+The template reflects the configuration of the client nodes shown in the
+Firewall Configuration section above. It contains no dynamically generated
+parts.
 
 ### Playbook
 
