@@ -240,14 +240,15 @@ roles/nftables/
 ├── tasks
 │   └── main.yml
 └── templates
-    └── nftables.conf.j2
+    ├── nftables-client.conf.j2
+    └── nftables-router.conf.j2
 ```
 
 The role consists of one `main.yml` file for handlers, one `main.yml` file for
-tasks and one template file. The tasks can use the template `nftables.conf.j2`
-to create the configuration file for the firewalls.
-
-TODO: other templates possible in inventory
+tasks and two template files. The tasks can use the templates
+`nftables-client.conf.j2` and `nftables-router.conf.j2` to create the
+configuration file for the firewalls. Using other templates, e.g., in the
+Ansible inventory is also possible.
 
 #### Handlers
 
