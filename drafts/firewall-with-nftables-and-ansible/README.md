@@ -328,18 +328,14 @@ to `true`.
 
 #### Templates
 
-The template for the firewall configuration file is defined as [Jinja2
-template][jinja2]. It is defined as follows in the file
-`roles/nftables/templates/nftables.conf.j2`:
+The templates for the firewall configuration file are defined as [Jinja2
+template][jinja2]. They are for the configuration of the router and client
+nodes. Additionally, the tasks above allow the specification of alternative
+templates for individual nodes in the configuration (see the Configuration
+section below).
 
-TODO: add better example, individual template here or in config? add flush
-ruleset, or maybe do not and come up with a better version that does not
-interfere with other firewall rules by, e.g., docker and libvirt. docker and
-libvirt should be started later and set the rules themselves. But restarting at
-a later point in time is a problem.
-
-TODO: add note that you need to be careful to not lock you out of the host or
-mess up other services.
+The template for the router configuration is defined as follows in the file
+`roles/nftables/templates/nftables-router.conf.j2`:
 
 ```jinja
 #!/usr/sbin/nft -f
@@ -406,6 +402,9 @@ taken from the Ansible variable `nftables_int_ifs`. The names of the external
 network interfaces are taken from the variable `nftables_ext_ifs`. Both
 variables can be set to the name of a single interface like `ext0` or to
 multiple interface names like `{int0, int1}`.
+
+The template for the client configuration is defined as follows in the file
+`roles/nftables/templates/nftables-client.conf.j2`:
 
 ```jinja
 #!/usr/bin/nft -f
