@@ -474,11 +474,9 @@ node2
 node3
 ```
 
-The hosts file of each site defines the group `nftables_hosts` and assigns the
-nodes `node1`, `node2` and `node3` to it. Thus, the three nodes are defined as
-firewall host for the playbook.
-
-TODO: terminology: use host or node or server or reword to firewall (config)?
+The hosts file of each site defines the group `nftables_hosts` and assigns
+Nodes 1, 2 and 3 (`node1`, `node2` and `node3`) to it. Thus, the three nodes
+are defined as firewall hosts for the playbook.
 
 The host-specific configuration of the firewall on Node 1 is in the `host_vars`
 of `node1` in each site. The configuration for Site 1 and Site 2 is defined as
@@ -487,19 +485,28 @@ follows in the files `site1/host_vars/node1` and `site2/host_vars/node1`:
 ```yaml
 ---
 # nftables configuration
-nftables_conf: "{{ inventory_dir }}/nftables/node1-nftables.conf.j2"
+nftables_conf: "nftables-router.conf.j2"
 ```
 
-Both files set the firewall configuration of Node 1 for Site 1 and Site 2 as
-described in the Firewall Configuration section above. The respective nftables
-configuration file is set to the node-specific template file
-`node1-nftables.conf.j2` in the subdirectory `nftables` of the Ansible
-inventory (`{{ inventory_dir }}`): In Site 1 the resulting template file is
-`site1/nftables/node1-nftables.conf.j2` and in Site 2 it is
-`site2/nftables/node1-nftables.conf.j2`.
+Both files set the firewall configuration of Node 1 to the router configuration
+described in the Firewall Configuration section above.
 
-TODO: add other node with "default" config? or add a group with the "default"
-config?
+As mentioned earlier, the tasks, or more specifically the `nftables_conf`
+variable, allow the specification of alternative firewall configurations other
+than the two templates in the Ansible role for individual nodes. For example,
+a different template could be set for a node in its `host_vars` as follows:
+
+```yaml
+---
+# nftables configuration
+nftables_conf: "{{ inventory_dir }}/nftables/nftables-other.conf.j2"
+```
+
+Here, the nftables configuration file is set to the template file
+`nftables-other.conf.j2` in the subdirectory `nftables` of the Ansible
+inventory (`{{ inventory_dir }}`): In Site 1, this template file is
+`site1/nftables/nftables-other.conf.j2` and in Site 2 it is
+`site2/nftables/nftables-other.conf.j2`.
 
 #### Groups
 
@@ -510,13 +517,12 @@ is defined as follows in the in the file `site1/group_vars/nftables_hosts` and
 ```yaml
 ---
 # nftables configuration
-nftables_conf: "nftables.conf.j2"
+nftables_conf: "nftables-client.conf.j2"
 ```
 
 Both files set the firewall configuration of Node 2 and 3 in both sites to the
-configuration described in the Firewall Configuration section above. The
-nftables configuration is set to the default template file `nftables.conf.j2`
-in the Ansible role.
+client node configuration described in the Firewall Configuration section
+above.
 
 ### Deployment
 
