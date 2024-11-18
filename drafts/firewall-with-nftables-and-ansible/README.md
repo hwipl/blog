@@ -125,6 +125,13 @@ table inet fw_router_nat {
 }
 ```
 
+The configuration is split into two tables that are added to any pre-existing
+firewall configuration. The names of the tables differ from the names that are
+usually used by software like, e.g., docker or libvirt so (re)starting the
+firewall configuration does not remove existing firewall rules. Note that the
+rules themselves still can interfere with each-other. For example, packets that
+are accepted by existing firewall rules can still be dropped in these tables.
+
 The table `fw_router_nat` contains the rules for NAT in one chain. The chain
 `postrouting` contains the NAT rules for outgoing traffic: its type is `nat`
 and it is attached to the hook `postrouting`. It contains a single rule that
