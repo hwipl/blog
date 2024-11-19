@@ -203,6 +203,11 @@ table inet fw_client_filter {
 }
 ```
 
+Similar to the router configuration above, the configuration is in a table that
+is added to the existing firewall configuration. The name of the table should
+not interfere with existing tables so (re)starting this firewall configuration
+does not delete any existing rules.
+
 The table `fw_client_filter` contains the rules for filtering in one chain.
 The chain `input` contains the rules for incoming traffic that is addressed to
 the node itself: the chain is of type `filter` and attached to the hook
