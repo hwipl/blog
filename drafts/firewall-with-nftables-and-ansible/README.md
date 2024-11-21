@@ -70,9 +70,9 @@ The configuration of the router nodes is shown in the following listing:
 ```
 #!/usr/sbin/nft -f
 
-table inet fw_router_filter
-delete table inet fw_router_filter
-table inet fw_router_filter {
+table inet fw_router
+delete table inet fw_router
+table inet fw_router {
     chain input_internal {
         # filter rules for incoming traffic on internal network interface
 
@@ -110,11 +110,7 @@ table inet fw_router_filter {
         # allow traffic from internal network
         iifname "int0" accept comment "allow from internal interface"
     }
-}
 
-table inet fw_router_nat
-delete table inet fw_router_nat
-table inet fw_router_nat {
     chain postrouting {
         # NAT rules for outgoing traffic
         type nat hook postrouting priority srcnat; policy accept;
@@ -125,26 +121,26 @@ table inet fw_router_nat {
 }
 ```
 
-The configuration is split into two tables that are added to any pre-existing
-firewall configuration. The names of the tables differ from the names that are
-usually used by software like, e.g., [docker][docker] or [libvirt][libvirt] so
-(re)starting the firewall configuration does not remove existing firewall
+The configuration is in the table `fw_router` that is added to any pre-existing
+firewall configuration. The name of the table should differ from the names that
+are usually used by software like, e.g., [docker][docker] or [libvirt][libvirt]
+so (re)starting the firewall configuration does not remove existing firewall
 rules. Note that the rules themselves still can interfere with each-other. For
 example, packets that are accepted by existing firewall rules can still be
-dropped in these tables.
+dropped in this table.
 
-The table `fw_router_nat` contains the rules for NAT in one chain. The chain
-`postrouting` contains the NAT rules for outgoing traffic: its type is `nat`
-and it is attached to the hook `postrouting`. It contains a single rule that
-changes (`masquerade`) the source address of outgoing traffic on the external
-network interface (`oifname "ext0"`) to match the address of that interface.
+The table contains the rules for NAT in the chain `postrouting`. It contains
+the NAT rules for outgoing traffic: its type is `nat` and it is attached to the
+hook `postrouting`. It contains a single rule that changes (`masquerade`) the
+source address of outgoing traffic on the external network interface (`oifname
+"ext0"`) to match the address of that interface.
 
-The table `fw_router_filter` contains the rules for filtering in three chains.
-The chain `input` contains the rules for incoming traffic that is addressed to
-the node itself: its type is `filter` and it is attached to the hook `input`.
-By default this chain drops all traffic that goes through this chain and is not
-explicitly accepted by a rule in the chain (`policy drop`). It contains the
-following rules:
+The table contains the rules for filtering in the three chains `input`,
+`input_internal` and `forward`. The chain `input` contains the rules for
+incoming traffic that is addressed to the node itself: its type is `filter` and
+it is attached to the hook `input`. By default this chain drops all traffic
+that goes through this chain and is not explicitly accepted by a rule in the
+chain (`policy drop`). It contains the following rules:
 
 1. The first rule allows all traffic that is already tracked by connection
    tracking (`ct`) and belongs to or is related to an existing connection (`ct
