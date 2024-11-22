@@ -175,9 +175,9 @@ The configuration of the client nodes is shown in the following listing:
 ```
 #!/usr/bin/nft -f
 
-table inet fw_client_filter
-delete table inet fw_client_filter
-table inet fw_client_filter {
+table inet fw_client
+delete table inet fw_client
+table inet fw_client {
     chain input {
         # filter rules for incoming traffic, drop everything by default
         type filter hook input priority filter; policy drop;
@@ -200,17 +200,16 @@ table inet fw_client_filter {
 }
 ```
 
-Similar to the router configuration above, the configuration is in a table that
-is added to the existing firewall configuration. The name of the table should
-not interfere with existing tables so (re)starting this firewall configuration
-does not delete any existing rules.
+Similar to the router configuration above, the configuration is in a table
+called `fw_client` that is added to the existing firewall configuration. The
+name of the table should not interfere with existing tables so (re)starting
+this firewall configuration does not delete any existing rules.
 
-The table `fw_client_filter` contains the rules for filtering in one chain.
-The chain `input` contains the rules for incoming traffic that is addressed to
-the node itself: the chain is of type `filter` and attached to the hook
-`input`. By default this chain drops all traffic that goes through it and is
-not explicitly accepted by a rule (`policy drop`). It contains the following
-rules:
+The table contains the rules for filtering in the chain `input`. It contains
+the rules for incoming traffic that is addressed to the node itself: the chain
+is of type `filter` and attached to the hook `input`. By default this chain
+drops all traffic that goes through it and is not explicitly accepted by a rule
+(`policy drop`). It contains the following rules:
 
 1. The first rule allows all traffic that is already tracked by connection
    tracking (`ct`) and belongs to or is related to an existing connection (`ct
