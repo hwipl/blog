@@ -344,15 +344,17 @@ nodes. Additionally, the tasks above allow the specification of alternative
 templates for individual nodes in the configuration (see the Configuration
 section below).
 
+##### Router Nodes
+
 The template for the router configuration is defined as follows in the file
 `roles/nftables/templates/nftables-router.conf.j2`:
 
 ```jinja
 #!/usr/sbin/nft -f
 
-table inet fw_router_filter
-delete table inet fw_router_filter
-table inet fw_router_filter {
+table inet {{ nftables_table }}
+delete table inet {{ nftables_table }}
+table inet {{ nftables_table }} {
     chain input_internal {
         # filter rules for incoming traffic on internal network interface
 
@@ -390,11 +392,7 @@ table inet fw_router_filter {
         # allow traffic from internal network
         iifname {{ nftables_int_ifs }} accept comment "allow from internal interface"
     }
-}
 
-table inet fw_router_nat
-delete table inet fw_router_nat
-table inet fw_router_nat {
     chain postrouting {
         # NAT rules for outgoing traffic
         type nat hook postrouting priority srcnat; policy accept;
@@ -407,11 +405,14 @@ table inet fw_router_nat {
 
 The template reflects the configuration of the router nodes shown in the
 Firewall Configuration section above with parts dynamically generated based on
-the Ansible configuration: The names of the internal network interfaces are
-taken from the Ansible variable `nftables_int_ifs`. The names of the external
-network interfaces are taken from the variable `nftables_ext_ifs`. Both
-variables can be set to the name of a single interface like `ext0` or to
-multiple interface names like `{int0, int1}`.
+the Ansible configuration: The name of the table is taken from the Ansible
+variable `nftables_table`. The names of the internal network interfaces are
+taken from the variable `nftables_int_ifs`. The names of the external network
+interfaces are taken from the variable `nftables_ext_ifs`. Both variables can
+be set to the name of a single interface like `ext0` or to multiple interface
+names like `{int0, int1}`.
+
+##### Client Nodes
 
 The template for the client configuration is defined as follows in the file
 `roles/nftables/templates/nftables-client.conf.j2`:
