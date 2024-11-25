@@ -420,9 +420,9 @@ The template for the client configuration is defined as follows in the file
 ```jinja
 #!/usr/bin/nft -f
 
-table inet fw_client_filter
-delete table inet fw_client_filter
-table inet fw_client_filter {
+table inet {{ nftables_table }}
+delete table inet {{ nftables_table }}
+table inet {{ nftables_table }} {
     chain input {
         # filter rules for incoming traffic, drop everything by default
         type filter hook input priority filter; policy drop;
@@ -446,8 +446,9 @@ table inet fw_client_filter {
 ```
 
 The template reflects the configuration of the client nodes shown in the
-Firewall Configuration section above. It contains no dynamically generated
-parts.
+Firewall Configuration section above with parts dynamically generated based on
+the Ansible configuration: The name of the table is taken from the Ansible
+variable `nftables_table`.
 
 ### Playbook
 
