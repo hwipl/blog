@@ -498,10 +498,19 @@ follows in the files `site1/host_vars/node1` and `site2/host_vars/node1`:
 ---
 # nftables configuration
 nftables_conf: "nftables-router.conf.j2"
+nftables_table: "fw_router"
+nftables_int_ifs: "int0"
+nftables_ext_ifs: "ext0"
 ```
 
 Both files set the firewall configuration of Node 1 to the router configuration
 described in the Firewall Configuration section above.
+
+The variable `nftables_conf` sets the template of the configuration file to
+`nftables-router.conf.j2`. The variable `nftables_table` sets the name of the
+table to `fw_router`. The variable `nftables_int_ifs` sets the internal network
+interfaces to the interface `int0`. The variable `nftables_ext_ifs` sets the
+external network interfaces to the interface `ext0`.
 
 As mentioned earlier, the tasks, or more specifically the `nftables_conf`
 variable, allow the specification of alternative firewall configurations other
