@@ -539,11 +539,16 @@ is defined as follows in the in the file `site1/group_vars/nftables_hosts` and
 ---
 # nftables configuration
 nftables_conf: "nftables-client.conf.j2"
+nftables_table: "fw_client"
 ```
 
 Both files set the firewall configuration of Node 2 and 3 in both sites to the
 client node configuration described in the Firewall Configuration section
 above.
+
+The variable `nftables_conf` sets the template of the configuration file to
+`nftables-client.conf.j2`. The variable `nftables_table` sets the name of the
+table to `fw_client`.
 
 ### Deployment
 
