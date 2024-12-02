@@ -121,19 +121,19 @@ table inet fw_router {
 }
 ```
 
-The configuration is in the table `fw_router` that is added to any pre-existing
-firewall configuration. The name of the table should differ from the names that
-are usually used by software like, e.g., [docker][docker] or [libvirt][libvirt]
-so (re)starting the firewall configuration does not remove existing firewall
-rules. Note that the rules themselves still can interfere with each-other. For
-example, packets that are accepted by existing firewall rules can still be
-dropped in this table.
+The configuration is in the [table][tables] `fw_router` that is added to any
+pre-existing firewall configuration. The name of the table should differ from
+the names that are usually used by software like, e.g., [docker][docker] or
+[libvirt][libvirt] so (re)starting the firewall configuration does not remove
+existing firewall [rules][rules]. Note that the rules themselves still can
+interfere with each-other. For example, packets that are accepted by existing
+firewall rules can still be dropped in this table.
 
-The table contains the rules for NAT in the chain `postrouting`. It contains
-the NAT rules for outgoing traffic: its type is `nat` and it is attached to the
-hook `postrouting`. It contains a single rule that changes (`masquerade`) the
-source address of outgoing traffic on the external network interface (`oifname
-"ext0"`) to match the address of that interface.
+The table contains the rules for NAT in the [chain][chains] `postrouting`. It
+contains the NAT rules for outgoing traffic: its type is `nat` and it is
+attached to the hook `postrouting`. It contains a single rule that changes
+(`masquerade`) the source address of outgoing traffic on the external network
+interface (`oifname "ext0"`) to match the address of that interface.
 
 The table contains the rules for filtering in the three chains `input`,
 `input_internal` and `forward`. The chain `input` contains the rules for
@@ -200,16 +200,17 @@ table inet fw_client {
 }
 ```
 
-Similar to the router configuration above, the configuration is in a table
-called `fw_client` that is added to the existing firewall configuration. The
-name of the table should not interfere with existing tables so (re)starting
-this firewall configuration does not delete any existing rules.
+Similar to the router configuration above, the configuration is in a
+[table][tables] called `fw_client` that is added to the existing firewall
+configuration. The name of the table should not interfere with existing tables
+so (re)starting this firewall configuration does not delete any existing
+[rules][rules].
 
 The table contains the rules for filtering in the chain `input`. It contains
-the rules for incoming traffic that is addressed to the node itself: the chain
-is of type `filter` and attached to the hook `input`. By default this chain
-drops all traffic that goes through it and is not explicitly accepted by a rule
-(`policy drop`). It contains the following rules:
+the rules for incoming traffic that is addressed to the node itself: the
+[chain][chains] is of type `filter` and attached to the hook `input`. By
+default this chain drops all traffic that goes through it and is not explicitly
+accepted by a rule (`policy drop`). It contains the following rules:
 
 1. The first rule allows all traffic that is already tracked by connection
    tracking (`ct`) and belongs to or is related to an existing connection (`ct
@@ -592,6 +593,9 @@ sites as shown in this document at the following links:
 - [Site 1 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/nftables/examples/site1)
 - [Site 2 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/nftables/examples/site2)
 
+[tables]: https://wiki.nftables.org/wiki-nftables/index.php/Configuring_tables
+[chains]: https://wiki.nftables.org/wiki-nftables/index.php/Configuring_chains
+[rules]: https://wiki.nftables.org/wiki-nftables/index.php/Simple_rule_management
 [docker]: https://www.docker.com
 [libvirt]: https://libvirt.org
 [roles]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
