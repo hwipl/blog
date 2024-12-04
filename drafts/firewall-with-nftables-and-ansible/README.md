@@ -3,7 +3,11 @@
 This document describes how you can deploy Linux firewalls with nftables and
 Ansible. It shows the nftables configuration as well as the Ansible role,
 playbook and configuration that are used to install and configure each firewall
-server automatically.
+automatically.
+
+Note: you need to be careful to not lock yourself out of remote hosts or
+interfere with running services when you make changes to the firewall
+configuration of hosts.
 
 ## Overview
 
