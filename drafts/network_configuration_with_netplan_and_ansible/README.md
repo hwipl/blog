@@ -13,7 +13,22 @@ automatically.
 
 ### Role
 
+The Ansible role is called `netplan` and structured as shown in the listing
+below:
+
+```
+roles/netplan/
+├── handlers
+│   └── main.yml
+├── tasks
+│   └── main.yml
+└── templates
+    └── netplan-network.yaml.j2
+```
+
 #### Handlers
+
+A handler is defined as follows in the file `roles/netplan/handlers/main.yml`:
 
 ```yaml
 ---
@@ -25,6 +40,8 @@ automatically.
 ```
 
 #### Tasks
+
+The tasks are defined as follows in the file `roles/netplan/tasks/main.yml`:
 
 ```yaml
 ---
@@ -44,12 +61,17 @@ automatically.
 
 #### Templates
 
+The template is defined as follows in the file
+`roles/nftables/templates/netplan-network.yaml.j2`:
+
 ```jinja
 network:
   {{ network | to_nice_yaml(indent=2,sort_keys=false) | indent(width=2) | trim }}
 ```
 
 ### Playbook
+
+The playbook is defined as follows in the file `netplan.yml`:
 
 ```yaml
 ---
