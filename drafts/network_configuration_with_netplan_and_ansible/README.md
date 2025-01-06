@@ -84,11 +84,25 @@ The playbook is defined as follows in the file `netplan.yml`:
 
 ### Configuration
 
+The Ansible hosts are defined as follows in the files `site1/hosts` and
+`site2/hosts`:
+
+```ini
+[netplan_hosts]
+node1
+node2
+node3
+```
+
 Node 1:
+
+The host-specific configuration of Node 1 is in the `host_vars` of `node1` in
+each site. The configuration for Site 1 defined as follows in the file
+`site1/host_vars/node1`:
 
 ```yaml
 # netplan network configuration
-netplan_config_file: 90-head-site1-network.yaml
+netplan_config_file: 90-node1-site1-network.yaml
 network:
   version: 2
   renderer: networkd
@@ -151,9 +165,13 @@ network:
 
 Node 2:
 
+The host-specific configuration of Node 2 is in the `host_vars` of `node2` in
+each site. The configuration for Site 1 defined as follows in the file
+`site1/host_vars/node2`:
+
 ```yaml
 # netplan network configuration
-netplan_config_file: 50-cloud-init.yaml
+netplan_config_file: 90-node2-site1-network.yaml
 network:
     bridges:
         int-br0:
@@ -219,9 +237,13 @@ network:
 
 Node 3:
 
+The host-specific configuration of Node 3 is in the `host_vars` of `node3` in
+each site. The configuration for Site 1 is defined as follows in the file
+`site1/host_vars/node3`:
+
 ```yaml
 # netplan network configuration
-netplan_config_file: 90-gpu-site1-network.yaml
+netplan_config_file: 90-node3-site1-network.yaml
 network:
   version: 2
   renderer: networkd
