@@ -407,8 +407,8 @@ The file name is the name of the WireGuard peer with the suffix `.conf`.
 
 #### Templates
 
-The template for the configuration files are defined as [Jinja2
-template][jinja2].
+The templates for the configuration files are defined as [Jinja2
+templates][jinja2].
 
 The template for the server configuration is defined as follows in the file
 `roles/wireguard/templates/wg.conf.j2`:
@@ -459,7 +459,7 @@ section above with parts dynamically generated based on the Ansible
 configuration:
 
 - The client's listen port is read from the variable `wireguard_listen_port`
-- The client's VPN address is read from the variable `wireguard_address`
+- The client's VPN address is read from the client variable `client_address`
 - The WireGuard network interface is read from the variable
   `wireguard_interface`
 - The server's public key is read from the variable `wireguard_public_key`
