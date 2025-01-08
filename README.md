@@ -1,5 +1,6 @@
 # blog
 
+- 2025-01-08: [VPN with WireGuard and Ansible](posts/vpn_with_wireguard_and_ansible)
 - 2025-01-05: [Reverse Proxy with HAProxy and Ansible](posts/reverse_proxy_with_haproxy_and_ansible)
 - 2025-01-03: [NTP with Chrony and Ansible](posts/ntp_with_chrony_and_ansible)
 - 2024-12-30: [DHCP with ISC DHCP and Ansible](posts/dhcp_with_isc_dhcp_and_ansible)
