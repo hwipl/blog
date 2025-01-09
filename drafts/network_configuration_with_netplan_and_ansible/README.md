@@ -289,6 +289,13 @@ network:
 
 ### Deployment
 
+```console
+$ # site 1
+$ ansible-playbook -i site1/hosts netplan.yml
+$ # site 2
+$ ansible-playbook -i site2/hosts netplan.yml
+```
+
 ## Conclusion
 
 ## Appendix: Code
