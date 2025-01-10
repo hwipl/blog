@@ -299,3 +299,11 @@ $ ansible-playbook -i site2/hosts netplan.yml
 ## Conclusion
 
 ## Appendix: Code
+
+You can find the Ansible role and playbook as well as the configuration of both
+sites as shown in this document at the following links:
+
+- [Ansible Role](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/netplan/roles/netplan)
+- [Ansible Playbook](https://github.com/hwipl/ansible-playbooks/blob/main/ubuntu/netplan/netplan.yml)
+- [Site 1 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/netplan/examples/site1)
+- [Site 2 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/netplan/examples/site2)
