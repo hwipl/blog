@@ -82,11 +82,12 @@ The option `guest only` allows only guest connections to the share.
 
 ## Ansible
 
-Ansible allows for automatic installation and configuration of the VPN servers.
-Ansible uses [roles][roles] and [playbooks][playbooks]. Roles consist of tasks,
-templates and handlers. Tasks are the individual installation and configuration
-steps. They use the [templates][templates] to generate configuration files and
-trigger events that are handled by the [handlers][handlers].
+Ansible allows for automatic installation and configuration of the file
+servers. Ansible uses [roles][roles] and [playbooks][playbooks]. Roles consist
+of tasks, templates and handlers. Tasks are the individual installation and
+configuration steps. They use the [templates][templates] to generate
+configuration files and trigger events that are handled by the
+[handlers][handlers].
 
 A role and a playbook are used to deploy the file servers. The playbook assigns
 the role to all nodes of a group defined in the Ansible [inventory][inventory].
@@ -138,8 +139,8 @@ A handler is defined as follows in the file `roles/samba/handlers/main.yml`:
 The handler is called `Restart samba` and restarts the file server with the
 [service module][service] when it is triggered. It requires root privileges to
 manipulate the state of the system services, so [become][become] is set to
-`true` for [privilege escalation][privilege]. To restart file server, it sets
-the system services `smbd` and `nmbd` to state `restarted`.
+`true` for [privilege escalation][privilege]. To restart the file server, it
+sets the system services `smbd` and `nmbd` to state `restarted`.
 
 #### Tasks
 
