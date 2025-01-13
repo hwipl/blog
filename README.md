@@ -1,5 +1,6 @@
 # blog
 
+- 2025-01-13: [File Server with Samba and Ansible](posts/file_server_with_samba_and_ansible)
 - 2025-01-08: [VPN with WireGuard and Ansible](posts/vpn_with_wireguard_and_ansible)
 - 2025-01-05: [Reverse Proxy with HAProxy and Ansible](posts/reverse_proxy_with_haproxy_and_ansible)
 - 2025-01-03: [NTP with Chrony and Ansible](posts/ntp_with_chrony_and_ansible)
