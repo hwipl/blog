@@ -222,7 +222,7 @@ accepted by a rule (`policy drop`). It contains the following rules:
 2. The second rule allows all incoming traffic on the loopback interface (`iif
    lo`).
 3. The third rule allows incoming ICMPv4 traffic (`ip protocol icmp`)
-4. The forth rule allows incoming ICMPv6 traffic (`meta l4proto ipv6-icmp`)
+4. The fourth rule allows incoming ICMPv6 traffic (`meta l4proto ipv6-icmp`)
 5. The fifth rule allows incoming SSH connections (`tcp dport ssh`)
 
 ## Ansible
@@ -537,7 +537,7 @@ inventory (`{{ inventory_dir }}`): In Site 1, this template file is
 #### Groups
 
 The site-specific configuration of the firewall on Node 2 and 3 in Site 1 and 2
-is defined as follows in the in the file `site1/group_vars/nftables_hosts` and
+is defined as follows in the files `site1/group_vars/nftables_hosts` and
 `site2/group_vars/nftables_hosts`:
 
 ```yaml
