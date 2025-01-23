@@ -42,6 +42,10 @@ roles/netplan/
     └── netplan-network.yaml.j2
 ```
 
+The role consists of one `main.yml` file for handlers, one `main.yml` file for
+tasks and one template file. The tasks use the template
+`netplan-network.yaml.j2` to create the configuration file for netplan.
+
 #### Handlers
 
 A handler is defined as follows in the file `roles/netplan/handlers/main.yml`:
