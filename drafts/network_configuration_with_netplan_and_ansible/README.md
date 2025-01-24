@@ -59,6 +59,12 @@ A handler is defined as follows in the file `roles/netplan/handlers/main.yml`:
   ansible.builtin.command: netplan apply
 ```
 
+The handler is called `Apply netplan configuration` and applies the network
+configuration with the [command module][command] when it is triggered. It
+requires root privileges to manipulate the system configuration, so
+[become][become] is set to `true` for [privilege escalation][privilege]. It
+calls the command `netplan apply` to apply the network configuration.
+
 #### Tasks
 
 The tasks are defined as follows in the file `roles/netplan/tasks/main.yml`:
@@ -334,3 +340,6 @@ sites as shown in this document at the following links:
 [handlers]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html
 [inventory]: https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
 [ansible-playbook]: https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html
+[command]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html
+[become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
+[privilege]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
