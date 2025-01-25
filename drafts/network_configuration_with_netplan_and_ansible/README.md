@@ -73,6 +73,16 @@ The tasks are defined as follows in the file `roles/netplan/tasks/main.yml`:
 ---
 # these tasks setup a network configuration with netplan
 
+- name: Update apt cache if older than 3600 seconds
+  become: true
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+- name: Ensure netplan is installed
+  become: true
+  ansible.builtin.apt:
+    name: netplan.io
+    state: present
 - name: Create netplan configuration from template
   become: true
   ansible.builtin.template:
@@ -84,6 +94,24 @@ The tasks are defined as follows in the file `roles/netplan/tasks/main.yml`:
   notify:
     - Apply netplan configuration
 ```
+
+These tasks make sure netplan is installed with the [apt module][apt],
+configure it with the template and the [template module][template] and trigger
+the event to apply the network configuration with [notify][notify] if the
+configuration file is changed. All tasks need root privileges to manipulate the
+system configuration. So, [become][become] is set to `true`.
+
+1. The first task updates the `apt` cache if it is older than one hour to make
+   sure the following installation task can run with up-to-date package
+   sources.
+2. The second task installs netplan with `apt` if it is not already installed.
+   In Ubuntu, it should already be installed by default.
+3. The third task creates or updates the network configuration in the directory
+   `/etc/netplan` from the template `netplan-network.yaml.j2`. The file name is
+   read from the Ansible variable `netplan_config_file`. The file owner and
+   group are set to `root`. File permissions are set to `644`. If the
+   configuration changed, the task triggers the event to apply the network
+   configuration.
 
 #### Templates
 
@@ -343,3 +371,6 @@ sites as shown in this document at the following links:
 [command]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html
 [become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
 [privilege]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
+[apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+[template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
+[notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
