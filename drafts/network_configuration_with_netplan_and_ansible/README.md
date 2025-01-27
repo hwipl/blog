@@ -115,13 +115,20 @@ system configuration. So, [become][become] is set to `true`.
 
 #### Templates
 
-The template is defined as follows in the file
+The template for the network configuration file is defined as [Jinja2
+template][jinja2]. It is defined as follows in the file
 `roles/nftables/templates/netplan-network.yaml.j2`:
 
 ```jinja
 network:
   {{ network | to_nice_yaml(indent=2,sort_keys=false) | indent(width=2) | trim }}
 ```
+
+The template creates a netplan configuration as shown in the Network
+Configuration section above from the Ansible configuration. To this end, it
+converts the network configuration in the Ansible variable `network` to a yaml
+file that netplan can use. So, the content of the `network` variable must be a
+valid netplan configuration (see Configuration below).
 
 ### Playbook
 
@@ -374,3 +381,4 @@ sites as shown in this document at the following links:
 [apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
 [template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
 [notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
+[jinja2]: https://jinja.palletsprojects.com/en/latest/templates/
