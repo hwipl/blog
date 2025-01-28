@@ -143,6 +143,10 @@ The playbook is defined as follows in the file `netplan.yml`:
     - netplan
 ```
 
+The playbook assigns the role `netplan` that is described above to all hosts in
+the group `netplan_hosts`. On execution, this playbook runs all the tasks of
+the role on all the hosts in the group to configure the network settings.
+
 ### Configuration
 
 The Ansible hosts are defined as follows in the files `site1/hosts` and
