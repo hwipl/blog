@@ -7,6 +7,37 @@ automatically.
 
 ## Overview
 
+The hosts in this document run Ubuntu 22.04 LTS. Their network settings are
+configured automatically with Ansible. The network configuration assumes the
+network in the following figure:
+
+```
+                             Other Networks
+                   _________________|_________________
+                  |                                   |
+..................|...................................|..................
+: Site 1          |                 :                 |          Site 2 :
+: 10.20.1.0/24    |                 :                 |    10.20.2.0/24 :
+:                 |                 :                 |                 :
+:          +----[ext0]---+          :          +----[ext0]---+          :
+:          |             |          :          |             |          :
+:          | Node 1      |          :          | Node 1      |          :
+:          | 10.20.1.1   |          :          | 10.20.2.1   |          :
+:          |             |          :          |             |          :
+:          |  [int-br0]  |          :          |  [int-br0]  |          :
+:          +----[int0]---+          :          +----[int0]---+          :
+:          _______|_______          :          _______|_______          :
+:         |               |         :         |               |         :
+:  +----[int0]---+ +----[int0]---+  :  +----[int0]---+ +----[int0]---+  :
+:  |  [int-br0]  | |             |  :  |  [int-br0]  | |             |  :
+:  |             | |             |  :  |             | |             |  :
+:  | Node 2      | | Node 3      |  :  | Node 2      | | Node 3      |  :
+:  | 10.20.1.2   | | 10.20.1.3   |  :  | 10.20.2.2   | | 10.20.2.3   |  :
+:  +-------------+ +-------------+  :  +-------------+ +-------------+  :
+:...................................:...................................:
+                        Network: 10.20.0.0/16
+```
+
 ## Netplan Configuration
 
 ## Ansible
