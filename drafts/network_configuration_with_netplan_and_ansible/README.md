@@ -38,6 +38,33 @@ network in the following figure:
                         Network: 10.20.0.0/16
 ```
 
+Device Settings:
+
+| Node   | Device   | MAC Address       | MTU  | Bridge Info         |
+|--------|----------|-------------------|------|---------------------|
+| Node 1 | ext0     | ca:fe:ca:fe:11:01 | 1500 | No bridge           |
+|        | int0     | ca:fe:ca:fe:11:03 | 1500 | Member of int-br0   |
+|        | int-br0  | ca:fe:ca:fe:11:03 | 1500 | Members: int0       |
+|        |          |                   |      |                     |
+| Node 2 | int0     | ca:fe:ca:fe:12:01 | 1500 | Member of int-br0   |
+|        | int-br0  | ca:fe:ca:fe:12:01 | 1500 | Members: int0       |
+|        |          |                   |      |                     |
+|        |          |                   |      |                     |
+| Node 3 | int0     | ca:fe:ca:fe:13:01 | 1500 | No bridge           |
+
+IPv4 Configuration:
+
+| Node   | Device   | IPv4 Address | IPv4 Routes           |
+|--------|----------|--------------|-----------------------|
+| Node 1 | ext0     | DHCP         | DHCP                  |
+|        | int0     | None         | None                  |
+|        | int-br0  | 10.20.1.1/24 | Node                  |
+|        |          |              |                       |
+| Node 2 | int0     | None         | None                  |
+|        | int-br0  | 10.20.1.2/24 | default via 10.20.1.1 |
+|        |          |              |                       |
+| Node 3 | int0     | 10.20.1.3/24 | default via 10.20.1.1 |
+
 ## Netplan Configuration
 
 ## Ansible
