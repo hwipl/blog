@@ -38,7 +38,8 @@ network in the following figure:
                         Network: 10.20.0.0/16
 ```
 
-Device Settings:
+The settings of the network devices on all nodes are shown in the following
+table:
 
 | Node   | Device   | MAC Address       | MTU  | Bridge Info         |
 |--------|----------|-------------------|------|---------------------|
@@ -49,8 +50,17 @@ Device Settings:
 | Node 2 | int0     | ca:fe:ca:fe:12:01 | 1500 | Member of int-br0   |
 |        | int-br0  | ca:fe:ca:fe:12:01 | 1500 | Members: int0       |
 |        |          |                   |      |                     |
-|        |          |                   |      |                     |
 | Node 3 | int0     | ca:fe:ca:fe:13:01 | 1500 | No bridge           |
+
+On Node 1, the device `ext0` with the MAC address `ca:fe:ca:fe:11:01` is not a
+member of a software bridge. The device `int0` with the MAC address
+`ca:fe:ca:fe:11:03` is the only member of the software bridge `int-br0`. The
+MAC address of the software bridge (device `int-br0`) is the same as its member
+device. On Node 2, the device `int0` with the MAC address `ca:fe:ca:fe:12:01`
+is the only member of the software bridge `int-br0`. The MAC address of the
+software bridge (device `int-br0`) is the same as its member device. On Node 3,
+the device `int0` with the MAC address `ca:fe:ca:fe:13:01` is not a member of a
+software bridge. The MTU of all network devices on all nodes is set to `1500`.
 
 IPv4 Configuration:
 
