@@ -62,18 +62,28 @@ software bridge (device `int-br0`) is the same as its member device. On Node 3,
 the device `int0` with the MAC address `ca:fe:ca:fe:13:01` is not a member of a
 software bridge. The MTU of all network devices on all nodes is set to `1500`.
 
-IPv4 Configuration:
+The IPv4 configuration of the network devices on all nodes is shown in the
+following table:
 
 | Node   | Device   | IPv4 Address | IPv4 Routes           |
 |--------|----------|--------------|-----------------------|
 | Node 1 | ext0     | DHCP         | DHCP                  |
 |        | int0     | None         | None                  |
-|        | int-br0  | 10.20.1.1/24 | Node                  |
+|        | int-br0  | 10.20.1.1/24 | None                  |
 |        |          |              |                       |
 | Node 2 | int0     | None         | None                  |
 |        | int-br0  | 10.20.1.2/24 | default via 10.20.1.1 |
 |        |          |              |                       |
 | Node 3 | int0     | 10.20.1.3/24 | default via 10.20.1.1 |
+
+On Node 1, the device `ext0` retrieves its IPv4 address and routes via DHCP. No
+addresses and no routes are configured on device `int0`, because it's just a
+member of the bridge `int-br0`. The bridge device `int-br0` has the address
+`10.20.1.1/24` and no additional routes. On Node 2, there is also no IP address
+or route on device `int0`, because it's a member of the bridge `int-br0`. The
+bridge device `int-br0` has IP address `10.20.1.2/24` and the default route is
+set to `10.20.1.1` (i.e. Node 1). On Node 3, device `int0` has IP address
+`10.20.1.3/24` and the default route is also set to `10.20.1.1` (Node 1).
 
 ## Netplan Configuration
 
