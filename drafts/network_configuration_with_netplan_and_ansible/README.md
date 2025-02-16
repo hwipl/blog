@@ -45,9 +45,28 @@ examined in this document. `Node 1` connects the site to other networks, e.g.,
 the Internet. `Site 2` is, except for addresses, identical to `Site 1`. To save
 space, it is not examined further in this document. Also, the three local
 networks just affect the routing configuration and are not discussed in more
-detail. The IP addresses in `Site 1` and `Site 2` are `10.20.1.0/24` and
+detail.
+
+The IPv4 addresses relevant for device and routing configration in Site 1 are
+summarized in the following table:
+
+| Entity          | Device  | IPv4 Address |
+|-----------------|---------|--------------|
+| Site 1          |         | 10.20.1.0/24 |
+| - Node 1        | int-br0 | 10.20.1.1    |
+| - Node 2        | int-br0 | 10.20.1.2    |
+| - Node 3        | int0    | 10.20.1.3    |
+| - Node 4        |         | 10.20.1.201  |
+| Site 2          |         | 10.20.2.0/24 |
+| Local Network 1 |         | 10.21.0.0/16 |
+| Local Network 2 |         | 10.22.0.0/16 |
+| Local Network 3 |         | 10.23.0.0/16 |
+
+The IP addresses in `Site 1` and `Site 2` are `10.20.1.0/24` and
 `10.20.2.0/24`. The IP addresses in the three local networks are
-`10.21.0.0/16`, `10.22.0.0/16` and `10.23.0.0/16`.
+`10.21.0.0/16`, `10.22.0.0/16` and `10.23.0.0/16`. In Site 1, `Node 1` uses
+address `10.20.1.1` on device `int-br0`, `Node 2` uses `10.20.1.2` on `int-br0`
+and `Node 3` uses `10.20.1.3` on `int0`.
 
 The settings of the network devices on all nodes are shown in the following
 table:
