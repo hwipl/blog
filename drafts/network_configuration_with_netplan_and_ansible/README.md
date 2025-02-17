@@ -47,6 +47,16 @@ space, it is not examined further in this document. Also, the three local
 networks just affect the routing configuration and are not discussed in more
 detail.
 
+The three Linux nodes in `Site 1` possess the following network devices. On
+`Node 1`, there are three network devices. Device `ext0` connects the node with
+other networks. Device `int0` connects the node with the other nodes in the
+site. Device `int-br0` is a Linux software bridge running on top of `int0` that
+connects, e.g., node-local virtual machines to the site. On `Node 2`, there are
+two network devices with a similar configuration. Device `int0` connects the
+node to the site and there is also a Linux software bridge called `int-br0`
+running on top of `int0`. On `Node 3`, there is only one device: `int0`
+connects the node to the site.
+
 The IPv4 addresses relevant for device and routing configration in Site 1 are
 summarized in the following table:
 
