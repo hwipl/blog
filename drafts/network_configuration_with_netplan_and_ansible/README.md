@@ -57,8 +57,8 @@ node to the site and there is also a Linux software bridge called `int-br0`
 running on top of `int0`. On `Node 3`, there is only one device: `int0`
 connects the node to the site.
 
-The IPv4 addresses relevant for device and routing configration in Site 1 are
-summarized in the following table:
+The IPv4 addresses relevant for the configuration of the network devices and
+the routing in `Site 1` are summarized in the following table:
 
 | Entity          | Device  | IPv4 Address |
 |-----------------|---------|--------------|
@@ -74,12 +74,13 @@ summarized in the following table:
 
 The IP addresses in `Site 1` and `Site 2` are `10.20.1.0/24` and
 `10.20.2.0/24`. The IP addresses in the three local networks are
-`10.21.0.0/16`, `10.22.0.0/16` and `10.23.0.0/16`. In Site 1, `Node 1` uses
+`10.21.0.0/16`, `10.22.0.0/16` and `10.23.0.0/16`. In `Site 1`, `Node 1` uses
 address `10.20.1.1` on device `int-br0`, `Node 2` uses `10.20.1.2` on `int-br0`
 and `Node 3` uses `10.20.1.3` on `int0`.
 
-The settings of the network devices on all nodes are shown in the following
-table:
+Further details of the three Linux nodes in `Site 1` and their network devices
+are shown in the following. The settings of the network devices are listed in
+the following table:
 
 | Node   | Device   | MAC Address       | MTU  | Bridge Info         |
 |--------|----------|-------------------|------|---------------------|
@@ -92,17 +93,18 @@ table:
 |        |          |                   |      |                     |
 | Node 3 | int0     | ca:fe:ca:fe:13:01 | 1500 | No bridge           |
 
-On Node 1, the device `ext0` with the MAC address `ca:fe:ca:fe:11:01` is not a
-member of a software bridge. The device `int0` with the MAC address
+On `Node 1`, the device `ext0` with the MAC address `ca:fe:ca:fe:11:01` is not
+a member of a software bridge. The device `int0` with the MAC address
 `ca:fe:ca:fe:11:03` is the only member of the software bridge `int-br0`. The
 MAC address of the software bridge (device `int-br0`) is the same as its member
-device. On Node 2, the device `int0` with the MAC address `ca:fe:ca:fe:12:01`
+device. On `Node 2`, the device `int0` with the MAC address `ca:fe:ca:fe:12:01`
 is the only member of the software bridge `int-br0`. The MAC address of the
-software bridge (device `int-br0`) is the same as its member device. On Node 3,
-the device `int0` with the MAC address `ca:fe:ca:fe:13:01` is not a member of a
-software bridge. The MTU of all network devices on all nodes is set to `1500`.
+software bridge (device `int-br0`) is the same as its member device. On `Node
+3`, the device `int0` with the MAC address `ca:fe:ca:fe:13:01` is not a member
+of a software bridge. The MTU of all network devices on all nodes is set to
+`1500`.
 
-The IPv4 configuration of the network devices on all nodes is shown in the
+The IPv4 configuration of the network devices on these nodes is shown in the
 following table:
 
 | Node   | Device   | IPv4 Address | IPv4 Routes           |
@@ -116,14 +118,15 @@ following table:
 |        |          |              |                       |
 | Node 3 | int0     | 10.20.1.3/24 | default via 10.20.1.1 |
 
-On Node 1, the device `ext0` retrieves its IPv4 address and routes via DHCP. No
-addresses and no routes are configured on device `int0`, because it's just a
+On `Node 1`, the device `ext0` retrieves its IPv4 address and routes via DHCP.
+No addresses and no routes are configured on device `int0`, because it's just a
 member of the bridge `int-br0`. The bridge device `int-br0` has the address
-`10.20.1.1/24` and no additional routes. On Node 2, there is also no IP address
-or route on device `int0`, because it's a member of the bridge `int-br0`. The
-bridge device `int-br0` has IP address `10.20.1.2/24` and the default route is
-set to `10.20.1.1` (i.e. Node 1). On Node 3, device `int0` has IP address
-`10.20.1.3/24` and the default route is also set to `10.20.1.1` (Node 1).
+`10.20.1.1/24` and no additional routes. On `Node 2`, there is also no IP
+address or route on device `int0`, because it's a member of the bridge
+`int-br0`. The bridge device `int-br0` has IP address `10.20.1.2/24` and the
+default route is set to `10.20.1.1` (i.e. `Node 1`). On `Node 3`, device `int0`
+has IP address `10.20.1.3/24` and the default route is also set to `10.20.1.1`
+(i.e. `Node 1`).
 
 ## Netplan Configuration
 
