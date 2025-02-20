@@ -172,6 +172,21 @@ network:
           via: 10.20.1.201
 ```
 
+The network devices `ext0` and `int0` are configured in `ethernets`. Both
+devices are identified by their MAC addresses with `macaddress` in `match`.
+The name of the network devices in Linux is set with `set-name`. In `dhcp4`,
+DHCPv4 is enabled on `ext0` with `true` and disabled on `int0` with `false`.
+The Linux software bridge device `int-br0` is configured in `bridges`. The
+member device `int0` is set in `interfaces`. Parameters of the bridge are set
+in `parameters`: forward delay is set to `15` seconds in `forward-delay` and
+STP is disabled with `stp: false`. The MAC address of the bridge device is set
+to `ca:fe:ca:fe:11:03` (i.e. device `int0`) in `macaddress`, the MTU is set to
+`1500` in `mtu` and DHCPv4 is disabled with `dhcpv4: false`. The IP addresses
+of the bridge are configured in `addresses`. Only address `10.20.1.1/24` is set
+there. Additional routes are configured on the bridge in `routes`. The routes
+to `10.20.0.0/16`, `10.21.0.0/16`, `10.22.0.0/16` and `10.23.0.0/16` are all
+set to go via `10.20.1.201` with `to` and `via`.
+
 Node 2:
 
 ```yaml
