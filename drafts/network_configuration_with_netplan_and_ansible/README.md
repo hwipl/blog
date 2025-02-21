@@ -230,6 +230,23 @@ network:
                 - network.lan
 ```
 
+The network device `int0` is configured in `ethernets`. In `match`, it is
+identified by its MAC address with `macaddress: ca:fe:ca:fe:12:01`. Its name is
+set to `int0` with `set-name: int0` and its MTU to `1500` with `mtu: 1500`. The
+software bridge `int-br0` is configured in `bridges`. Its only device is set to
+`int0` in `interfaces`. The bridge parameters are set in `parameters`: forward
+delay is set to `15` seconds with `forward-delay: 15` and STP is disabled with
+`stp: false`. The MAC address of the bridge is set to the MAC address of device
+`int0` with `macaddress: ca:fe:ca:fe:12:01` and its MTU to `1500` with `mtu:
+1500`. The IP addresses of the bridge are set in `addresses`. Only address
+`10.20.1.2/24` is set on the device. Additional routes are configured in
+`routes`. The default route is set to go via `10.20.1.1`. The other routes to
+`10.20.0.0/16`, `10.21.0.0/16`, `10.22.0.0/16` and `10.23.0.0/16` are all
+configured to go through `10.20.1.201`. Finally, name server settings are
+configured for the bridge in `nameservers`. The addresses of the name servers
+are set in `addresses`. The only name server is `10.20.1.1`. The search domains
+are set to `s1.network.lan` and `network.lan` in `search`.
+
 Node 3:
 
 ```yaml
