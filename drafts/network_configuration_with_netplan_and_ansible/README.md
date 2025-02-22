@@ -261,12 +261,6 @@ network:
       dhcp4: false
       addresses:
         - 10.20.1.3/24
-      nameservers:
-        search:
-          - s1.network.lan
-          - network.lan
-        addresses:
-          - 10.20.1.1
       routes:
         - to: default
           via: 10.20.1.1
@@ -280,7 +274,24 @@ network:
           via: 10.20.1.201
         - to: 10.23.0.0/16
           via: 10.20.1.201
+      nameservers:
+        addresses:
+          - 10.20.1.1
+        search:
+          - s1.network.lan
+          - network.lan
 ```
+
+In `ethernets`, network device `int0` is configured. In `match`, `macaddress:
+"ca:fe:ca:fe:13:02"` identiefies the device by its MAC address. `set-name:
+int0` sets its name in Linux to `int0`. `dhcp4: false` disables DHCP on the
+device. `addresses` configures the IP addresses of the device. Only
+`10.20.1.3/24` is set on the device. Additional routes are configured in
+`routes`. The default route goes via `10.20.1.1`. The routes to `10.20.0.0/16`,
+`10.21.0.0/16`, `10.22.0.0/16` and `10.23.0.0/16` go via `10.20.1.201`.
+`nameservers` configures the DNS settings of the device. Here, `addresses` sets
+the only name server to `10.20.1.1` and `search` sets the search domains to
+`s1.network.lan` and `network.lan`.
 
 ## Ansible
 
