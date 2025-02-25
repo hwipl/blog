@@ -142,11 +142,13 @@ network:
       match:
         macaddress: "ca:fe:ca:fe:11:01"
       set-name: ext0
+      mtu: 1500
       dhcp4: true
     int0:
       match:
         macaddress: "ca:fe:ca:fe:11:03"
       set-name: int0
+      mtu: 1500
       dhcp4: false
   bridges:
     int-br0:
@@ -175,7 +177,8 @@ network:
 
 The network devices `ext0` and `int0` are configured in `ethernets`. Both
 devices are identified by their MAC addresses with `macaddress` in `match`.
-The name of the network devices in Linux is set with `set-name`. In `dhcp4`,
+The names of the network devices in Linux are set to `ext0` and `int0` with
+`set-name`. The MTU of the devices is set to `1500` in `mtu`. In `dhcp4`,
 DHCPv4 is enabled on `ext0` with `true` and disabled on `int0` with `false`.
 The Linux software bridge device `int-br0` is configured in `bridges`. The
 member device `int0` is set in `interfaces`. Parameters of the bridge are set
@@ -201,6 +204,7 @@ network:
         macaddress: "ca:fe:ca:fe:12:01"
       set-name: int0
       mtu: 1500
+      dhcp4: false
   bridges:
     int-br0:
       interfaces:
@@ -210,6 +214,7 @@ network:
         stp: false
       macaddress: "ca:fe:ca:fe:12:01"
       mtu: 1500
+      dhcp4: false
       addresses:
       - 10.20.1.2/24
       routes:
@@ -236,12 +241,13 @@ network:
 The network device `int0` is configured in `ethernets`. In `match`, it is
 identified by its MAC address with `macaddress: "ca:fe:ca:fe:12:01"`. Its name
 is set to `int0` with `set-name: int0` and its MTU to `1500` with `mtu: 1500`.
-The software bridge `int-br0` is configured in `bridges`. Its only device is
-set to `int0` in `interfaces`. The bridge parameters are set in `parameters`:
-forward delay is set to `15` seconds with `forward-delay: 15` and STP is
-disabled with `stp: false`. The MAC address of the bridge is set to the MAC
-address of device `int0` with `macaddress: "ca:fe:ca:fe:12:01"` and its MTU to
-`1500` with `mtu: 1500`. The IP addresses of the bridge are set in `addresses`.
+DHCPv4 is disabled with `dhcp4: false`. The software bridge `int-br0` is
+configured in `bridges`. Its only device is set to `int0` in `interfaces`. The
+bridge parameters are set in `parameters`: forward delay is set to `15` seconds
+with `forward-delay: 15` and STP is disabled with `stp: false`. The MAC address
+of the bridge is set to the MAC address of device `int0` with `macaddress:
+"ca:fe:ca:fe:12:01"` and its MTU to `1500` with `mtu: 1500`. DHCPv4 is disabled
+with `dhcp4: false`. The IP addresses of the bridge are set in `addresses`.
 Only address `10.20.1.2/24` is set on the device. Additional routes are
 configured in `routes`. The default route is set to go via `10.20.1.1`. The
 other routes to `10.20.0.0/16`, `10.21.0.0/16`, `10.22.0.0/16` and
@@ -263,6 +269,7 @@ network:
       match:
         macaddress: "ca:fe:ca:fe:13:02"
       set-name: int0
+      mtu: 1500
       dhcp4: false
       addresses:
       - 10.20.1.3/24
@@ -289,14 +296,14 @@ network:
 
 In `ethernets`, network device `int0` is configured. In `match`, `macaddress:
 "ca:fe:ca:fe:13:02"` identifies the device by its MAC address. `set-name: int0`
-sets its name in Linux to `int0`. `dhcp4: false` disables DHCP on the device.
-`addresses` configures the IP addresses of the device. Only `10.20.1.3/24` is
-set on the device. Additional routes are configured in `routes`. The default
-route goes via `10.20.1.1`. The routes to `10.20.0.0/16`, `10.21.0.0/16`,
-`10.22.0.0/16` and `10.23.0.0/16` go via `10.20.1.201`. `nameservers`
-configures the DNS settings of the device. Here, `addresses` sets the only name
-server to `10.20.1.1` and `search` sets the search domains to `s1.network.lan`
-and `network.lan`.
+sets its name in Linux to `int0`. `mtu: 1500` sets its MTU to `1500`. `dhcp4:
+false` disables DHCPv4 on the device. `addresses` configures the IP addresses
+of the device. Only `10.20.1.3/24` is set on the device. Additional routes are
+configured in `routes`. The default route goes via `10.20.1.1`. The routes to
+`10.20.0.0/16`, `10.21.0.0/16`, `10.22.0.0/16` and `10.23.0.0/16` go via
+`10.20.1.201`. `nameservers` configures the DNS settings of the device. Here,
+`addresses` sets the only name server to `10.20.1.1` and `search` sets the
+search domains to `s1.network.lan` and `network.lan`.
 
 ## Ansible
 
