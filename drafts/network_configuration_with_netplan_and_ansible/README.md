@@ -130,7 +130,17 @@ has IP address `10.20.1.3/24` and the default route is also set to `10.20.1.1`
 
 ## Network Configuration
 
-Node 1:
+The network configuration of the Linux nodes that results from the example
+network shown above is described in this section. The network configuration of
+a node can be stored on the node in a [YAML][yaml] file in the directory
+`/etc/netplan`. These configuration files start with a `network` block that
+contains all settings. Common entries in `network` are `version` that sets the
+netplan version to `2` and `renderer` that sets `networkd` as renderer. The
+other node-specific settings are described together with the respective
+configuration files below.
+
+On Node 1, the network is configured as follows in the file
+`/etc/netplan/90-node1-site1-network.yaml`:
 
 ```yaml
 # Network configuration of Node 1
@@ -191,7 +201,8 @@ there. Additional routes are configured on the bridge in `routes`. The routes
 to `10.20.0.0/16`, `10.21.0.0/16`, `10.22.0.0/16` and `10.23.0.0/16` are all
 set to go via `10.20.1.201` with `to` and `via`.
 
-Node 2:
+On Node 2, the network is configured as follows in the file
+`/etc/netplan/90-node2-site1-network.yaml`:
 
 ```yaml
 # Network configuration of Node 2
@@ -257,7 +268,8 @@ of the name servers are set in `addresses`. The only name server is
 `10.20.1.1`. The search domains are set to `s1.network.lan` and `network.lan`
 in `search`.
 
-Node 3:
+On Node 3, the network is configured as follows in the file
+`/etc/netplan/90-node3-site1-network.yaml`:
 
 ```yaml
 # Network configuration of Node 3
@@ -690,6 +702,7 @@ sites as shown in this document at the following links:
 - [Site 1 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/netplan/examples/site1)
 - [Site 2 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/netplan/examples/site2)
 
+[yaml]: https://yaml.org/
 [roles]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
 [playbooks]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
 [templates]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html
