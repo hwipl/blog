@@ -130,14 +130,18 @@ has IP address `10.20.1.3/24` and the default route is also set to `10.20.1.1`
 
 ## Network Configuration
 
-The network configuration of the Linux nodes that results from the example
-network shown above is described in this section. The network configuration of
-a node can be stored on the node in a [YAML][yaml] file in the directory
-`/etc/netplan`. These configuration files start with a `network` block that
-contains all settings. Common entries in `network` are `version` that sets the
-netplan version to `2` and `renderer` that sets `networkd` as renderer. The
-other node-specific settings are described together with the respective
-configuration files below.
+The network configuration of the three Linux nodes that results from the
+example network shown above is described in this section. The network
+configuration of a node is stored on the node in a [YAML][yaml] file in the
+directory `/etc/netplan`. These configuration files start with a `network`
+block that contains all settings. Common entries in `network` are `version`
+that sets the netplan version to `2`, `renderer` that sets `networkd` as
+renderer and `ethernets` that configures network devices. Additionaly, there is
+also `bridges` on Nodes 1 and 2 that contains the configuration of the Linux
+software bridges. The node-specific settings in `ethernets` and `bridges` are
+described together with the respective configuration file of each node below.
+
+### Node 1
 
 On Node 1, the network is configured as follows in the file
 `/etc/netplan/90-node1-site1-network.yaml`:
@@ -200,6 +204,8 @@ of the bridge are configured in `addresses`. Only address `10.20.1.1/24` is set
 there. Additional routes are configured on the bridge in `routes`. The routes
 to `10.20.0.0/16`, `10.21.0.0/16`, `10.22.0.0/16` and `10.23.0.0/16` are all
 set to go via `10.20.1.201` with `to` and `via`.
+
+### Node 2
 
 On Node 2, the network is configured as follows in the file
 `/etc/netplan/90-node2-site1-network.yaml`:
@@ -267,6 +273,8 @@ server settings are configured for the bridge in `nameservers`. The addresses
 of the name servers are set in `addresses`. The only name server is
 `10.20.1.1`. The search domains are set to `s1.network.lan` and `network.lan`
 in `search`.
+
+### Node 3
 
 On Node 3, the network is configured as follows in the file
 `/etc/netplan/90-node3-site1-network.yaml`:
