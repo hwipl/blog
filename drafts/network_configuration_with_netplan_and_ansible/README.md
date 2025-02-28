@@ -132,14 +132,16 @@ has IP address `10.20.1.3/24` and the default route is also set to `10.20.1.1`
 
 The network configuration of the three Linux nodes that results from the
 example network shown above is described in this section. The network
-configuration of a node is stored on the node in a [YAML][yaml] file in the
-directory `/etc/netplan`. These configuration files start with a `network`
-block that contains all settings. Common entries in `network` are `version`
-that sets the netplan version to `2`, `renderer` that sets `networkd` as
-renderer and `ethernets` that configures network devices. Additionaly, there is
-also `bridges` on Nodes 1 and 2 that contains the configuration of the Linux
-software bridges. The node-specific settings in `ethernets` and `bridges` are
-described together with the respective configuration file of each node below.
+configuration of a node is stored on the node in a [YAML][yaml] file with the
+[netplan structure][structure] in the directory `/etc/netplan`. These
+configuration files start with a `network` block that contains all settings.
+Common entries in `network` are `version` that sets the version of the netplan
+configuration format to `2`, `renderer` that sets `networkd` as underlying
+configuration tool and `ethernets` that configures network devices.
+Additionally, there is also `bridges` on Nodes 1 and 2 that contains the
+configuration of the Linux software bridges. The node-specific settings in
+`ethernets` and `bridges` are described together with the respective
+configuration file of each node below.
 
 ### Node 1
 
@@ -711,6 +713,7 @@ sites as shown in this document at the following links:
 - [Site 2 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/netplan/examples/site2)
 
 [yaml]: https://yaml.org/
+[structure]: https://netplan.readthedocs.io/en/stable/reference/
 [roles]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
 [playbooks]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
 [templates]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html
