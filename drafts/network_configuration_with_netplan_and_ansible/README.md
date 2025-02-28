@@ -435,7 +435,7 @@ system configuration. So, [become][become] is set to `true`.
 
 The template for the network configuration file is defined as [Jinja2
 template][jinja2]. It is defined as follows in the file
-`roles/nftables/templates/netplan-network.yaml.j2`:
+`roles/netplan/templates/netplan-network.yaml.j2`:
 
 ```jinja
 network:
