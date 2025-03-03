@@ -467,6 +467,11 @@ the role on all the hosts in the group to configure the network settings.
 
 ### Configuration
 
+The configuration is derived from host files in the Ansible
+[inventory][inventory]. They contain the variables that the tasks of the role
+use to configure the nodes. Group-specific configuration in `group_vars` is not
+used here.
+
 The Ansible hosts are defined as follows in the files `site1/hosts` and
 `site2/hosts`:
 
@@ -476,6 +481,13 @@ node1
 node2
 node3
 ```
+
+The hosts file defines the group `netplan_hosts` and assigns the nodes `node1`,
+`node2` and `node3` to it. Thus, the network settings of the three Linux nodes
+Node 1, Node 2 and Node 3 are configured by the playbook.
+
+The host-specific configuration of the nodes is in the `host_vars` of
+each node. The respective files are shown in the following.
 
 #### Node 1
 
