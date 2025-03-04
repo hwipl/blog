@@ -539,6 +539,11 @@ network:
         via: 10.20.1.201
 ```
 
+The name of the Netplan configuration file is set in the Ansible variable
+`netplan_config_file` to the value `90-node1-site1-network.yaml`. The network
+configuration is defined in the variable `network`. It is identical to the
+configuration of Node 1 shown in the Network Configuration section.
+
 #### Node 2
 
 The host-specific configuration of Node 2 is in the `host_vars` of `node2` in
@@ -591,6 +596,11 @@ network:
         - network.lan
 ```
 
+The name of the Netplan configuration file is set in the Ansible variable
+`netplan_config_file` to the value `90-node2-site1-network.yaml`. The network
+configuration is defined in the variable `network`. It is identical to the
+configuration of Node 2 shown in the Network Configuration section.
+
 #### Node 3
 
 The host-specific configuration of Node 3 is in the `host_vars` of `node3` in
@@ -632,6 +642,11 @@ network:
         - s1.network.lan
         - network.lan
 ```
+
+The name of the Netplan configuration file is set in the Ansible variable
+`netplan_config_file` to the value `90-node3-site1-network.yaml`. The network
+configuration is defined in the variable `network`. It is identical to the
+configuration of Node 3 shown in the Network Configuration section.
 
 ### Deployment
 
