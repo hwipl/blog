@@ -21,6 +21,10 @@ network in the following figure:
 :                  +----[ext0]---+                   __:                 :
 :                  |             |                  |  :                 :
 :                  | Node 1      |                  |  :                 :
+:                  | Router      |                  |  :                 :
+:                  | DNS Server  |                  |  :                 :
+:                  | VPN Server  |                  |  :                 :
+:                  | 10.20.21.1  |                  |  :                 :
 :                  | 10.20.1.1   |                  |  :.................:
 :                  |             |                  |  : Local Network 1 :
 :                  |  [int-br0]  |                  |__: 10.21.0.0/16    :
@@ -60,17 +64,19 @@ connects the node to the site.
 The IPv4 addresses relevant for the configuration of the network devices and
 the routing in `Site 1` are summarized in the following table:
 
-| Entity          | Device  | IPv4 Address |
-|-----------------|---------|--------------|
-| Site 1          |         | 10.20.1.0/24 |
-| - Node 1        | int-br0 | 10.20.1.1    |
-| - Node 2        | int-br0 | 10.20.1.2    |
-| - Node 3        | int0    | 10.20.1.3    |
-| - Node 4        |         | 10.20.1.201  |
-| Site 2          |         | 10.20.2.0/24 |
-| Local Network 1 |         | 10.21.0.0/16 |
-| Local Network 2 |         | 10.22.0.0/16 |
-| Local Network 3 |         | 10.23.0.0/16 |
+| Entity          | Device  | IPv4 Address  |
+|-----------------|---------|---------------|
+| Site 1          |         | 10.20.1.0/24  |
+| - VPN           |         | 10.20.21.0/24 |
+| - Node 1        | int-br0 | 10.20.1.1     |
+|                 |         | 10.20.21.1    |
+| - Node 2        | int-br0 | 10.20.1.2     |
+| - Node 3        | int0    | 10.20.1.3     |
+| - Node 4        |         | 10.20.1.201   |
+| Site 2          |         | 10.20.2.0/24  |
+| Local Network 1 |         | 10.21.0.0/16  |
+| Local Network 2 |         | 10.22.0.0/16  |
+| Local Network 3 |         | 10.23.0.0/16  |
 
 The IP addresses in `Site 1` and `Site 2` are `10.20.1.0/24` and
 `10.20.2.0/24`. The IP addresses in the three local networks are
@@ -107,14 +113,22 @@ of a software bridge. The MTU of all network devices on all nodes is set to
 The IPv4 configuration of the network devices on these nodes is shown in the
 following table:
 
-| Node   | Device   | IPv4 Address | IPv4 Routes           |
-|--------|----------|--------------|-----------------------|
-| Node 1 | ext0     | DHCP         | DHCP                  |
-|        | int0     | None         | None                  |
-|        | int-br0  | 10.20.1.1/24 | None                  |
-|        |          |              |                       |
-| Node 2 | int0     | None         | None                  |
-|        | int-br0  | 10.20.1.2/24 | default via 10.20.1.1 |
+| Node   | Device   | IPv4 Address | IPv4 Routes                  |
+|--------|----------|--------------|------------------------------|
+| Node 1 | ext0     | DHCP         | DHCP                         |
+|        | int0     | None         | None                         |
+|        | int-br0  | 10.20.1.1/24 | 10.20.0.0/16 via 10.20.1.201 |
+|        |          |              | 10.21.0.0/16 via 10.20.1.201 |
+|        |          |              | 10.22.0.0/16 via 10.20.1.201 |
+|        |          |              | 10.23.0.0/16 via 10.20.1.201 |
+|        |          |              |                              |
+| Node 2 | int0     | None         | None                         |
+|        | int-br0  | 10.20.1.2/24 | default via 10.20.1.1        |
+|        |          |              | 10.20.21.0/24 via 10.20.1.1  |
+|        |          |              | 10.20.0.0/16 via 10.20.1.201 |
+|        |          |              | 10.21.0.0/16 via 10.20.1.201 |
+|        |          |              | 10.22.0.0/16 via 10.20.1.201 |
+|        |          |              | 10.23.0.0/16 via 10.20.1.201 |
 |        |          |              |                       |
 | Node 3 | int0     | 10.20.1.3/24 | default via 10.20.1.1 |
 
