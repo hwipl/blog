@@ -261,6 +261,9 @@ network:
       routes:
       - to: default
         via: 10.20.1.1
+      # vpn traffic
+      - to: 10.20.21.0/24
+        via: 10.20.1.1
       # other site traffic
       - to: 10.20.0.0/16
         via: 10.20.1.201
@@ -291,12 +294,12 @@ of the bridge is set to the MAC address of device `int0` with `macaddress:
 with `dhcp4: false`. The IP addresses of the bridge are set in `addresses`.
 Only address `10.20.1.2/24` is set on the device. Additional routes are
 configured in `routes`. The default route is set to go via `10.20.1.1`. The
-other routes to `10.20.0.0/16`, `10.21.0.0/16`, `10.22.0.0/16` and
-`10.23.0.0/16` are all configured to go through `10.20.1.201`. Finally, name
-server settings are configured for the bridge in `nameservers`. The addresses
-of the name servers are set in `addresses`. The only name server is
-`10.20.1.1`. The search domains are set to `s1.network.lan` and `network.lan`
-in `search`.
+route to `10.20.21.0/24` also goes via `10.20.1.1`. The other routes to
+`10.20.0.0/16`, `10.21.0.0/16`, `10.22.0.0/16` and `10.23.0.0/16` are all
+configured to go through `10.20.1.201`. Finally, name server settings are
+configured for the bridge in `nameservers`. The addresses of the name servers
+are set in `addresses`. The only name server is `10.20.1.1`. The search domains
+are set to `s1.network.lan` and `network.lan` in `search`.
 
 ### Node 3
 
@@ -319,6 +322,9 @@ network:
       - 10.20.1.3/24
       routes:
       - to: default
+        via: 10.20.1.1
+      # vpn traffic
+      - to: 10.20.21.0/24
         via: 10.20.1.1
       # other site traffic
       - to: 10.20.0.0/16
@@ -343,11 +349,12 @@ In `ethernets`, network device `int0` is configured. In `match`, `macaddress:
 sets its name in Linux to `int0`. `mtu: 1500` sets its MTU to `1500`. `dhcp4:
 false` disables DHCPv4 on the device. `addresses` configures the IP addresses
 of the device. Only `10.20.1.3/24` is set on the device. Additional routes are
-configured in `routes`. The default route goes via `10.20.1.1`. The routes to
-`10.20.0.0/16`, `10.21.0.0/16`, `10.22.0.0/16` and `10.23.0.0/16` go via
-`10.20.1.201`. `nameservers` configures the DNS settings of the device. Here,
-`addresses` sets the only name server to `10.20.1.1` and `search` sets the
-search domains to `s1.network.lan` and `network.lan`.
+configured in `routes`. The default route and the route to `10.20.21.0/24` go
+via `10.20.1.1`. The routes to `10.20.0.0/16`, `10.21.0.0/16`, `10.22.0.0/16`
+and `10.23.0.0/16` go via `10.20.1.201`. `nameservers` configures the DNS
+settings of the device. Here, `addresses` sets the only name server to
+`10.20.1.1` and `search` sets the search domains to `s1.network.lan` and
+`network.lan`.
 
 ## Ansible
 
