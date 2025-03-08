@@ -434,10 +434,10 @@ The tasks are defined as follows in the file `roles/netplan/tasks/main.yml`:
   become: true
   ansible.builtin.template:
     src: netplan-network.yaml.j2
-    dest: "/etc/netplan/{{ netplan_config_file }}"
+    dest: "{{ netplan_config_file }}"
     owner: root
     group: root
-    mode: '0644'
+    mode: '0600'
   notify:
     - Apply netplan configuration
 ```
@@ -453,12 +453,11 @@ system configuration. So, [become][become] is set to `true`.
    sources.
 2. The second task installs netplan with `apt` if it is not already installed.
    In Ubuntu, it should already be installed by default.
-3. The third task creates or updates the network configuration in the directory
-   `/etc/netplan` from the template `netplan-network.yaml.j2`. The file name is
-   read from the Ansible variable `netplan_config_file`. The file owner and
-   group are set to `root`. File permissions are set to `644`. If the
-   configuration changed, the task triggers the event to apply the network
-   configuration.
+3. The third task creates or updates the network configuration from the
+   template `netplan-network.yaml.j2`. The directory and file name are read
+   from the Ansible variable `netplan_config_file`. The file owner and group
+   are set to `root`. File permissions are set to `600`. If the configuration
+   changed, the task triggers the event to apply the network configuration.
 
 #### Templates
 
@@ -526,7 +525,7 @@ each site. The configuration for Site 1 defined as follows in the file
 
 ```yaml
 # netplan network configuration
-netplan_config_file: 90-node1-site1-network.yaml
+netplan_config_file: /etc/netplan/90-node1-site1-network.yaml
 network:
   version: 2
   renderer: networkd
@@ -569,9 +568,9 @@ network:
 ```
 
 The name of the Netplan configuration file is set in the Ansible variable
-`netplan_config_file` to the value `90-node1-site1-network.yaml`. The network
-configuration is defined in the variable `network`. It is identical to the
-configuration of Node 1 shown in the Network Configuration section.
+`netplan_config_file` to the value `/etc/netplan/90-node1-site1-network.yaml`.
+The network configuration is defined in the variable `network`. It is identical
+to the configuration of Node 1 shown in the Network Configuration section.
 
 #### Node 2
 
@@ -581,7 +580,7 @@ each site. The configuration for Site 1 defined as follows in the file
 
 ```yaml
 # netplan network configuration
-netplan_config_file: 90-node2-site1-network.yaml
+netplan_config_file: /etc/netplan/90-node2-site1-network.yaml
 network:
   version: 2
   renderer: networkd
@@ -626,9 +625,9 @@ network:
 ```
 
 The name of the Netplan configuration file is set in the Ansible variable
-`netplan_config_file` to the value `90-node2-site1-network.yaml`. The network
-configuration is defined in the variable `network`. It is identical to the
-configuration of Node 2 shown in the Network Configuration section.
+`netplan_config_file` to the value `/etc/netplan/90-node2-site1-network.yaml`.
+The network configuration is defined in the variable `network`. It is identical
+to the configuration of Node 2 shown in the Network Configuration section.
 
 #### Node 3
 
@@ -638,7 +637,7 @@ each site. The configuration for Site 1 is defined as follows in the file
 
 ```yaml
 # netplan network configuration
-netplan_config_file: 90-node3-site1-network.yaml
+netplan_config_file: /etc/netplan/90-node3-site1-network.yaml
 network:
   version: 2
   renderer: networkd
@@ -673,9 +672,9 @@ network:
 ```
 
 The name of the Netplan configuration file is set in the Ansible variable
-`netplan_config_file` to the value `90-node3-site1-network.yaml`. The network
-configuration is defined in the variable `network`. It is identical to the
-configuration of Node 3 shown in the Network Configuration section.
+`netplan_config_file` to the value `/etc/netplan/90-node3-site1-network.yaml`.
+The network configuration is defined in the variable `network`. It is identical
+to the configuration of Node 3 shown in the Network Configuration section.
 
 ### Deployment
 
