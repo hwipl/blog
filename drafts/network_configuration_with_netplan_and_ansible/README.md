@@ -150,6 +150,23 @@ default route is set to `10.20.1.1` (i.e. `Node 1`). On `Node 3`, device `int0`
 has IP address `10.20.1.3/24` and the default route is also set to `10.20.1.1`
 (i.e. `Node 1`).
 
+The DNS configuration of the network devices on the three nodes is shown in the
+following table:
+
+| Node   | Device  | DNS Server | Search Domains              |
+|--------|---------|------------|-----------------------------|
+| Node 1 | ext0    | DHCP       | DHCP                        |
+| Node 2 | int-br0 | 10.20.1.1  | s1.network.lan, network.lan |
+| Node 3 | int0    | 10.20.1.1  | s1.network.lan, network.lan |
+
+The DNS server on `Node 1` is used by the other nodes in the site. It resolves
+all DNS names for them including the internal domains `network.lan` and
+`s1.network.lan`. So the DNS configuration on `Node 2` and `Node 3` sets the IP
+address of `Node 1` as DNS server as well as `s1.network.lan` and `network.lan`
+as search domains for their network devices. `Node 1` retrieves its DNS
+configuration via DHCP on the network device that connects the node to the
+other networks (i.e. `ext0`).
+
 ## Network Configuration
 
 The network configuration of the three Linux nodes that results from the
