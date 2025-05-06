@@ -172,9 +172,9 @@ other networks (i.e. `ext0`).
 The network configuration of the three Linux nodes that results from the
 example network shown above is described in this section. The network
 configuration of a node is stored on the node in a [YAML][yaml] file with the
-[netplan structure][structure] in the directory `/etc/netplan`. These
+[Netplan structure][structure] in the directory `/etc/netplan`. These
 configuration files start with a `network` block that contains all settings.
-Common entries in `network` are `version` that sets the version of the netplan
+Common entries in `network` are `version` that sets the version of the Netplan
 configuration format to `2`, `renderer` that sets `networkd` as underlying
 configuration tool and `ethernets` that configures network devices.
 Additionally, there is also `bridges` on Nodes 1 and 2 that contains the
@@ -408,7 +408,7 @@ roles/netplan/
 
 The role consists of one `main.yml` file for handlers, one `main.yml` file for
 tasks and one template file. The tasks use the template
-`netplan-network.yaml.j2` to create the configuration file for netplan.
+`netplan-network.yaml.j2` to create the configuration file for Netplan.
 
 #### Handlers
 
@@ -416,14 +416,14 @@ A handler is defined as follows in the file `roles/netplan/handlers/main.yml`:
 
 ```yaml
 ---
-# netplan handlers
+# Netplan handlers
 
-- name: Apply netplan configuration
+- name: Apply Netplan configuration
   become: true
   ansible.builtin.command: netplan apply
 ```
 
-The handler is called `Apply netplan configuration` and applies the network
+The handler is called `Apply Netplan configuration` and applies the network
 configuration with the [command module][command] when it is triggered. It
 requires root privileges to manipulate the system configuration, so
 [become][become] is set to `true` for [privilege escalation][privilege]. It
@@ -435,19 +435,19 @@ The tasks are defined as follows in the file `roles/netplan/tasks/main.yml`:
 
 ```yaml
 ---
-# these tasks setup a network configuration with netplan
+# these tasks setup a network configuration with Netplan
 
 - name: Update apt cache if older than 3600 seconds
   become: true
   ansible.builtin.apt:
     update_cache: true
     cache_valid_time: 3600
-- name: Ensure netplan is installed
+- name: Ensure Netplan is installed
   become: true
   ansible.builtin.apt:
     name: netplan.io
     state: present
-- name: Create netplan configuration from template
+- name: Create Netplan configuration from template
   become: true
   ansible.builtin.template:
     src: netplan-network.yaml.j2
@@ -456,10 +456,10 @@ The tasks are defined as follows in the file `roles/netplan/tasks/main.yml`:
     group: root
     mode: '0600'
   notify:
-    - Apply netplan configuration
+    - Apply Netplan configuration
 ```
 
-These tasks make sure netplan is installed with the [apt module][apt],
+These tasks make sure Netplan is installed with the [apt module][apt],
 configure it with the template and the [template module][template] and trigger
 the event to apply the network configuration with [notify][notify] if the
 configuration file is changed. All tasks need root privileges to manipulate the
@@ -468,7 +468,7 @@ system configuration. So, [become][become] is set to `true`.
 1. The first task updates the `apt` cache if it is older than one hour to make
    sure the following installation task can run with up-to-date package
    sources.
-2. The second task installs netplan with `apt` if it is not already installed.
+2. The second task installs Netplan with `apt` if it is not already installed.
    In Ubuntu, it should already be installed by default.
 3. The third task creates or updates the network configuration from the
    template `netplan-network.yaml.j2`. The directory and file name are read
@@ -487,11 +487,11 @@ network:
   {{ network | to_nice_yaml(indent=2,sort_keys=false) | indent(width=2) | trim }}
 ```
 
-The template creates a netplan configuration as shown in the Network
+The template creates a Netplan configuration as shown in the Network
 Configuration section above from the Ansible configuration. To this end, it
 converts the network configuration in the Ansible variable `network` to a yaml
-file that netplan can use. So, the content of the `network` variable must be a
-valid netplan configuration (see Configuration below).
+file that Netplan can use. So, the content of the `network` variable must be a
+valid Netplan configuration (see Configuration below).
 
 ### Playbook
 
@@ -499,7 +499,7 @@ The playbook is defined as follows in the file `netplan.yml`:
 
 ```yaml
 ---
-- name: Configure network using netplan
+- name: Configure network using Netplan
   hosts: netplan_hosts
 
   roles:
@@ -541,7 +541,7 @@ each site. The configuration for Site 1 defined as follows in the file
 `site1/host_vars/node1`:
 
 ```yaml
-# netplan network configuration
+# Netplan network configuration
 netplan_config_file: /etc/netplan/90-site1-node1.yaml
 network:
   version: 2
@@ -596,7 +596,7 @@ each site. The configuration for Site 1 defined as follows in the file
 `site1/host_vars/node2`:
 
 ```yaml
-# netplan network configuration
+# Netplan network configuration
 netplan_config_file: /etc/netplan/90-site1-node2.yaml
 network:
   version: 2
@@ -653,7 +653,7 @@ each site. The configuration for Site 1 is defined as follows in the file
 `site1/host_vars/node3`:
 
 ```yaml
-# netplan network configuration
+# Netplan network configuration
 netplan_config_file: /etc/netplan/90-site1-node3.yaml
 network:
   version: 2
