@@ -541,6 +541,7 @@ each site. The configuration for Site 1 defined as follows in the file
 `site1/host_vars/node1`:
 
 ```yaml
+---
 # Netplan network configuration
 netplan_config_file: /etc/netplan/90-site1-node1.yaml
 network:
@@ -596,6 +597,7 @@ each site. The configuration for Site 1 defined as follows in the file
 `site1/host_vars/node2`:
 
 ```yaml
+---
 # Netplan network configuration
 netplan_config_file: /etc/netplan/90-site1-node2.yaml
 network:
@@ -622,6 +624,9 @@ network:
       - 10.20.1.2/24
       routes:
       - to: default
+        via: 10.20.1.1
+      # vpn traffic
+      - to: 10.20.21.0/24
         via: 10.20.1.1
       # other site traffic
       - to: 10.20.0.0/16
@@ -653,6 +658,7 @@ each site. The configuration for Site 1 is defined as follows in the file
 `site1/host_vars/node3`:
 
 ```yaml
+---
 # Netplan network configuration
 netplan_config_file: /etc/netplan/90-site1-node3.yaml
 network:
@@ -669,6 +675,9 @@ network:
       - 10.20.1.3/24
       routes:
       - to: default
+        via: 10.20.1.1
+      # vpn traffic
+      - to: 10.20.21.0/24
         via: 10.20.1.1
       # other site traffic
       - to: 10.20.0.0/16
