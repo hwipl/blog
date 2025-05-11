@@ -511,6 +511,7 @@ The host-specific configuration of the VPN servers is in the `host_vars` of
 as follows in the file `site1/host_vars/node1`:
 
 ```yaml
+---
 # wireguard configuration
 # Server IP 10.20.21.1
 wireguard_interface: "site1-wg0"
@@ -552,6 +553,7 @@ The configuration for the VPN server in Site 2 is defined as follows in the
 files `site2/host_vars/node1`:
 
 ```yaml
+---
 # wireguard configuration
 # Server IP 10.20.22.1
 wireguard_interface: "site2-wg0"
