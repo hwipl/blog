@@ -444,6 +444,7 @@ The host-specific configuration of the DHCP servers is in the `host_vars` of
 `site2/host_vars/node1`:
 
 ```yaml
+---
 # dhcp server configuration
 dhcpd_interfaces_v4: "eth0 eth1"
 dhcpd_interfaces_v6: ""
