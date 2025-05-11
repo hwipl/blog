@@ -273,6 +273,7 @@ The host-specific configuration of the Samba servers is in the `host_vars` of
 `site2/host_vars/node1`:
 
 ```yaml
+---
 # smb server configuration
 samba_path: "/srv/samba/guest"
 samba_share: "guest"
