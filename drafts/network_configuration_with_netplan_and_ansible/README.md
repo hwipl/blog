@@ -759,3 +759,155 @@ sites as shown in this document at the following links:
 [template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
 [notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
 [jinja2]: https://jinja.palletsprojects.com/en/latest/templates/
+
+## Appendix: Site 2 Configuration
+
+`site2/hosts`:
+
+```ini
+[netplan_hosts]
+node1
+node2
+node3
+```
+
+`site2/host_vars/node1`:
+
+```yaml
+---
+# Netplan network configuration
+netplan_config_file: /etc/netplan/90-site2-node1.yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    ext0:
+      match:
+        macaddress: "ca:fe:ca:fe:21:01"
+      set-name: ext0
+      mtu: 1500
+      dhcp4: true
+    int0:
+      match:
+        macaddress: "ca:fe:ca:fe:21:03"
+      set-name: int0
+      mtu: 1500
+      dhcp4: false
+  bridges:
+    int-br0:
+      interfaces:
+      - int0
+      parameters:
+        forward-delay: 15
+        stp: false
+      macaddress: "ca:fe:ca:fe:21:03"
+      mtu: 1500
+      dhcp4: false
+      addresses:
+      - 10.20.2.1/24
+      routes:
+      # other site traffic
+      - to: 10.20.0.0/16
+        via: 10.20.2.201
+      # other local network traffic
+      - to: 10.21.0.0/16
+        via: 10.20.2.201
+      - to: 10.22.0.0/16
+        via: 10.20.2.201
+      - to: 10.23.0.0/16
+        via: 10.20.2.201
+```
+
+`site2/host_vars/node2`:
+
+```yaml
+---
+# Netplan network configuration
+netplan_config_file: /etc/netplan/90-site2-node2.yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    int0:
+      match:
+        macaddress: "ca:fe:ca:fe:22:01"
+      set-name: int0
+      mtu: 1500
+      dhcp4: false
+  bridges:
+    int-br0:
+      interfaces:
+      - int0
+      parameters:
+        forward-delay: 15
+        stp: false
+      macaddress: "ca:fe:ca:fe:22:01"
+      mtu: 1500
+      dhcp4: false
+      addresses:
+      - 10.20.2.2/24
+      routes:
+      - to: default
+        via: 10.20.2.1
+      # vpn traffic
+      - to: 10.20.22.0/24
+        via: 10.20.2.1
+      # other site traffic
+      - to: 10.20.0.0/16
+        via: 10.20.2.201
+      # other local network traffic
+      - to: 10.21.0.0/16
+        via: 10.20.2.201
+      - to: 10.22.0.0/16
+        via: 10.20.2.201
+      - to: 10.23.0.0/16
+        via: 10.20.2.201
+      nameservers:
+        addresses:
+        - 10.20.2.1
+        search:
+        - s2.network.lan
+        - network.lan
+```
+
+`site2/host_vars/node3`:
+
+```yaml
+---
+# Netplan network configuration
+netplan_config_file: /etc/netplan/90-site2-node3.yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    int0:
+      match:
+        macaddress: "ca:fe:ca:fe:23:02"
+      set-name: int0
+      mtu: 1500
+      dhcp4: false
+      addresses:
+      - 10.20.2.3/24
+      routes:
+      - to: default
+        via: 10.20.2.1
+      # vpn traffic
+      - to: 10.20.22.0/24
+        via: 10.20.2.1
+      # other site traffic
+      - to: 10.20.0.0/16
+        via: 10.20.2.201
+      # other local network traffic
+      - to: 10.21.0.0/16
+        via: 10.20.2.201
+      - to: 10.22.0.0/16
+        via: 10.20.2.201
+      - to: 10.23.0.0/16
+        via: 10.20.2.201
+      nameservers:
+        addresses:
+        - 10.20.2.1
+        search:
+        - s2.network.lan
+        - network.lan
+```
