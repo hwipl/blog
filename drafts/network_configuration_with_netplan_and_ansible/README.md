@@ -762,6 +762,61 @@ sites as shown in this document at the following links:
 
 ## Appendix: Site 2 Configuration
 
+| Entity          | Device  | IPv4 Address  |
+|-----------------|---------|---------------|
+| Site 1          |         | 10.20.1.0/24  |
+| Site 2          |         | 10.20.2.0/24  |
+| - VPN           |         | 10.20.22.0/24 |
+| - Node 1        | int-br0 | 10.20.2.1     |
+|                 |         | 10.20.22.1    |
+| - Node 2        | int-br0 | 10.20.2.2     |
+| - Node 3        | int0    | 10.20.2.3     |
+| - Node 4        |         | 10.20.2.201   |
+| Local Network 1 |         | 10.21.0.0/16  |
+| Local Network 2 |         | 10.22.0.0/16  |
+| Local Network 3 |         | 10.23.0.0/16  |
+
+| Node   | Device   | MAC Address       | MTU  | Bridge Info         |
+|--------|----------|-------------------|------|---------------------|
+| Node 1 | ext0     | ca:fe:ca:fe:21:01 | 1500 | No bridge           |
+|        | int0     | ca:fe:ca:fe:21:03 | 1500 | Member of int-br0   |
+|        | int-br0  | ca:fe:ca:fe:21:03 | 1500 | Members: int0       |
+|        |          |                   |      |                     |
+| Node 2 | int0     | ca:fe:ca:fe:22:01 | 1500 | Member of int-br0   |
+|        | int-br0  | ca:fe:ca:fe:22:01 | 1500 | Members: int0       |
+|        |          |                   |      |                     |
+| Node 3 | int0     | ca:fe:ca:fe:23:01 | 1500 | No bridge           |
+
+| Node   | Device   | IPv4 Address | IPv4 Routes                  |
+|--------|----------|--------------|------------------------------|
+| Node 1 | ext0     | DHCP         | DHCP                         |
+|        | int0     | None         | None                         |
+|        | int-br0  | 10.20.2.1/24 | 10.20.0.0/16 via 10.20.2.201 |
+|        |          |              | 10.21.0.0/16 via 10.20.2.201 |
+|        |          |              | 10.22.0.0/16 via 10.20.2.201 |
+|        |          |              | 10.23.0.0/16 via 10.20.2.201 |
+|        |          |              |                              |
+| Node 2 | int0     | None         | None                         |
+|        | int-br0  | 10.20.2.2/24 | default via 10.20.2.1        |
+|        |          |              | 10.20.22.0/24 via 10.20.2.1  |
+|        |          |              | 10.20.0.0/16 via 10.20.2.201 |
+|        |          |              | 10.21.0.0/16 via 10.20.2.201 |
+|        |          |              | 10.22.0.0/16 via 10.20.2.201 |
+|        |          |              | 10.23.0.0/16 via 10.20.2.201 |
+|        |          |              |                              |
+| Node 3 | int0     | 10.20.2.3/24 | default via 10.20.2.1        |
+|        |          |              | 10.20.22.0/24 via 10.20.2.1  |
+|        |          |              | 10.20.0.0/16 via 10.20.2.201 |
+|        |          |              | 10.21.0.0/16 via 10.20.2.201 |
+|        |          |              | 10.22.0.0/16 via 10.20.2.201 |
+|        |          |              | 10.23.0.0/16 via 10.20.2.201 |
+
+| Node   | Device  | DNS Server | Search Domains              |
+|--------|---------|------------|-----------------------------|
+| Node 1 | ext0    | DHCP       | DHCP                        |
+| Node 2 | int-br0 | 10.20.2.1  | s2.network.lan, network.lan |
+| Node 3 | int0    | 10.20.2.1  | s2.network.lan, network.lan |
+
 `site2/hosts`:
 
 ```ini
