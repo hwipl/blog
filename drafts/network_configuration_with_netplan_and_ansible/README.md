@@ -762,6 +762,9 @@ sites as shown in this document at the following links:
 
 ## Appendix: Site 2 Configuration
 
+The IPv4 addresses relevant for the configuration of the network devices and
+the routing in `Site 2` are summarized in the following table:
+
 | Entity          | Device  | IPv4 Address  |
 |-----------------|---------|---------------|
 | Site 1          |         | 10.20.1.0/24  |
@@ -776,6 +779,11 @@ sites as shown in this document at the following links:
 | Local Network 2 |         | 10.22.0.0/16  |
 | Local Network 3 |         | 10.23.0.0/16  |
 
+Further details of the three Linux nodes in `Site 2` and their network devices
+are shown in the following.
+
+The settings of the network devices are listed in the following table:
+
 | Node   | Device   | MAC Address       | MTU  | Bridge Info         |
 |--------|----------|-------------------|------|---------------------|
 | Node 1 | ext0     | ca:fe:ca:fe:21:01 | 1500 | No bridge           |
@@ -786,6 +794,9 @@ sites as shown in this document at the following links:
 |        | int-br0  | ca:fe:ca:fe:22:01 | 1500 | Members: int0       |
 |        |          |                   |      |                     |
 | Node 3 | int0     | ca:fe:ca:fe:23:01 | 1500 | No bridge           |
+
+The IPv4 configuration of the network devices on these nodes is shown in the
+following table:
 
 | Node   | Device   | IPv4 Address | IPv4 Routes                  |
 |--------|----------|--------------|------------------------------|
@@ -811,13 +822,18 @@ sites as shown in this document at the following links:
 |        |          |              | 10.22.0.0/16 via 10.20.2.201 |
 |        |          |              | 10.23.0.0/16 via 10.20.2.201 |
 
+The DNS configuration of the network devices on the three nodes is shown in the
+following table:
+
 | Node   | Device  | DNS Server | Search Domains              |
 |--------|---------|------------|-----------------------------|
 | Node 1 | ext0    | DHCP       | DHCP                        |
 | Node 2 | int-br0 | 10.20.2.1  | s2.network.lan, network.lan |
 | Node 3 | int0    | 10.20.2.1  | s2.network.lan, network.lan |
 
-`site2/hosts`:
+The Ansible configuration is shown in the following.
+
+The Ansible hosts are defined as follows in the file `site2/hosts`:
 
 ```ini
 [netplan_hosts]
@@ -826,6 +842,7 @@ node2
 node3
 ```
 
+The host-specific configuration of Node 1 is defined as follows in the file
 `site2/host_vars/node1`:
 
 ```yaml
@@ -873,6 +890,7 @@ network:
         via: 10.20.2.201
 ```
 
+The host-specific configuration of Node 2 is defined as follows in the file
 `site2/host_vars/node2`:
 
 ```yaml
@@ -925,6 +943,7 @@ network:
         - network.lan
 ```
 
+The host-specific configuration of Node 3 is defined as follows in the file
 `site2/host_vars/node3`:
 
 ```yaml
