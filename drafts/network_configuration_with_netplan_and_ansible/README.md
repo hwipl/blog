@@ -745,22 +745,6 @@ sites as shown in this document at the following links:
 - [Site 1 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/netplan/examples/site1)
 - [Site 2 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/netplan/examples/site2)
 
-[yaml]: https://yaml.org/
-[structure]: https://netplan.readthedocs.io/en/stable/reference/
-[roles]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
-[playbooks]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
-[templates]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html
-[handlers]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html
-[inventory]: https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
-[ansible-playbook]: https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html
-[command]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html
-[become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
-[privilege]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
-[apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
-[template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
-[notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
-[jinja2]: https://jinja.palletsprojects.com/en/latest/templates/
-
 ## Appendix: Site 2 Configuration
 
 The IPv4 addresses relevant for the configuration of the network devices and
@@ -986,3 +970,19 @@ network:
         - s2.network.lan
         - network.lan
 ```
+
+[yaml]: https://yaml.org/
+[structure]: https://netplan.readthedocs.io/en/stable/reference/
+[roles]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html
+[playbooks]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html
+[templates]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html
+[handlers]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html
+[inventory]: https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
+[ansible-playbook]: https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html
+[command]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html
+[become]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html#become-directives
+[privilege]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_privilege_escalation.html
+[apt]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+[template]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html
+[notify]: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html#notifying-handlers
+[jinja2]: https://jinja.palletsprojects.com/en/latest/templates/
