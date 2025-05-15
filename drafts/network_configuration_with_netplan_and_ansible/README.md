@@ -88,8 +88,9 @@ and `Node 3` uses `10.20.1.3` on `int0`. The VPN in `Site 1` uses IP addresses
 in `10.20.21.0/24` and `Node 1` uses address `10.20.21.1` in the VPN.
 
 Further details of the three Linux nodes in `Site 1` and their network devices
-are shown in the following. The settings of the network devices are listed in
-the following table:
+are shown in the following.
+
+The settings of the network devices are listed in the following table:
 
 | Node   | Device   | MAC Address       | MTU  | Bridge Info         |
 |--------|----------|-------------------|------|---------------------|
