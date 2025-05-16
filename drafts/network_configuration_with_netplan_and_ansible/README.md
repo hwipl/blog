@@ -49,8 +49,9 @@ examined in this document. `Node 1` has multiple roles: it is a router, DNS
 server and VPN server. It connects VPN clients with the site and the site to
 other networks, e.g., the Internet. `Site 2` is, except for addresses,
 identical to `Site 1`. To save space, it is not examined further in this
-document. Also, the three local networks just affect the routing configuration
-and are not discussed in more detail.
+document but its configuration is listed in the appendix below. Also, the three
+local networks just affect the routing configuration and are not discussed in
+more detail.
 
 The three Linux nodes in `Site 1` possess the following network devices. On
 `Node 1`, there are multiple network devices. Device `ext0` connects the node
@@ -516,10 +517,10 @@ the role on all the hosts in the group to configure the network settings.
 The configuration is derived from host files in the Ansible
 [inventory][inventory]. They contain the variables that the tasks of the role
 use to configure the nodes. Group-specific configuration in `group_vars` is not
-used here.
+used here. As mentioned before, only the configuration of Site 1 is described
+here but you can find the configuration of Site 2 in the appendix below.
 
-The Ansible hosts are defined as follows in the files `site1/hosts` and
-`site2/hosts`:
+The Ansible hosts are defined as follows in the files `site1/hosts`:
 
 ```ini
 [netplan_hosts]
@@ -707,20 +708,17 @@ to the configuration of Node 3 shown in the Network Configuration section.
 
 The network configuration can be deployed with the Ansible role, configuration
 and playbook described above. You can use the following
-[ansible-playbook][ansible-playbook] commands:
+[ansible-playbook][ansible-playbook] command:
 
 ```console
 $ # site 1
 $ ansible-playbook -i site1/hosts netplan.yml
-$ # site 2
-$ ansible-playbook -i site2/hosts netplan.yml
 ```
 
-Both `ansible-playbook` commands run the playbook `netplan.yml` with the
+The `ansible-playbook` command runs the playbook `netplan.yml` with the
 site-specific hosts files specified with the command line argument `-i`. The
-first command configures all hosts in Site 1 and the second command in Site 2.
-After successful execution of the commands above, the network settings should
-be configured and active.
+command configures all hosts in Site 1. After successful execution of the
+command above, the network settings should be configured and active.
 
 ## Conclusion
 
@@ -969,6 +967,13 @@ network:
         search:
         - s2.network.lan
         - network.lan
+```
+
+The configuration can be deployed like in Site 1 with the following command:
+
+```console
+$ # site 2
+$ ansible-playbook -i site2/hosts netplan.yml
 ```
 
 [yaml]: https://yaml.org/
