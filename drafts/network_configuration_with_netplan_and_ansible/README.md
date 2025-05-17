@@ -312,8 +312,8 @@ of the bridge is set to the MAC address of device `int0` with `macaddress:
 "ca:fe:ca:fe:12:01"` and its MTU to `1500` with `mtu: 1500`. DHCPv4 is disabled
 with `dhcp4: false`. The IP addresses of the bridge are set in `addresses`.
 Only address `10.20.1.2/24` is set on the device. Additional routes are
-configured in `routes`. The default route is set to go via `10.20.1.1`. The
-route to `10.20.21.0/24` also goes via `10.20.1.1`. The other routes to
+configured in `routes`. The default route is set to go via `10.20.1.1`. The VPN
+route `10.20.21.0/24` also goes via `10.20.1.1`. The other routes to
 `10.20.0.0/16`, `10.21.0.0/16`, `10.22.0.0/16` and `10.23.0.0/16` are all
 configured to go through `10.20.1.201`. Finally, name server settings are
 configured for the bridge in `nameservers`. The addresses of the name servers
@@ -368,12 +368,12 @@ In `ethernets`, network device `int0` is configured. In `match`, `macaddress:
 sets its name in Linux to `int0`. `mtu: 1500` sets its MTU to `1500`. `dhcp4:
 false` disables DHCPv4 on the device. `addresses` configures the IP addresses
 of the device. Only `10.20.1.3/24` is set on the device. Additional routes are
-configured in `routes`. The default route and the route to `10.20.21.0/24` go
-via `10.20.1.1`. The routes to `10.20.0.0/16`, `10.21.0.0/16`, `10.22.0.0/16`
-and `10.23.0.0/16` go via `10.20.1.201`. `nameservers` configures the DNS
-settings of the device. Here, `addresses` sets the only name server to
-`10.20.1.1` and `search` sets the search domains to `s1.network.lan` and
-`network.lan`.
+configured in `routes`. The default route and the VPN route to `10.20.21.0/24`
+go via `10.20.1.1`. The routes to `10.20.0.0/16`, `10.21.0.0/16`,
+`10.22.0.0/16` and `10.23.0.0/16` go via `10.20.1.201`. `nameservers`
+configures the DNS settings of the device. Here, `addresses` sets the only name
+server to `10.20.1.1` and `search` sets the search domains to `s1.network.lan`
+and `network.lan`.
 
 ## Ansible
 
