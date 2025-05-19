@@ -733,16 +733,6 @@ contain configuration or code examples you can use as a basis for your own
 setup. Also, you can find links to the code and configuration examples in the
 appendix below.
 
-## Appendix: Code
-
-You can find the Ansible role and playbook as well as the configuration of both
-sites as shown in this document at the following links:
-
-- [Ansible Role](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/netplan/roles/netplan)
-- [Ansible Playbook](https://github.com/hwipl/ansible-playbooks/blob/main/ubuntu/netplan/netplan.yml)
-- [Site 1 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/netplan/examples/site1)
-- [Site 2 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/netplan/examples/site2)
-
 ## Appendix: Site 2 Configuration
 
 The IPv4 addresses relevant for the configuration of the network devices and
@@ -975,6 +965,16 @@ The configuration can be deployed like in Site 1 with the following command:
 $ # site 2
 $ ansible-playbook -i site2/hosts netplan.yml
 ```
+
+## Appendix: Code
+
+You can find the Ansible role and playbook as well as the configuration of both
+sites as shown in this document at the following links:
+
+- [Ansible Role](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/netplan/roles/netplan)
+- [Ansible Playbook](https://github.com/hwipl/ansible-playbooks/blob/main/ubuntu/netplan/netplan.yml)
+- [Site 1 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/netplan/examples/site1)
+- [Site 2 Configuration](https://github.com/hwipl/ansible-playbooks/tree/main/ubuntu/netplan/examples/site2)
 
 [yaml]: https://yaml.org/
 [structure]: https://netplan.readthedocs.io/en/stable/reference/
