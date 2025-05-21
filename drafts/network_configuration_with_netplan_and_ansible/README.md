@@ -49,7 +49,7 @@ examined in this document. `Node 1` has multiple roles: it is a router, DNS
 server and VPN server. It connects VPN clients with the site and the site to
 other networks, e.g., the Internet. `Site 2` is, except for addresses,
 identical to `Site 1`. To save space, it is not examined further in this
-document but its configuration is listed in the appendix below. Also, the three
+document but its configuration is listed in Appendix 1 below. Also, the three
 local networks just affect the routing configuration and are not discussed in
 more detail.
 
@@ -390,7 +390,7 @@ variables in the inventory. Each site uses a different inventory to allow for
 site-specific configurations. The deployment is finally performed with the
 [ansible-playbook][ansible-playbook] command. The role, playbook, configuration
 and deployment are shown in the following subsections. Additionally, you can
-find links to the code and configuration examples in the appendix at the end of
+find links to the code and configuration examples in Appendix 2 at the end of
 this document.
 
 ### Role
@@ -518,7 +518,7 @@ The configuration is derived from host files in the Ansible
 [inventory][inventory]. They contain the variables that the tasks of the role
 use to configure the nodes. Group-specific configuration in `group_vars` is not
 used here. As mentioned before, only the configuration of Site 1 is described
-here but you can find the configuration of Site 2 in the appendix below.
+here but you can find the configuration of Site 2 in Appendix 1 below.
 
 The Ansible hosts are defined as follows in the files `site1/hosts`:
 
@@ -730,10 +730,10 @@ templates together with Ansible variables to create the network configuration.
 Finally, an Ansible Playbook is used with the `ansible-playbook` command to run
 the tasks and, thus, configure the network settings on all hosts. All sections
 contain configuration or code examples you can use as a basis for your own
-setup. Also, you can find links to the code and configuration examples in the
-appendix below.
+setup. Also, you can find links to the code and configuration examples in
+Appendix 2 below.
 
-## Appendix: Site 2 Configuration
+## Appendix 1: Site 2 Configuration
 
 The IPv4 addresses relevant for the configuration of the network devices and
 the routing in `Site 2` are summarized in the following table:
@@ -966,7 +966,7 @@ $ # site 2
 $ ansible-playbook -i site2/hosts netplan.yml
 ```
 
-## Appendix: Code
+## Appendix 2: Code
 
 You can find the Ansible role and playbook as well as the configuration of both
 sites as shown in this document at the following links:
