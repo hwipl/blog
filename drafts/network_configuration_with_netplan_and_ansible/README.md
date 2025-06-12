@@ -730,8 +730,8 @@ command above, the network settings should be configured and active.
 This document describes how you can automatically configure Linux network
 settings with Netplan and Ansible on Ubuntu 22.04 LTS. After presenting an
 example network and configuration, an Ansible Role is shown that contains the
-installation and configuration tasks as well as templates. The tasks use the
-templates together with Ansible variables to create the network configuration.
+installation and configuration tasks as well as a template. The tasks use the
+template together with Ansible variables to create the network configuration.
 Finally, an Ansible Playbook is used with the `ansible-playbook` command to run
 the tasks and, thus, configure the network settings on all hosts. All sections
 contain configuration or code examples you can use as a basis for your own
