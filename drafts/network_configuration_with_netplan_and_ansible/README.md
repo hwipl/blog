@@ -145,17 +145,17 @@ following table:
 On `Node 1`, the device `ext0` retrieves its IPv4 address and routes via DHCP.
 No addresses and no routes are configured on device `int0`, because it's just a
 member of the bridge `int-br0`. The bridge device `int-br0` has the address
-`10.20.1.1/24`. Additional routes are `10.20.0.0/16` (other site traffic and
-`Site 2`), `10.21.0.0/16` (`Local Network 1`), `10.22.0.0/16` (`Local Network
-2`) and `10.23.0.0/16` (`Local Network 3`) that are all routed via
-`10.20.1.201` (`Node 4`). On `Node 2`, there is also no IP address or route on
-device `int0`, because it's a member of the bridge `int-br0`. The bridge device
-`int-br0` has IP address `10.20.1.2/24` and the default route is set to
-`10.20.1.1` (`Node 1`). Additional routes are `10.20.21.0/24` (VPN) via
-`10.20.1.1` and `10.20.0.0/16`, `10.21.0.0/16`, `10.22.0.0/16`, `10.23.0.0/16`
-via `10.20.1.201`. On `Node 3`, device `int0` has IP address `10.20.1.3/24` and
-the default route is also set to `10.20.1.1` (`Node 1`). The additional routes
-are the same as on `Node 2`.
+`10.20.1.1/24`. Additional routes are `10.20.0.0/16` (other site traffic, `Site
+2`), `10.21.0.0/16` (`Local Network 1`), `10.22.0.0/16` (`Local Network 2`) and
+`10.23.0.0/16` (`Local Network 3`) that are all routed via `10.20.1.201` (`Node
+4`). On `Node 2`, there is also no IP address or route on device `int0`,
+because it's a member of the bridge `int-br0`. The bridge device `int-br0` has
+IP address `10.20.1.2/24` and the default route is set to `10.20.1.1` (`Node
+1`). Additional routes are `10.20.21.0/24` (VPN) via `10.20.1.1` and
+`10.20.0.0/16`, `10.21.0.0/16`, `10.22.0.0/16`, `10.23.0.0/16` via
+`10.20.1.201`. On `Node 3`, device `int0` has IP address `10.20.1.3/24` and the
+default route is also set to `10.20.1.1` (`Node 1`). The additional routes are
+the same as on `Node 2`.
 
 The DNS configuration of the network devices on the three nodes is shown in the
 following table:
